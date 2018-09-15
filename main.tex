@@ -1,23 +1,62 @@
 \input{preamble.sty}
-
 \begin{document}
-
 \maketitle
 
-\section{Introdução}
-There is a theory which states that if ever anyone discovers exactly what the Universe is for and why it is here, it will instantly disappear and be replaced by something even more bizarre and inexplicable.
-There is another theory which states that this has already happened.
+\section{What is the problem that you will be investigating? Why is it interesting?}
 
-\begin{figure}[h!]
-\centering
-\includegraphics[scale=1.7]{images/universe}
-\caption{The Universe}
-\label{fig:universe}
-\end{figure}
+Este projeto propõe a aplicação de técnicas de \textit{deep learning} para a transcrição dos movimentos da Libras para dentro do modelo computacional CORE-SL, que é capaz de descrever aspectos de sua fonologia e foi proposto por \cite{antunes-2015}. 
 
-\section{Conclusion}
-``I always thought something was fundamentally wrong with the universe'' \citep{adams1995hitchhiker}
+Pode-se observar um grande número de estudos que se propõem a realizar a tradução de diferentes línguas de sinais para a língua falada correspondente. Entretanto, muito desses estudos ficam limitados perante o contexto cotidiano do Surdo por desconsiderarem aspectos relevantes da fonologia da língua de sinais como movimentos, expressões não-manuais, locação e orientação das mãos do interlocutor \cite{quadros-2004}. É comum também que esses estudos restrinjam seu campo de atuação apenas ao âmbito da datilologia\footnote{
+Datilologia – também conhecida como alfabeto digital ou alfabeto manual, consiste na soletração manual de palavras pelos Surdos em uma variedade de contextos. É geralmente utilizada para introduzir uma palavra que ainda não possui um sinal equivalente \cite{quadros-2004}\cite{pereira-choi-2011}.
+}, que na prática é aplicada em contexto restritos da comunicação do Surdo.
 
-\bibliographystyle{plain}
-\bibliography{references}
+\textcite{antunes-hcisl-2011} apresentam outros fatores que ressaltam as dificuldades de aplicar essas abordagens ao cotidiano do Surdo. De forma sucinta, esses fatores são: 
+\begin{enumerate}
+\item O uso de equipamentos como luvas, acelerômetros e outros sensores que são de difícil acesso; 
+\item A adoção de métodos e tecnologias que não empatizam com a realidade surdo, restringindo sua movimentação ou deixando de considerar aspectos importantes, como as expressões faciais;
+\item O uso de métodos que mapeiam sinais diretamente para palavras, e que tornam-se facilmente obsoletos mediante a introdução de novos sinais ou quando confrontados com variações linguísticas como gírias e regionalismos; 
+\item A utilização de imagens estáticas para o treinamento de modelos, que desconsideram a dinâmica da língua; 
+\end{enumerate}
+
+Diante dessas limitações, \textcite{antunes-hcisl-2011} introduziram a proposta de uma arquitetura capaz de considerar os aspectos fonológicos da língua e de viabilizar a interação homem-máquina por meio dos sinais, a qual foi denominada HCI-SL. A figura \ref{fig:hcisl} representa a estrutura proposta pelos pesquisadores, onde uma API interna compreendendo tecnologias de visão computacional e processamento de linguagem natural proveem uma interface comum e padronizada para ferramentas e outras APIs e serviços externos como dicionários, tradutores e aplicações de finalidades diversas.
+
+\image
+	[6cm]
+    {fig:hcisl}
+    {images/hcisl}
+    {Arquitetura HCI-SL \cite{antunes-hcisl-2011}}
+
+Para arquitetura acima funcionar, foi necessário primeiro que \textcite{antunes-hcisl-2011} definissem um modelo computacional capaz de descrever completamente os sinais e suas características fonológicas. Além disso, esse modelo teria como papel fundamental estabelecer um padrão de representação da língua de sinais, passando a ser adotado pelas peças que compõem a arquitetura HCI-SL, bem como por todas aplicações e serviços desenvolvidos a partir dela. Os pesquisadores definem o CORE-SL como sendo:
+
+\begin{quote}
+Neste sentido, o trabalho apresenta o desenvolvimento de um modelo para a descrição computacional dos aspectos fonológicos dos sinais, que agrega flexibilidade e um nível de detalhamento capazes de proporcionar alternativas para um tratamento computacional robusto e para auxiliar às diferentes necessidades de aplicação. Este modelo é fundamental, pois atuará como um dos pilares de sustentação na construção de artefatos tecnológicos que considerem as necessidades deste perfil de usuário e tornem a comunicação usuário-sistema natural para ele. \cite{antunes-2011}
+\end{quote}
+
+\image
+    {fig:ligacoes_coresl}
+    {images/ligacoes_coresl}
+    {Ligações do CORE-SL}
+
+
+
+
+\image
+    [8cm]
+    {fig:hcisl_architecture}
+    {images/hcisl_architecture}
+    {Arquitetura do HSI-SL}
+
+
+\section{What data will you use? If you are collecting new datasets, how do you plan to collect
+them?}
+
+\section{What method or algorithm are you proposing? If there are existing implementations, will you use them and how? How do you plan to improve or modify such implementations?}
+
+\section{What reading will you examine to provide context and background?}
+
+\section{How will you evaluate your results? Qualitatively, what kind of results do you expect (e.g. plots or figures)? Quantitatively, what kind of analysis will you use to evaluate and/or compare your results (e.g. what performance metrics or statistical tests)?}
+
+\printbibliography
+
 \end{document}
+%%
