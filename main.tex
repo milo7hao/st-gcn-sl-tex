@@ -2,9 +2,9 @@
 \begin{document}
 \maketitle
 
-\section{What is the problem that you will be investigating? Why is it interesting?}
+\section{Problema de investigação}
 
-Este projeto propõe a aplicação de técnicas de \textit{deep learning} para a transcrição dos movimentos da Libras para dentro do modelo computacional CORE-SL, que é capaz de descrever aspectos de sua fonologia e foi proposto por \cite{antunes-2015}. 
+Este projeto propõe a aplicação de técnicas de \textit{deep learning} para a interpretação e transcrição das características fonológicas dos sinais da Libras para o modelo computacional CORE-SL \cite{antunes-2015}. 
 
 Pode-se observar um grande número de estudos que se propõem a realizar a tradução de diferentes línguas de sinais para a língua falada correspondente. Entretanto, muito desses estudos ficam limitados perante o contexto cotidiano do Surdo por desconsiderarem aspectos relevantes da fonologia da língua de sinais como movimentos, expressões não-manuais, locação e orientação das mãos do interlocutor \cite{quadros-2004}. É comum também que esses estudos restrinjam seu campo de atuação apenas ao âmbito da datilologia\footnote{
 Datilologia – também conhecida como alfabeto digital ou alfabeto manual, consiste na soletração manual de palavras pelos Surdos em uma variedade de contextos. É geralmente utilizada para introduzir uma palavra que ainda não possui um sinal equivalente \cite{quadros-2004}\cite{pereira-choi-2011}.
@@ -18,7 +18,7 @@ Datilologia – também conhecida como alfabeto digital ou alfabeto manual, cons
 \item A utilização de imagens estáticas para o treinamento de modelos, que desconsideram a dinâmica da língua; 
 \end{enumerate}
 
-Diante dessas limitações, \textcite{antunes-hcisl-2011} introduziram a proposta de uma arquitetura capaz de considerar os aspectos fonológicos da língua e de viabilizar a interação homem-máquina por meio dos sinais, a qual foi denominada HCI-SL. A figura \ref{fig:hcisl} representa a estrutura proposta pelos pesquisadores, onde uma API interna compreendendo tecnologias de visão computacional e processamento de linguagem natural proveem uma interface comum e padronizada para ferramentas e outras APIs e serviços externos como dicionários, tradutores e aplicações de finalidades diversas.
+Diante dessas limitações, \textcite{antunes-hcisl-2011} introduziram a proposta de uma arquitetura capaz de considerar os aspectos fonológicos da língua e de viabilizar a interação homem-máquina por meio dos sinais, a qual foi denominada HCI-SL. A \refimage{fig:hcisl} representa a estrutura proposta pelos pesquisadores, onde uma API interna compreendendo tecnologias de visão computacional e processamento de linguagem natural proveem uma interface comum e padronizada para ferramentas e outras APIs e serviços externos como dicionários, tradutores e aplicações de finalidades diversas.
 
 \image
 	[6cm]
@@ -26,35 +26,49 @@ Diante dessas limitações, \textcite{antunes-hcisl-2011} introduziram a propost
     {images/hcisl}
     {Arquitetura HCI-SL \cite{antunes-hcisl-2011}}
 
-Para arquitetura acima funcionar, foi necessário primeiro que \textcite{antunes-hcisl-2011} definissem um modelo computacional capaz de descrever completamente os sinais e suas características fonológicas. Além disso, esse modelo teria como papel fundamental estabelecer um padrão de representação da língua de sinais, passando a ser adotado pelas peças que compõem a arquitetura HCI-SL, bem como por todas aplicações e serviços desenvolvidos a partir dela. Os pesquisadores definem o CORE-SL como sendo:
 
-\begin{quote}
-Neste sentido, o trabalho apresenta o desenvolvimento de um modelo para a descrição computacional dos aspectos fonológicos dos sinais, que agrega flexibilidade e um nível de detalhamento capazes de proporcionar alternativas para um tratamento computacional robusto e para auxiliar às diferentes necessidades de aplicação. Este modelo é fundamental, pois atuará como um dos pilares de sustentação na construção de artefatos tecnológicos que considerem as necessidades deste perfil de usuário e tornem a comunicação usuário-sistema natural para ele. \cite{antunes-2011}
-\end{quote}
-
-\image
-    {fig:ligacoes_coresl}
-    {images/ligacoes_coresl}
-    {Ligações do CORE-SL}
-
-
-
-
-\image
-    [8cm]
-    {fig:hcisl_architecture}
+Para arquitetura acima funcionar, foi necessário primeiro que \textcite{antunes-hcisl-2011} definissem o CORE-SL, que consiste num modelo computacional capaz de descrever completamente os sinais e suas características fonológicas. Além disso, ele tem como papel fundamental estabelecer um padrão de representação dos sinais, passando a ser adotado pelas peças que compõem a arquitetura HCI-SL e por todas as aplicações e serviços desenvolvidos a partir dela (conforme \refimage{fig:coresl-architecture}). 
+ 
+ \image
+    [6cm]
+    {fig:coresl-architecture}
     {images/hcisl_architecture}
     {Arquitetura do HSI-SL}
 
+De acordo com os pesquisadores, o CORE-SL:
 
-\section{What data will you use? If you are collecting new datasets, how do you plan to collect
-them?}
+\begin{quote}
+[...] agrega flexibilidade e um nível de detalhamento capazes de proporcionar alternativas para um tratamento computacional robusto e para auxiliar às diferentes necessidades de aplicação. Este modelo é fundamental, pois atuará como um dos pilares de sustentação na construção de artefatos tecnológicos que considerem as necessidades deste perfil de usuário e tornem a comunicação usuário-sistema natural para ele. \cite{antunes-2011}
+\end{quote}
+
+ A \refimage{fig:coresl-interfaces} ilustra as interações do CORE-SL com uma série de serviços idealizados ou em desenvolvimento por pesquisadores da Universidade Federal do Paraná - UFPR. Nela, o modelo exerce um papel chave para existência e comunicação das demais peças envolvidas.
+
+\image
+    {fig:coresl-interfaces}
+    {images/coresl_interfaces}
+    {CORE-SL como peça chave para a comunicação de outros serviços}
+
+A \refimage{fig:coresl-sinalarvore} mostra um exemplo de descrição do sinal árvore através do modelo CORE-SL:
+
+\image
+    {fig:coresl-sinalarvore}
+    {images/sinal_arvore}
+    {Representação do sinal árvore escrito segundo o CORE-SL}
+    
+
+\section{Dados que serão utilizados}
+% What data will you use? If you are collecting new datasets, how do you plan to collect them?
+A proposta inicial é utilizar \textit{datasets} de vídeos de línguas de sinais, como por exemplo xxx e xxx.
 
 \section{What method or algorithm are you proposing? If there are existing implementations, will you use them and how? How do you plan to improve or modify such implementations?}
+Lorem ipsum
 
 \section{What reading will you examine to provide context and background?}
+Lorem ipsum
 
 \section{How will you evaluate your results? Qualitatively, what kind of results do you expect (e.g. plots or figures)? Quantitatively, what kind of analysis will you use to evaluate and/or compare your results (e.g. what performance metrics or statistical tests)?}
+Lorem ipsum
+
 
 \printbibliography
 
