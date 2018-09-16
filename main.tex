@@ -3,8 +3,9 @@
 \maketitle
 
 \section{Problema de investigação}
+\label{sec:problema-investigacao}
 
-Este projeto propõe a aplicação de técnicas de \textit{deep learning} para a interpretação e transcrição das características fonológicas dos sinais da Libras para o modelo computacional CORE-SL \cite{antunes-2015}. 
+Este projeto propõe a aplicação de técnicas de \textit{deep learning} para a interpretação e transcrição das características fonológicas da língua de sinais para o modelo computacional CORE-SL \cite{antunes-2015}. 
 
 Pode-se observar um grande número de estudos que se propõem a realizar a tradução de diferentes línguas de sinais para a língua falada correspondente. Entretanto, muito desses estudos ficam limitados perante o contexto cotidiano do Surdo por desconsiderarem aspectos relevantes da fonologia da língua de sinais como movimentos, expressões não-manuais, locação e orientação das mãos do interlocutor \cite{quadros-2004}. É comum também que esses estudos restrinjam seu campo de atuação apenas ao âmbito da datilologia\footnote{
 Datilologia – também conhecida como alfabeto digital ou alfabeto manual, consiste na soletração manual de palavras pelos Surdos em uma variedade de contextos. É geralmente utilizada para introduzir uma palavra que ainda não possui um sinal equivalente \cite{quadros-2004}\cite{pereira-choi-2011}.
@@ -25,7 +26,6 @@ Diante dessas limitações, \textcite{antunes-hcisl-2011} introduziram a propost
     {fig:hcisl}
     {images/hcisl}
     {Arquitetura HCI-SL \cite{antunes-hcisl-2011}}
-
 
 Para arquitetura acima funcionar, foi necessário primeiro que \textcite{antunes-hcisl-2011} definissem o CORE-SL, que consiste num modelo computacional capaz de descrever completamente os sinais e suas características fonológicas. Além disso, ele tem como papel fundamental estabelecer um padrão de representação dos sinais, passando a ser adotado pelas peças que compõem a arquitetura HCI-SL e por todas as aplicações e serviços desenvolvidos a partir dela (conforme \refimage{fig:coresl-architecture}). 
  
@@ -57,17 +57,23 @@ A \refimage{fig:coresl-sinalarvore} mostra um exemplo de descrição do sinal á
     
 
 \section{Dados que serão utilizados}
-% What data will you use? If you are collecting new datasets, how do you plan to collect them?
-A proposta inicial é utilizar \textit{datasets} de vídeos de línguas de sinais, como por exemplo xxx e xxx.
+A proposta inicial é utilizar o \textit{dataset} \textit{American Sign Language Lexicon Video Dataset} (ASLLVD)\footnote{\textit{American Sign Language Lexicon Video Dataset} (ASLLVD) - disponível no endereço \url{http://vlm1.uta.edu/~athitsos/asl_lexicon/}}. Ele é composto por vídeos de sinais realizados por diferentes atores e também por arquivos de metadados que determinam qual o sinal e quais os respectivos frames de início e fim para cada um deles dentro do vídeo. Esse \textit{dataset} é apresentado com mais detalhes em \cite{athitsos-asldataset-2008}.
 
-\section{What method or algorithm are you proposing? If there are existing implementations, will you use them and how? How do you plan to improve or modify such implementations?}
-Lorem ipsum
+Apesar do \textit{dataset} acima não se referir especificamente à Libras, sua utilização é válida para este projeto porque o CORE-SL não está atrelado aos sinais, mas às características fonológicas desses sinais, as quais são transversais para línguas de diferentes regiões. 
 
-\section{What reading will you examine to provide context and background?}
-Lorem ipsum
+Uma vez definidos os dados, será necessário produzir os respectivos arquivos de descrição dos sinais em CORE-SL, para que sirvam de entrada no treinamento do modelo a ser elaborado.
+
+Adicionalmente, tem-se como estratégia inicial utilizar a biblioteca OpenPose\footnote{OpenPose - consiste num sistema para detectar simultaneamente pontos chaves do corpo, da mão e do rosto humano (num total de 135) em tempo real para múltiplas pessoas. Está descrito em mais detalhes em \textcite{cao-realtime-2017}, \textcite{simon-hand-2017} e \textcite{wei-cpm-2016} e disponível no endereço \url{https://github.com/CMU-Perceptual-Computing-Lab/openpose}} para extrair os pontos do corpo dos atores presentes no \textit{dataset} acima e produzir uma entrada potencialmente mais rica para o modelo a ser elaborado.
+
+\section{Método a ser utilizado}
+Pretende-se elaborar para este projeto um modelo baseado em \textit{Recurrent neural network} - RNN e/ou \textit{Long short-term memory} - LSTM. Entretanto, ainda é necessário expandir o embasamento teórico acerca dessas técnicas e do grau de aplicabilidade ao problema em questão.
+
+Com relação ao modelo CORE-SL, entende-se que a discussão apresentada na \refsect{sec:problema-investigacao} e os respectivos trabalhos de citados são suficientes para realização do projeto.
+
 
 \section{How will you evaluate your results? Qualitatively, what kind of results do you expect (e.g. plots or figures)? Quantitatively, what kind of analysis will you use to evaluate and/or compare your results (e.g. what performance metrics or statistical tests)?}
 Lorem ipsum
+Dúvida...?
 
 
 \printbibliography

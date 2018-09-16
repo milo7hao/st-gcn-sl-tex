@@ -1,20 +1,25 @@
 \documentclass{article}
 \usepackage[utf8]{inputenc}
 \usepackage[brazil]{babel}
-\usepackage{csquotes}
 
+% Diversos
+\usepackage{csquotes}
+\usepackage{graphicx}
+\usepackage{verbatim}
+\usepackage{hyperref}
+
+% Bibliografia
+\usepackage[style=abnt]{biblatex}
+\addbibresource{references.bib}
+
+% Título
 \title{Projeto de Deep Learning}
 \author{Cleison Correia de Amorim}
 \date{Setembro 2018}
 
-\usepackage[style=abnt]{biblatex}
-\addbibresource{references.bib}
 
-\usepackage{graphicx}
-\usepackage{verbatim}
-\usepackage{listings}
-
-% image - Definição de imagem
+% Comandos
+% 'image': definição de imagem
 \newcommand{\image}[4][\textwidth] {
     \begin{figure}[ht]
     \centering
@@ -24,5 +29,9 @@
     \end{figure}
 }
 
-% refimage - Referencias de imagens
+% 'refimage': referências de imagens
 \newcommand{\refimage}[1] {Figura \ref{#1}}
+
+% 'refsection': referências de imagens
+\newcommand{\refsect}[1] {seção \nameref{#1}}
+
