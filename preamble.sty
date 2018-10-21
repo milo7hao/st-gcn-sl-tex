@@ -1,4 +1,4 @@
-\documentclass{abntex2}
+\documentclass[9pt,conference]{IEEEtran}
 \usepackage[utf8]{inputenc}
 \usepackage[brazil]{babel}
 
@@ -8,19 +8,15 @@
 \usepackage{verbatim}
 \usepackage{hyperref}
 
-% Bibliografia
-\usepackage[style=abnt]{biblatex}
-\addbibresource{references.bib}
-
 % Título
-\title{Projeto de Deep Learning}
+\title{Extração de Características Fonológicas da Língua de Sinais utilizando Redes Convolucionais de Grafo Espaço-Temporais}
 \author{Cleison Correia de Amorim}
-\date{Setembro 2018}
+\date{Outubro 2018}
 
 
 % Comandos
 % 'image': definição de imagem
-\newcommand{\image}[4][\textwidth] {
+\newcommand{\image}[4][\linewidth] {
     \begin{figure}[ht]
     \centering
     \includegraphics[width=#1]{#3}
@@ -34,6 +30,3 @@
 
 % 'refsection': referências de imagens
 \newcommand{\refsect}[1] {seção "\nameref{#1}"}
-
-
-
