@@ -2,19 +2,18 @@
 \begin{document}
 \maketitle
 \begin{abstract}
-Este projeto propõe a aplicação de técnicas de \textit{deep learning} para a transcrição das características fonológicas da língua de sinais para o modelo computacional CORE-SL proposto por \cite{antunes-2015}. 
-
-[adicionar abstract ...]
+Este trabalho propõe a aplicação de um modelo profundo na transcrição das características fonológicas da língua de sinais para o modelo de descrição computacional CORE-SL. Para isso, será utilizado o modelo de Redes Convolucionais de Grafos Espaço-Temporais, que baseia-se na representação do esqueleto humano na forma de grafos, e no aprendizado automático dos seus padrões de movimentos no espaço e no tempo por meio deles.
 \end{abstract}
+
 %\begin{IEEEkeywords}
 %Broad band networks, quality of service, WDM.
 %\end{IEEEkeywords}
 
 
-\section{Introdução}
+\section{Introdução} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \label{sec:introducao}
-Pode-se observar um número considerável de estudos que propõem-se a realizar a tradução de diferentes línguas de sinais para a língua falada correspondente. Entretanto, muito desses estudos ficam limitados frente ao contexto cotidiano do Surdo por desconsiderarem aspectos relevantes da fonologia da língua como os movimentos, expressões não-manuais, locação e orientação das mãos do interlocutor \cite{quadros-2004}. É comum também que tais estudos restrinjam seu campo de atuação ao âmbito da datilologia\footnote{
-Datilologia – também conhecida como alfabeto digital ou alfabeto manual, consiste na soletração manual de palavras pelos Surdos. É geralmente utilizada para introduzir uma palavra que ainda não possui um sinal equivalente \cite{quadros-2004}\cite{pereira-choi-2011}.
+Existe um grande número de estudos que propõem-se a realizar a tradução de diferentes línguas de sinais para a língua falada correspondente. Entretanto, muito desses estudos são limitados frente ao contexto cotidiano do Surdo por desconsiderarem aspectos relevantes da fonologia da língua como os movimentos, expressões não-manuais, locação e orientação das mãos do interlocutor \cite{quadros-2004}. É comum também que tais estudos restrinjam seu campo de atuação ao âmbito da datilologia\footnote{
+    Datilologia – também conhecida como alfabeto digital ou alfabeto manual, consiste na soletração de palavras pelos Surdos. É geralmente utilizada para introduzir uma palavra que ainda não possui um sinal equivalente \cite{quadros-2004}\cite{pereira-choi-2011}.
 }, que na prática é aplicada apenas em contexto restritos da comunicação desses indivíduos.
 
 Em \cite{antunes-hcisl-2011}, os autores apresentam outros fatores que justificam a limitação em trazer muitos desses estudos para a realidade do Surdo: 
@@ -46,30 +45,38 @@ De acordo com os autores, o CORE-SL:
 \image
     {fig:coresl-interfaces}
     {images/coresl_interfaces}
-    {CORE-SL como peça chave para a comunicação de outros serviços}
+    {CORE-SL como peça chave para a comunicação entre serviços \cite{garcia-2013}.}
 
 A \refimage{fig:coresl-sinalarvore} mostra um exemplo de descrição do sinal árvore através do modelo CORE-SL.
 
 \image
     {fig:coresl-sinalarvore}
     {images/sinal_arvore}
-    {Representação do sinal árvore escrito segundo o CORE-SL}
+    {Representação do sinal árvore escrito segundo o CORE-SL.}
     
 
-\section{Redes Convolucionais de Grafos Espaço-Temporais}
+\section{Redes Convolucionais de Grafos Espaço-Temporais} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Será utilizado para este trabalho o modelo \textit{Spatial-Temporal Graph Convolutional Networks} (ou Redes Neurais de Grafos Espaço-Temporais) apresentado por \cite{st-gcn-2018}, devido à sua capacidade de lidar com o movimento humano sob duas perspectivas distintas. 
+Para viabilizar a transcrição dos sinais articulados para um modelo de descrição como o CORE-SL, neste trabalho será utilizado o modelo \textit{Spatial-Temporal Graph Convolutional Networks - ST-GCN}\footnote{
+    O código fonte do modelo ST-GCN é disponibilizado publicamente pelos autores no endereço \url{https://github.com/yysijie/st-gcn}.
+} (ou Redes Neurais de Grafos Espaço-Temporais) proposto em \cite{st-gcn-2018}. Sua escolha deve-se ao fato dele ser centrado na dinâmica do esqueleto humano e ser capaz de lidar com seu movimento sob duas perspectivas distintas e complementares entre si. Esses aspectos tornam a abordagem do ST-GCN extremamente relevante ao contexto da língua de sinais apresentado.
 
-(e também da língua de sinais), como a sua articulação dentro do espaço e no decorrer do tempo.
+Segundo os autores:
+\begin{quote}
+A dinâmica dos esqueletos humanos transmite informações significativas para o reconhecimento de sua ação. Abordagens convencionais para modelagem de esqueletos geralmente dependem de partes feitas à mão ou de regras transversais, resultando assim em poder expressivo limitado e dificuldades de generalização. [...] o ST-GCN vai além das limitações dos métodos anteriores, aprendendo automaticamente os padrões espaciais e temporais a partir dos dados. Essa formulação não apenas leva a um maior poder expressivo, mas também a uma capacidade de generalização mais forte \cite{st-gcn-2018}.
+\end{quote}
+
+O modelo é formulado com base numa sequência de grafos de esqueletos extraídos de uma sequência de frames de vídeos, onde cada nó corresponde a uma junta do corpo humano, conforme \refimage{fig:st-gcn-graph}. Os vértices intra-corporais são definidos com base nas conexões naturais do corpo humano. Os vértices inter-frames, por sua vez, conectam as mesmas juntas entre frames consecutivos afim de denotar sua articulação no decorrer do tempo \cite{st-gcn-2018}.
 
 \image
 	[4cm]
     {fig:st-gcn-graph}
     {images/st_gcn_graph}
-    {Grafo espaço-temporal de uma sequência de esqueletos utilizados pelo ST-GCN, onde os pontos azuis denotam as juntas do corpo. Os vértices intra-corporais são definidos com base nas conexões naturais do corpo humano. Os vértices inter-frames, por sua vez, conectam as mesmas juntas entre frames consecutivos para denotar seu movimento no decorrer do tempo \cite{st-gcn-2018}.}
+    {Sequência de grafos de esqueletos, que denotam o movimento humano no espaço e no tempo, utilizados pelo ST-GCN \cite{st-gcn-2018}.}
 
-
-Adicionalmente, tem-se como estratégia utilizar a biblioteca OpenPose para extrair os pontos do corpo dos atores presentes no \textit{dataset} acima e produzir uma entrada potencialmente mais rica para o modelo. A OpenPose é capaz de detectar os atores e fornecer cerca de 135 pontos referentes a partes de seus corpos, como mãos, braços e rosto, conforme descrito em \cite{cao-realtime-2017}, \cite{simon-hand-2017}, \cite{wei-cpm-2016} e no endereço \url{https://github.com/CMU-Perceptual-Computing-Lab/openpose}. Apesar disso, o acesso à quantidade considerável de recursos computacionais requeridos por essa biblioteca durante a execução do projeto (como por exemplo, GPUs com mais de 4GB de memória), pode ser um fator limitador em potencial para sua aplicação neste momento.
+Para que seja possível transformar vídeos convencionais numa sequência de grafos conforme descrito acima, é necessário realizar uma etapa prévia denominada pelos autores como "estimação de pose". Nessa etapa, é utilizada a biblioteca OpenPose\footnote{
+	OpenPose - é uma biblioteca capaz de detectar os atores e fornecer cerca de 135 pontos referentes a partes de seus corpos, como mãos, braços e rosto. Disponível no endereço \url{https://github.com/CMU-Perceptual-Computing-Lab/openpose}.
+} \cite{cao-realtime-2017}, \cite{simon-hand-2017}, \cite{wei-cpm-2016} e são extraídos no trabalho original do ST-GCN 18 pontos do corpo conforme apresentado na \refimage{fig:keypoints-pose}.
 
 \image
 	[4cm]
@@ -77,10 +84,22 @@ Adicionalmente, tem-se como estratégia utilizar a biblioteca OpenPose para extr
     {images/keypoints_pose_COCO_18}
     {Representação dos 18 pontos do corpo extraídos pelo OpenPose e utilizados pelo modelo ST-GCN.}
 
+A arquitetura do modelo ST-GCN é apresentada na \refimage{fig:st-gcn-architecture}. Ela é essencialmente composta por 9 unidades de convolução espaço-temporal posicionadas em sequência, seguidas por uma camada de \textit{pooling} e um classificador \textit{Softmax}.
 
-\section{Dataset}
-\label{sec:dados-utilizados}
-Será utilizado o \textit{dataset} \textit{American Sign Language Lexicon Video Dataset} (ASLLVD)\footnote{\textit{American Sign Language Lexicon Video Dataset} (ASLLVD) - disponível no endereço \url{http://vlm1.uta.edu/~athitsos/asl_lexicon/}}, que é composto por vídeos de sinais realizados por diferentes atores, com diferentes níveis de fluência na língua de sinais. O \textit{dataset} também contém arquivos de metadados que determinam o nome e os respectivos \textit{frames} de início e fim para os sinais nos vídeos gravados. Ele é apresentado em mais detalhes em \cite{athitsos-asldataset-2008}.
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=3.2cm]{images/st_gcn_architecture}
+    \includegraphics[width=3.5cm]{images/st_gcn_architeture_unit}
+    \caption{Visão geral da arquitetura do modelo (à esquerda) e detalhe de uma unidade do ST-GCN (à direita).}
+    \label{fig:st-gcn-architecture}
+\end{figure}
+
+
+\section{Dataset} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\label{sec:dataset}
+Será utilizado o \textit{dataset} \textit{American Sign Language Lexicon Video Dataset} (ASLLVD)\footnote{
+    \textit{American Sign Language Lexicon Video Dataset} (ASLLVD) - disponível no endereço \url{http://vlm1.uta.edu/~athitsos/asl_lexicon/}
+}, que é composto por vídeos de sinais realizados por diferentes atores, com diferentes níveis de fluência na língua de sinais. O \textit{dataset} também contém arquivos de metadados que determinam o nome e os respectivos \textit{frames} de início e fim para os sinais nos vídeos gravados. Ele é apresentado em mais detalhes em \cite{athitsos-asldataset-2008}.
 
 \image
     {fig:asllvd-example}
@@ -107,10 +126,29 @@ Para que os vídeos possam ser utilizados como entrada para o modelo ST-GCN, é 
 Como os sinais contidos no \textit{dataset} não possuem sua descrição em CORE-SL, será necessário produzir as respectivas \textit{labels} nesse formato. Entretanto, o tempo limitado para execução deste trabalho, atua como limitador na produção dessas \textit{labels} e quantidade de amostras classificadas dessa forma que será possível obter a tempo de aplicar ao modelo e extrair resultados. Uma das estratégias para lidar com isso é selecionar um conjunto de cerca das 20 características mais relevantes do CORE-SL para classificar os vídeos no primeiro momento. O CORE-SL possui um total de 100 características.
 
 
-\section{Avaliação dos resultados}
-Devido à restrição no número de amostras com \textit{labels} em CORE-SL que serão geradas (conforme \refsect{sec:dados-utilizados}), a estratégia inicial para validação do modelo consiste em utilizar de técnicas de validação cruzada como o K-Fold, pela sua capacidade de maximizar o uso dos dados disponíveis através de diferentes combinações entre eles.
+\section{Etapas da pesquisa} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Com o intuito de lidar com os problemas apresentados acima, como a necessidade de criação do  \textit{dataset} em CORE-SL e a demanda por recursos computacionais elevados para execução dos algoritmos de estimação de pose e do ST-GCN, esta pesquisa foi segmentada em duas etapas. 
 
-Com relação às métricas a serem adotadas, ainda há necessidade de pesquisa quanto àquelas mais apropriadas ao tipo de modelo RNN e, principalmente, ao tipo de problema proposto acima. Apesar disso, sabe-se de antemão que essas métricas devem ser capazes de mensurar o grau de similaridade (ou proporção do acerto/erro) das saídas produzidas pelo modelo, dado que um \textit{label} em CORE-SL consiste em um XML contendo diversas características fonológicas que permitem um julgamento do tipo "quão correta está a descrição do sinal produzida pelo modelo", "quantas das características estão corretas?" ou "o XML obtido está 90\% semelhante com relação ao XML de referência". Métricas que limitem a avaliação de uma forma binária como "certo" ou "errado" não se mostram adequadas para este problema.
+A primeira delas, consiste em atuar na adaptação das camadas de entrada e nas representações internas do modelo ST-GCN para fazê-lo considerar os grafos com os novos pontos do corpo e utilizar a nova base de dados para seu treinamento. Nesse momento, objetiva-se conhecer o desempenho do modelo frente ao problema da língua de sinais e, dessa forma, os sinais serão classificados segundo seu nome já contido na base ASLLVD (dispensando a necessidade do \textit{dataset} em CORE-SL). Em termos gerais, essa etapa engloba:
+\begin{enumerate}
+    \item Localizar \textit{dataset} de língua de sinais (concluído);
+    \item Criar pipeline de pré-processamento do \textit{dataset} para o ST-GCN (concluído);
+    \item Aumentar \textit{dataset} para adicionar variações aos vídeos;
+    \item Adaptar ST-GCN e suas representações de grafos (em andamento);
+    \item Treinar modelo adaptado (em andamento);
+    \item Avaliar e melhorar resultados.
+\end{enumerate}
+
+Na segunda etapa, as camadas finais do modelo deverão ser adaptadas e a saída do modelo deverá estar no formato das características fonológicas criadas para o novo \textit{dataset} em CORE-SL. Aqui também será necessário definir uma estratégia para representação dessas características pelo classificador. Essa etapa considera os seguintes passos:
+\begin{enumerate}
+    \item Criar \textit{labels} em CORE-SL para o \textit{dataset};
+    \item Definir estratégia para representação das saídas do ST-GCN como características fonológicas;
+    \item Adaptar as camadas de saída do ST-GCN para considerar a estratégia acima;
+    \item Treinar modelo adaptado;
+    \item Avaliar e melhorar resultados.
+\end{enumerate}
+
+Atualmente, a maioria dos passos definidos para a primeira etapa encontram-se em andamento, seguindo um ciclo de adaptação, treinamento e correção/otimização.
 
 
 % Bibliografia
