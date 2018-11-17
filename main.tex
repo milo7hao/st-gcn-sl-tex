@@ -120,7 +120,7 @@ A pesquisa foi organizada segundo passos estabelecidos abaixo. Em termos gerais,
     \item Definir \textit{dataset}: foi estabelecido o ASLLVD, devido à sua abrangência relevante de sinais, qualidade das amostras coletadas, organização das anotações e rotulações, e articulação dos sinais por indivíduos nativos. Apesar de baseado na Língua Americana de Sinais, a utilização desse \textit{dataset} não restringe a abordagem apresentada à língua daquele país. Ao contrário, entende-se que é possível adotar o mesmo método a \textit{datasets} de línguas de outros países;
     \item Preparar \textit{dataset}: para que fosse possível utilizar o \textit{dataset} acima com o modelo ST-GCN foi necessário primeiro criar um \textit{pipeline} de pré-processamento, conforme descrito mais adiante nesta seção, afim de colocar cada amostra em  um formato compatível com a entrada do modelo;
     \item Adaptar modelo: para que fosse possível utilizar o ST-GCN no contexto da língua de sinais, foi necessário adaptá-lo às particularidades do problema. Dentre elas, a principal diz respeito à mudança na representação da dimensão espacial dos grafos, que passa a considerar não apenas os 18 pontos utilizados em \cite{st-gcn-2018}, mas também os 21 pontos de cada mão e os 70 pontos da face, conforme ilustrado na \refimage{fig:keypoints-face-hand}. Dessa forma, os grafos do modelo passaram a considerar um total de 130 pontos do corpo humano e suas relações;
-    \item Treinar modelo adaptado: para realizar o treinamento do modelo, está sendo utilizada uma máquina na nuvem configurada com CPU Intel Haswell, 5GB de memória RAM e GPU NVIDIA Tesla P100 com 16GB de memória dedicada. O tempo médio consumido para essa tarefa é proporcional ao número de épocas configuradas e tem variado entre 1 e 4 dias;
+    \item Treinar modelo adaptado: nesse passo, o modelo acima será submetido às amostras do \textit{dataset} para que possa desenvolver um conhecimento acerca do problema;
     \item Avaliar e melhorar resultados: a partir das descobertas obtidas na tarefa acima, serão realizados os eventuais ajustes no modelo, \textit{dataset} ou nas configurações do treinamento, e repetido o passo anterior.
 \end{enumerate}
 
@@ -133,24 +133,28 @@ A pesquisa foi organizada segundo passos estabelecidos abaixo. Em termos gerais,
 \end{figure}
 
 
-A preparação das amostras contidas no ASLLVD consiste na aplicação das etapas de pré-processamento apresentadas na \refimage{fig:preprocessamento} e detalhadas a seguir, afim de torná-las compatíveis com a entrada esperada pelo modelo ST-GCN:
+A preparação das amostras contidas no ASLLVD consiste na aplicação das etapas de pré-processamento apresentadas na \refimage{fig:preprocessamento} e detalhadas a seguir. Isso se faz necessário para torná-las compatíveis com a entrada esperada pelo modelo ST-GCN:
 
-\begin{figure}[ht]
-    \centering
-    \smartdiagramset{
-        border color=none,
-        back arrow disabled=true,
-        text width=1cm}
-    \smartdiagram[sequence diagram]{
-        Obter vídeos,
-        Segmentar amostras,
-        Estimar poses, 
-        Holdout, 
-        Processar amostras}
-    \caption{Etapas de pré-processamento aplicadas ao \textit{dataset} ASLLVD.}
-    \label{fig:preprocessamento}
-\end{figure}
+%\begin{figure}[ht]
+%    \centering
+%    \smartdiagramset{
+%        border color=none,
+%        back arrow disabled=true,
+%        text width=1cm}
+%    \smartdiagram[sequence diagram]{
+%        Obter vídeos,
+%        Segmentar amostras,
+%        Estimar poses, 
+%        Holdout, 
+%        Processar amostras}
+%    \caption{Etapas de pré-processamento aplicadas ao \textit{dataset} ASLLVD.}
+%    \label{fig:preprocessamento}
+%\end{figure}
 
+\image
+    {fig:preprocessamento}
+    {images/dataset_preprocessing}
+    {Etapas de pré-processamento aplicadas ao \textit{dataset} ASLLVD.}
 
 \begin{enumerate}
     \item Obter vídeos: o \textit{dataset} está disponibilizado para download no formato de vídeos correspondentes a cada uma das seções gravadas, conforme descrito no arquivo de metadados\footnote{
@@ -158,16 +162,27 @@ A preparação das amostras contidas no ASLLVD consiste na aplicação das etapa
     }. Os vídeos totalizam 126GB distribuídos em 952 arquivos. Para automatizar a obtenção desses itens, foi adicionado esse passo ao  \textit{pipeline} de pré-processamento;
     \item Segmentar vídeos: como os vídeos do \textit{dataset} correspondem a seções inteiras gravadas para um indivíduo, que contém uma sequência de articulação de múltiplos sinais, faz-se necessário segmentar e rotular cada um deles em um arquivo próprio. Para isso, são utilizadas as anotações estabelecidas no arquivo de metadados;
     % \item Aumentar \textit{dataset}: foi observado no \textit{dataset} acima que não há um grande número de variações para cada sinal contido. Há geralmente 1 ou 2 vídeos por sinal e, para melhorar o desempenho do modelo, é importante gerar variações dos vídeos existentes;
-    \item Estimar pose: em seguida, é necessário utilizar a biblioteca OpenPose para extrair os 130 pontos do corpo dos indivíduos nas amostras. Esses pontos são extraídos para cada \textit{frame} e posteriormente são agrupados em um único arquivo JSON referente àquela amostra;
-    \item \textit{Holdout}: nessa etapa, as amostras devem ser separadas em subgrupos de treinamento, validação e testes. Para isso, foi utilizada uma proporção de 70\% dos dados para treinamento (cerca de 6.800 amostras), 15\% dos dados para validação (cerca de 1.500 amostras) e 15\% para testes (também cerca 1.500 amostras);
+    \item Estimar poses: em seguida, é necessário utilizar a biblioteca OpenPose para extrair os 130 pontos do corpo dos indivíduos nas amostras. Esses pontos são extraídos para cada \textit{frame} e posteriormente são agrupados em um único arquivo JSON referente àquela amostra;
+    \item Dividir \textit{dataset}: nessa etapa, as amostras devem ser separadas em subgrupos de treinamento, validação e testes. Para isso, foi utilizada uma proporção de 70\% dos dados para treinamento (cerca de 6.800 amostras), 15\% dos dados para validação (cerca de 1.500 amostras) e 15\% para testes (também cerca 1.500 amostras);
     \item Processar amostras: a implementação do modelo ST-GCN utiliza como formato de entrada listas de objetos do Python serializados e gravados no formato de arquivos \textit{.pkl}. Sendo assim, esse processo precisa ser aplicado aos conjuntos de amostras de treinamento, validação e testes divididos acima para o novo \textit{dataset}. Além disso, nessa etapa as amostras também deverão ser ajustadas para possuir um comprimento uniforme. Para isso, a sequência de \textit{frames} de cada amostra deve ser repetida preenchendo os \textit{frames} vazios até que o comprimento desejado seja alcançado, conforme sugerem os autores em \cite{st-gcn-2018}. Neste trabalho, um comprimento fixo de 126 \textit{frames} será adotado para as amostras (aproximadamente 4 segundos, considerando uma taxa de 30 FPS).
 \end{enumerate}
 
 \section{Resultados} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \label{sec:resultados}
+
+Esta seção apresenta as descobertas e resultados obtidos a partir da aplicação da abordagem descrita nas seções anteriores. Os experimentos aqui relacionados foram realizados utilizando uma máquina virtual com CPU Intel Haswell, memória RAM de 5GB e GPU NVIDIA Tesla P100 com 16GB de memória dedicada. 
+% O tempo médio consumido para essa tarefa é proporcional ao número de épocas configuradas e tem variado entre 1 e 4 dia
+
+Foram considerados \textit{batches} de 32 amostras, uma taxa de aprendizado de 0,1 e um \textit{weight decay} de 0,0001 em quatro momentos distintos durante o treinameto. Além disso, foi aplicada uma estratégia de \textit{data augmentation} que consiste em aplci
+
+O tempo médio dos experimentos é de aproximadamente 7,5 épocas de treinamento por hora.
+
 Resultados
 Treinamento??? bath size
 (data augmentation) Random move ???
+
+
+
 
 
 % \section{Trabalhos Futuros} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
