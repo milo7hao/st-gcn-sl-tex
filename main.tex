@@ -12,7 +12,7 @@ Este trabalho propõe a aplicação de um modelo de aprendizagem profunda basead
 
 \section{Introdução} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \label{sec:introducao}
-[introdução sobre lingua da sinais...]
+[TODO: incluir introdução sobre a língua da sinais...]
 
 Hoje há um grande número de estudos que se propõem realizar a transcrição da língua de sinais para sua equivalência na língua falada. Entretanto, muitos desses estudos apresentam-se limitados frente ao cotidiano do Surdo por desconsiderarem aspectos relevantes da fonologia dessa língua como, por exemplo, movimentos, expressões não-manuais e locação (ou pontos de articulação) \cite{quadros-2004} e abordam o problema utilizando imagens estáticas dos sinais ou restringindo seu foco apenas às mãos do interlocutor sem a interação com o próprio corpo. É comum também que tais estudos centralizem seu campo de atuação ao âmbito da datilologia\footnote{
      Datilologia – também conhecida como alfabeto digital ou alfabeto manual. Consiste na soletração de palavras pelos Surdos. É geralmente utilizada para introduzir uma palavra que ainda não possui um sinal equivalente \cite{quadros-2004, pereira-choi-2011}.
@@ -170,19 +170,39 @@ A preparação das amostras contidas no ASLLVD consiste na aplicação das etapa
 \section{Resultados} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \label{sec:resultados}
 
-Esta seção apresenta as descobertas e resultados obtidos a partir da aplicação da abordagem descrita nas seções anteriores. Os experimentos aqui relacionados foram realizados utilizando uma máquina virtual com CPU Intel Haswell, memória RAM de 5GB e GPU NVIDIA Tesla P100 com 16GB de memória dedicada. 
+Esta seção apresenta as descobertas e resultados obtidos a partir da aplicação da abordagem descrita nas seções anteriores. Os experimentos aqui relacionados foram realizados utilizando uma máquina virtual com CPU Intel Haswell, memória RAM de 5GB e GPU NVIDIA Tesla P100 com 16GB de memória dedicada. O tempo médio obtido com essa arquitetura foi de aproximadamente 7 épocas para cada hora de treinamento.
 % O tempo médio consumido para essa tarefa é proporcional ao número de épocas configuradas e tem variado entre 1 e 4 dia
 
-Foram considerados \textit{batches} de 32 amostras, uma taxa de aprendizado de 0,1 e um \textit{weight decay} de 0,0001 em quatro momentos distintos durante o treinameto. Além disso, foi aplicada uma estratégia de \textit{data augmentation} que consiste em aplci
+Foram considerados \textit{batches} de 32 amostras e uma taxa de aprendizado de 0,1, além de um \textit{weight decay} de 0,0001 em quatro momentos distintos do treinamento (geralmente distribuídos após a conclusão de 35\%, 50\%, 65\% e 80\% das épocas previstas, respectivamente). 
+Adicionalmente, uma estratégia de \textit{data augmentation} para diversificar as amostras apresentadas ao modelo, e ela consiste na aplicação de transformações randômicas de rotação, translação e escala randômicas no momento da leitura desses itens nos \textit{batches}.
 
-O tempo médio dos experimentos é de aproximadamente 7,5 épocas de treinamento por hora.
+A \reftable{tab:resultados-1} apresenta os resultados obtidos parciais da abordagem proposta neste trabalho (representado como ST-GCN (Sign Language), e aqueles obtidos pelo modelo ST-GCN em \cite{st-gcn-2018} (para os \textit{datasets} Kinetics e Kinetics Motion). O resultado do ST-GCN (Sign Language) está listado para o seu treinamento até a época 630 de um total de 1.000 épocas previstas.
 
-Resultados
-Treinamento??? bath size
-(data augmentation) Random move ???
+\begin{table}[ht]
+    \centering
+    \caption{Performance atual da abordagem proposta e do ST-GCN original}
+    \label{tab:resultados-1}
+    \begin{tabular}{@{}lll@{}} \toprule
+                                        &   Top-1           &   Top-5           \\ \midrule
+        ST-GCN (Kinetics)               &   30,7\%          &   52,8\%          \\
+        ST-GCN (Kinetics Motion)        &   72,4\%          &   -               \\ \midrule
+        \textbf{ST-GCN (Sign Language)} & \textbf{26,0\%}   &   \textbf{45,2\%} \\ \bottomrule
+    \end{tabular}
+\end{table}
+
+De acordo com os autores em \cite{st-gcn-2018}, os \textit{datasets} Kinetics e Kinetics Motion diferem-se essencialmente pelo fato de que o primeiro corresponde ao conjunto completo de ações de múltiplos indivíduos (e que muitas vezes incluem a interação desses indivíduos com objetos e com o ambiente à sua volta, que devem ser considerados para classificar tais ações); já o segundo, por sua vez, diz respeito a um subconjunto criado pelos autores para englobar apenas ações descritas exclusivamente pelo movimento dos indivíduos, sem interação com o mundo à sua volta. 
+
+O motivo disso, nos remete a recapitular a abordagem do ST-GCN de mapear o corpo humano e seus movimentos através de grafos. Ao mesmo tempo em que permite uma observação praticamente completa do esqueleto dos indivíduos, ela abre mão de todos os detalhes adicionais presentes nas cenas em que esses indivíduos estão inseridos. 
+
+Para o contexto do problema apresentado neste trabalho, entretanto, não há prejuízos decorrentes da não observância dos detalhes da cena, conforme acima. Isso porque nas línguas de sinais o foco é estritamente voltado para o movimento do corpo dos indivíduos (principalmente de partes como mãos, tronco e face), e não é comum que haja interação com objetos durante a articulação dos sinais, mas apenas do corpo com o próprio corpo.
 
 
 
+% TODO: incluir gráfico de evolução no treinamento
+
+
+% \section{Conclusão} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% TODO: verificar a inclusão de uma seção de conclusão, potencialmente englobando trabalhos futuros
 
 
 % \section{Trabalhos Futuros} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
