@@ -71,11 +71,12 @@ A \refimage{fig:st-gcn-workflow} ilustra a abordagem utilizada pelo ST-GCN. Em p
     {images/st_gcn_workflow}
     {Fluxo do ST-GCN, onde os grafos criados a partir dos indivíduos presentes nos vídeos são submetidos ao modelo e, por fim, classificados entre as ações disponíveis. Fonte: \cite[p. 3]{st-gcn-2018}.}
 
-É possível fazer em tempo real?
-Sim, considerando dois aspectos: 
-1) o maior "gargalo" é o OpenPose, que é capaz de operar estimando poses num fluxo contínuo (streaming) em tempo real, mas requer uma máquina robusta para isso (por exemplo, com uma GPU com 4GB);
-2) o ST-GCN hoje trabalha apenas com vídeos de tamanho fixo. Mesmo com o OpenPose em fluxo contínuo, imagino que ele classificaria de "janelas em janelas" de tempo.
-Mesmo eu conhecendo essas restrições, você acha que é interessante eu falar que ele funciona em tempo real?
+% TODO: REVISAR !!!
+O fluxo acima ilustra a aplicação do ST-GCN para o contexto de vídeos isolados, sem o \textit{streaming} em tempo real originado da captura de uma câmera. Apesar disso, entende-se que é possível evoluí-lo nessa direção, desde que observadas as seguintes condições: a primeira delas requer a utilização de uma biblioteca ou \textit{hardware} específico que seja capaz de prover a estimação dos esqueletos num fluxo contínuo, substituindo o papel dos vídeos isolados situado no início do fluxo. Hoje, apesar da OpenPose poder ser utilizado para cumprir essa tarefa, ela define um requisito de \textit{hardware} bastante robusto para isso; em segundo lugar, se passarmos a considerar a estimação em tempo real, precisaremos dividir o fluxo contínuo em pedaços de tamanho fixo para realizar a classificação para cada um deles.
+
+%\begin{enumerate}
+%    \item o maior "gargalo" é o OpenPose, que é capaz de operar estimando poses pa fluxo contínuo (streaming) em tempo real, mas requer uma máquina %    \item o ST-GCN hoje trabalha apenas com vídeos de tamanho fixo. Mesmo com o OpenPose em fluxo contínuo, imagino que ele classificaria de "janelas em janelas" de tempo.
+%\end{enumerate}
 
 
 % Funcionamento do ST-GCN ------------------------
@@ -269,7 +270,7 @@ Por fim, a quinta etapa consiste em \textbf{normalizar e serializar} as amostras
 A implementação da sequência de etapas de pré-processamento apresentada acima está disponibilizada publicamente\footnote{
     Disponível em \url{http://www.cin.ufpe.br/~cca5/st-gcn-sl}
 }. Da mesma forma, as saídas de cada etapa e o \textit{dataset} final pré-processado também estão disponíveis\footnote{
-    Disponível em \url{http://www.cin.ufpe.br/~cca5/asllvd-segmented}
+    Disponível em \url{http://www.cin.ufpe.br/~cca5/asllvd-poses}
 }.
 
 
