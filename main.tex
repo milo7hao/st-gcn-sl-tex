@@ -12,7 +12,8 @@ Este trabalho propõe a aplicação de um modelo de aprendizagem profunda basead
 
 \section{Introdução} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \label{sec:introducao}
-[TODO: incluir introdução sobre a língua da sinais...]
+
+[TODO: reescrever seção...]
 
 Hoje há um grande número de estudos que se propõem realizar a transcrição da língua de sinais para sua equivalência na língua falada. Entretanto, muitos desses estudos apresentam-se limitados frente ao cotidiano do Surdo por desconsiderarem aspectos relevantes da fonologia dessa língua como, por exemplo, movimentos, expressões não-manuais e locação (ou pontos de articulação) \cite{quadros-2004} e abordam o problema utilizando imagens estáticas dos sinais ou restringindo seu foco apenas às mãos do interlocutor sem a interação com o próprio corpo. É comum também que tais estudos centralizem seu campo de atuação ao âmbito da datilologia\footnote{
      Datilologia – também conhecida como alfabeto digital ou alfabeto manual. Consiste na soletração de palavras pelos Surdos. É geralmente utilizada para introduzir uma palavra que ainda não possui um sinal equivalente \cite{quadros-2004, pereira-choi-2011}.
@@ -41,22 +42,20 @@ Dado o contexto acima, esta pesquisa objetiva contribuir com a viabilização da
 O primeiro passo nessa direção consiste em quebrar a barreira da representação estática dos sinais para identificar e explorar abordagens capazes de considerar os traços do movimento do corpo do interlocutor, bem como a interação entre suas partes e as expressões decorrentes da articulação dos sinais. Para isso, nas seções a seguir será apresentada e avaliada a eficácia da aplicação de uma técnica de aprendizagem profunda denominada Rede Convolucional de Grafos Espaço-Temporais \cite{st-gcn-2018}, que é centrada nos movimentos do corpo, mãos e face do interlocutor capturados por meio de câmeras convencionais e representados como grafos, para o reconhecimento de sinais. 
 
 
-\section{Trabalhos Relacionados} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Trabalhos Relacionados} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-[TODO: incluir conteúdo]
+[TODO: escrever seção]
 
 
 \section{Redes Convolucionais de Grafos Espaço-Temporais} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 As Redes Convolucionais de Grafos Espaço-Temporais (ou \textit{Spatial-Temporal Graph Convolutional Network - ST-GCN}) consistem num tipo de modelo de aprendizagem profunda proposto por \cite{st-gcn-2018} que especializa a abordagem das Redes Neurais de Grafos e que são aplicados no reconhecimento de ações. Sua motivação surgiu a partir da necessidade enxergada pelos autores de métodos que fossem capazes de capturar de forma autônoma os padrões contidos na configuração espacial das articulações do corpo humano, bem como sua dinâmica temporal.
 
-Segundo os autores, métodos anteriores de uso de esqueletos para reconhecimento de ações acabaram limitando-se justamente por não explorar explicitamente tais relações espaciais entre as articulações, que são cruciais para a compreensão das ações humanas. Esses métodos, simplesmente empregaram as coordenadas conjuntas em etapas de tempo individuais para formar vetores de característica, aplicando uma análise temporal neles \cite{st-gcn-2018, wang-2012, fernando-2015}.
+Segundo eles, os métodos anteriores de uso de esqueletos para reconhecimento de ações acabaram limitando-se justamente por não explorar explicitamente tais relações espaciais entre as articulações, que são cruciais para a compreensão das ações humanas. Esses métodos, simplesmente empregaram as coordenadas conjuntas em etapas de tempo individuais para formar vetores de característica, aplicando uma análise temporal neles \cite{st-gcn-2018, wang-2012, fernando-2015}.
 
-%A capacidade desses métodos é limitada, pois eles não exploram explicitamente as relações espaciais entre as articulações, que são cruciais para a compreensão das ações humanas.
+Mais recentemente, eles afirmam, novos métodos que tentaram alavancar as conexões naturais entre as articulações foram desenvolvidos \cite{shahroudy-2016, yong-du-2015}. Eles mostraram melhorias encorajadoras, o que sugere a importância da conectividade. No entanto, a maioria desses métodos baseia-se em partes ou regras criadas manualmente para analisar os padrões espaciais. Como resultado, os modelos criados para uma aplicação específica são difíceis de serem generalizados para outras \cite{st-gcn-2018}.
 
-Mais recentemente, novos métodos que tentaram alavancar as conexões naturais entre as articulações foram desenvolvidos \cite{shahroudy-2016, yong-du-2015}. Eles mostraram melhorias encorajadoras, o que sugere a importância da conectividade. No entanto, a maioria desses métodos baseia-se em partes ou regras criadas manualmente para analisar os padrões espaciais. Como resultado, os modelos criados para uma aplicação específica são difíceis de serem generalizados para outras \cite{st-gcn-2018}.
-
-O ST-GCN, por sua vez, tem como base de sua formulação a sequência de grafos de esqueletos que representam o corpo humano, os quais são obtidos a partir de uma sequência de frames de vídeos de ações ordinárias desses indivíduos. A \refimage{fig:st-gcn-graph} permite-nos visualizar essa estrutura, onde cada nó corresponde a um ponto de articulação humana. Os vértices intra-corporais são definidos com base nas conexões naturais do corpo. Os vértices inter-frames, por sua vez, conectam as mesmas conexões (ou articulações) entre frames consecutivos para denotar sua trajetória no decorrer do tempo \cite{st-gcn-2018}.
+O ST-GCN, por sua vez, tem como base de sua formulação uma sequência de grafos de esqueletos que representam o corpo humano, os quais são obtidos a partir de uma série de \textit{frames} de vídeos de ações ordinárias desses indivíduos. A \refimage{fig:st-gcn-graph} permite-nos visualizar essa estrutura, onde cada nó corresponde a um ponto de articulação humana. Os vértices intra-corporais são definidos com base nas conexões naturais do corpo. Os vértices inter-frames, por sua vez, conectam as mesmas articulações entre \textit{frames} consecutivos para denotar sua trajetória no decorrer do tempo \cite{st-gcn-2018}.
 
 \image
 	[4cm]
@@ -64,26 +63,19 @@ O ST-GCN, por sua vez, tem como base de sua formulação a sequência de grafos 
     {images/st_gcn_graph}
     {Sequência de grafos de esqueletos, que denotam o movimento humano no espaço e no tempo, utilizados pelo ST-GCN. Fonte: \cite[p. 1]{st-gcn-2018}.}
 
-A \refimage{fig:st-gcn-workflow} ilustra a abordagem utilizada pelo ST-GCN. Em primeiro lugar, é realizada a estimação das poses dos indivíduos nos vídeos de entrada e a construção de grafos espaço-temporais com base na sequência de esqueletos estimados. Em seguida, múltiplas camadas de convolução ST-GCN são aplicadas gerando, gradualmente, mapas de características de nível cada vez mais alto para os grafos apresentados. Por fim, eles são submetidos a um classificador para a identificação da ação correspondente.
+A \refimage{fig:st-gcn-workflow} ilustra a abordagem utilizada pelo ST-GCN. Nela, primeiro é realizada a estimação das poses dos indivíduos nos vídeos de entrada e a construção de grafos espaço-temporais com base nessa sequência de esqueletos estimados. Em seguida, múltiplas camadas de convolução ST-GCN são aplicadas gerando, gradualmente, mapas de características de nível cada vez mais alto para os grafos apresentados. Por fim, eles são submetidos a um classificador para a identificação da ação correspondente.
 
 \image
     {fig:st-gcn-workflow}
     {images/st_gcn_workflow}
     {Fluxo do ST-GCN, onde os grafos criados a partir dos indivíduos presentes nos vídeos são submetidos ao modelo e, por fim, classificados entre as ações disponíveis. Fonte: \cite[p. 3]{st-gcn-2018}.}
 
-% TODO: REVISAR !!!
-O fluxo acima ilustra a aplicação do ST-GCN para o contexto de vídeos isolados, sem o \textit{streaming} em tempo real originado da captura de uma câmera. Apesar disso, entende-se que é possível evoluí-lo nessa direção, desde que observadas as seguintes condições: a primeira delas requer a utilização de uma biblioteca ou \textit{hardware} específico que seja capaz de prover a estimação dos esqueletos num fluxo contínuo, substituindo o papel dos vídeos isolados situado no início do fluxo. Hoje, apesar da OpenPose poder ser utilizado para cumprir essa tarefa, ela define um requisito de \textit{hardware} bastante robusto para isso; em segundo lugar, se passarmos a considerar a estimação em tempo real, precisaremos dividir o fluxo contínuo em pedaços de tamanho fixo para realizar a classificação para cada um deles.
-
-%\begin{enumerate}
-%    \item o maior "gargalo" é o OpenPose, que é capaz de operar estimando poses pa fluxo contínuo (streaming) em tempo real, mas requer uma máquina %    \item o ST-GCN hoje trabalha apenas com vídeos de tamanho fixo. Mesmo com o OpenPose em fluxo contínuo, imagino que ele classificaria de "janelas em janelas" de tempo.
-%\end{enumerate}
-
 
 % Funcionamento do ST-GCN ------------------------
 
-Para que seja possível compreender o funcionamento da rede ST-GCN em detalhe, é necessário primeiro aprofundarmos a discussão nas estratégias de amostragem e de particionamento adotadas pelos autores. 
+Para que seja possível compreender o funcionamento da rede ST-GCN em detalhe, é necessário primeiro aprofundarmos a discussão nas estratégias de amostragem e de particionamento adotadas por ele. 
 
-Quando lidamos com convoluções em imagens 2D, facilmente visualizamos a existência de um \textit{grid} rígido ou retângulo em volta de um ponto central, o qual delimita a vizinhança na qual o filtro convolucional será aplicado. No caso dos grafos, entretanto, é necessário ir além dessa definição e considerar que a vizinhança de um ponto será composta apenas por aqueles pontos que estão diretamente conectados a ele por meio de uma borda. A \refimage{fig:st-gcn-sampling} permite-nos visualizar essa definição para o exemplo de um único \textit{frame}. Observe que as bordas tracejadas vermelhas passam a representar a área de amostragem utilizada pelo filtro convolucional, em volta dos pontos centrais em vermelho. Observe também que, apesar de haver pontos do corpo localizados próximos fisicamente no espaço (como nos pontos dos pés, joelhos e cintura), eles não serão considerados como vizinhos na abordagem de convolução em grafos por não possuírem conexões diretas entre si.
+É fácil visualizar a existência de um \textit{grid} rígido ou retângulo em volta de um ponto central quando lidamos com convoluções em imagens 2D. o qual delimita a vizinhança na qual o filtro convolucional será aplicado. No caso dos grafos, entretanto, é necessário ir além dessa definição e considerar que a vizinhança de um ponto será composta apenas por aqueles pontos que estão diretamente conectados a ele por meio de um vértice. A \refimage{fig:st-gcn-sampling} permite-nos visualizar essa definição para o exemplo de um único \textit{frame}. Observe que as bordas tracejadas vermelhas passam a representar a área de amostragem utilizada pelo filtro convolucional, em volta dos pontos vermelho. Observe também que, apesar de haver pontos do corpo localizados próximos fisicamente no espaço (como no caso dos pontos dos pés, joelhos e cintura), eles não serão considerados como vizinhos na abordagem de convolução em grafos por não possuírem conexões diretas entre si.
 
 \image
 	[3cm]
@@ -91,9 +83,9 @@ Quando lidamos com convoluções em imagens 2D, facilmente visualizamos a exist�
     {images/st_gcn_sampling}
     {\textit{Frame} de exemplo de um esqueleto de entrada. As articulações do corpo são desenhadas com pontos azuis. Os pontos vermelhos representam os pontos centrais de um filtro com distância D = 1 aplicado ao \textit{frame}, cuja abrangência é delimitada pela linha tracejada vermelha. Fonte: \cite[p. 5]{st-gcn-2018}.}
 
-Por meio da \refimage{fig:st-gcn-sampling} é possível observar que apenas estão sendo considerados pela linha tracejada os pontos que estão imediatamente conectados aos pontos centrais. Em outras palavras, diz-se que a área de amostragem do filtro convolucional apenas considera vizinhos com distância D = 1. Essa distância poderia ser ajustada para abranger vizinhos mais distantes, porém na apresentação do ST-GCN \cite{st-gcn-2018} os autores estabeleceram a utilização da distância conforme acima.
+Por meio da \refimage{fig:st-gcn-sampling} é possível observar que apenas estão sendo considerados pela linha tracejada os pontos que estão imediatamente conectados aos pontos centrais. Em outras palavras, diz-se que a área de \textbf{amostragem} do filtro convolucional apenas considera vizinhos com distância D = 1. Essa distância poderia ser ajustada para abranger vizinhos mais distantes, porém na apresentação do ST-GCN \cite{st-gcn-2018} os autores estabeleceram a utilização da distância conforme acima.
 
-Uma vez apresentada a estratégia de amostragem, é possível seguir na compreensão da estratégia de particionamento utilizada pelo ST-GCN. Ela é definida como Particionamento de Configuração Espacial e baseia-se na localização das partes do corpo humano e nas características de seu movimento, conforme ilustra a \refimage{fig:st-gcn-spatial-part}.
+Uma vez apresentada a amostragem, é possível seguir na compreensão da estratégia de \textbf{particionamento}, que é definida como Particionamento de Configuração Espacial. Ela está baseada na localização das partes e nas características do movimento do corpo humano, conforme ilustra a \refimage{fig:st-gcn-spatial-part}.
 
 \image
 	[3cm]
@@ -101,7 +93,7 @@ Uma vez apresentada a estratégia de amostragem, é possível seguir na compreen
     {images/st_gcn_spatial_partitioning}
     {Particionamento de Configuração Espacial: os nós são rotulados de acordo com suas distâncias ao centro de gravidade do esqueleto (cruz preta) comparado com o do nó raiz (verde). Os nós centrípetos têm distâncias menores (azul), enquanto os nós centrífugos têm distâncias mais longas (amarelo) do que o nó raiz. Fonte: \cite[p. 5]{st-gcn-2018}.}
 
-De acordo com os autores, a estratégia desenvolvida motiva-se no fato de que os movimentos das partes do corpo podem ser amplamente categorizados como concêntricos ou excêntricos e, por isso, particiona a vizinhança em três subconjuntos:
+De acordo com os autores, a estratégia desenvolvida motiva-se no fato de que os movimentos das partes do corpo podem ser amplamente categorizados como concêntricos ou excêntricos e, por isso, os pontos na região de amostragem são particionados em três subconjuntos:
 
 \begin{enumerate}
     \item O nó raiz (ou ponto central, sinalizado em verde na imagem);
@@ -109,15 +101,13 @@ De acordo com os autores, a estratégia desenvolvida motiva-se no fato de que os
     \item O grupo centrifugal (pontos em amarelo na imagem): mais distante do centro de gravidade do que o nó raiz;
 \end{enumerate}
 
-O centro de gravidade é tomado como sendo a coordenada média de todas as juntas do esqueleto em um \textit{frame} e, durante a convolução, cada ponto do corpo é rotulado segundo uma das partições acima.
+O centro de gravidade é definido como sendo a coordenada média de todas as juntas do esqueleto em um \textit{frame}. Durante a convolução, cada ponto do corpo é rotulado segundo uma das partições acima.
 
-O ST-GCN define uma estratégia de atribuição de pesos que também é direcionada pelas partições acima e, para cada uma delas, atribui um peso distinto. Isso é um detalhe importante sobre o modelo que, ao invés de concentrar sua atenção no movimento das juntas do corpo de forma individual,  direciona seu foco a aprender o tipo do movimento realizado por essas juntas.
+O ST-GCN define uma estratégia de atribuição de pesos que também é direcionada por essas partições e, para cada uma delas, recebe um peso distinto. Em outras palavras, ao invés de concentrar sua atenção no movimento das juntas do corpo de forma individual, ele direciona seu foco a aprender o tipo do movimento realizado por essas juntas.
 
-Uma vez exploradas as estratégias definidas pelo ST-GCN, apresentadas sob o contexto de um único \textit{frame} na dimensão espacial, podemos dar um passo adiante para compreender como o modelo considera a dimensão temporal. 
+Uma vez exploradas as estratégias definidas pelo ST-GCN, apresentadas sob o contexto de um único \textit{frame} na dimensão espacial, é possível aprofudar essa discussão para compreender como o modelo considera a dimensão temporal. 
 
-Primeiramente, retomemos à definição inicial que estabelece que a dimensão temporal é representada por uma sequência de grafos extraídos dos \textit{frames} de vídeo da ação de um indivíduo, conforme ilustrado na \refimage{fig:st-gcn-graph}. Se selecionarmos o grafo de um \textit{frame} aleatório nessa sequência, podemos considerar que ele possui dois vizinhos: aquele imediatamente anterior e aquele imediatamente posterior a ele na sequência. Além disso, foi definido também que cada junta do corpo em um grafo precisar estar conectada a ela mesma nos grafos vizinhos para representar sua evolução no tempo.
-
-Se considerarmos o racional acima, e nos voltarmos para a definição de amostragem representada na \refimage{fig:st-gcn-sampling} é fácil evoluir a compreensão espacial para a dimensão temporal quando consideramos que o ponto central em vermelho, além dos pontos delimitados pela linha tracejada vermelha, passará a ter como vizinhos também aqueles pontos com os quais está conectado nos grafos vizinhos dos \textit{frames} anterior e posterior da sequência. Dessa forma, a linha tracejada vermelha passará a englobar mais pontos dentro dela, abrangendo agora também aqueles diretamente conectados e dispostos na dimensão temporal, conforme ilustrado na \refimage{fig:st-gcn-convolution} (à esquerda).
+Retomemos à definição inicial que estabelece que a dimensão temporal é formada por uma sequência de grafos de esqueletos extraídos dos \textit{frames} de vídeo de uma ação, conforme \refimage{fig:st-gcn-graph}. Se selecionássemos um desses grafos, constataríamos que ele possui dois vizinhos: o grafo imediatamente anterior e aquele imediatamente posterior a ele na sequência. Além disso, foi definido também que cada articulação deve estar conectada a ela mesma nos grafos vizinhos afim de representar sua evolução no tempo. Nesse ponto já seríamos capazes de evoluir a compreensão de amostragem espacial também para a dimensão temporal, se considerarmos que o ponto central em vermelho da \refimage{fig:st-gcn-graph}, além dos pontos delimitados pela linha tracejada vermelha, agora passará a ter como vizinhos também aqueles pontos com os quais está conectado nos seus vizinhos anterior e posterior da sequência. Dessa forma, a linha tracejada vermelha passaria a englobar também aqueles pontos diretamente conectados e dispostos na dimensão temporal, conforme ilustrado na \refimage{fig:st-gcn-convolution} (à esquerda).
 
 \image
 	[9cm]
@@ -125,7 +115,7 @@ Se considerarmos o racional acima, e nos voltarmos para a definição de amostra
     {images/st_gcn_convolution}
     {Amostragem englobando pontos diretamente conectados nas dimensões espacial e temporal (à esquerda) e processo de convolução espaço-temporal sob os pontos da amostragem obtida (ao centro e à direita).  Fonte: \cite[p. 3]{st-gcn-2018}.}
 
-Uma vez realizada a amostragem sob ambas as dimensões e selecionados os pontos para aplicação da convolução, é possível aplicar esse processo de uma forma análoga àquela aplicada a imagens 2D, conforme ilustra a \refimage{fig:st-gcn-convolution} (ao centro e à direita).
+Uma vez realizada a amostragem sob as duas dimensões e selecionados os pontos para a convolução, é possível aplicar esse processo de uma forma análoga àquela aplicada a imagens 2D, conforme ilustra a \refimage{fig:st-gcn-convolution} (ao centro e à direita).
 
 
 % Arquitetura ------------------------
@@ -141,11 +131,11 @@ A \refimage{fig:st-gcn-architecture} (à esquerda) permite-nos visualizar as cam
 \end{figure}
 
 
-Para que fosse possível realizar a estimação das poses dos indivíduos, conforme fluxo da \refimage{fig:st-gcn-workflow}, os autores utilizaram uma biblioteca denominada OpenPose. Trata-se de uma biblioteca que utiliza algoritmos de aprendizagem profunda para detectar indivíduos em cenas de vídeos e extrair até 135 pontos de articulações de seus corpos, mãos e faces \cite{cao-realtime-2017, simon-hand-2017, wei-cpm-2016}, e que está disponível publicamente\footnote{
+Para que fosse possível realizar a estimação das poses dos indivíduos, conforme fluxo da \refimage{fig:st-gcn-workflow}, os autores utilizaram uma biblioteca denominada OpenPose. Trata-se de uma ferramenta que utiliza algoritmos de aprendizagem profunda para detectar indivíduos em cenas de vídeos e extrair até 135 pontos de articulações de seus corpos, mãos e faces \cite{cao-realtime-2017, simon-hand-2017, wei-cpm-2016}, e que está disponível publicamente\footnote{
     Disponível em \url{https://github.com/CMU-Perceptual-Computing-Lab/openpose}.
 }.
 
-Para apresentação do ST-GCN, entretanto, os autores utilizaram apenas 18 desses pontos, os quais se referem às articulações do corpo (vide \refimage{fig:keypoints-pose}). O código fonte e os modelos pré-treinados do ST-GCN estão disponíveis publicamente pelos autores\footnote{
+Na apresentação do ST-GCN, entretanto, os autores utilizaram apenas 18 desses pontos, os quais se referem às articulações do corpo (vide \refimage{fig:keypoints-pose}). O código fonte e os modelos pré-treinados do ST-GCN estão disponíveis publicamente pelos autores\footnote{
     Disponível em \url{https://github.com/yysijie/st-gcn}.
 }.
 
@@ -155,7 +145,7 @@ Para apresentação do ST-GCN, entretanto, os autores utilizaram apenas 18 desse
     {images/keypoints_pose_COCO_18}
     {Representação dos 18 pontos referentes ao corpo humano, extraídos pelo OpenPose. Fonte: \cite{openpose-output-2018}.}
 
-
+Todo o fluxo descrito até aqui trata da aplicação do ST-GCN para o contexto onde vídeos isolados são gravados previamente e utilizados como entrada. Apesar disso, entende-se que seria possível, com algum trabalho adicional, evoluí-lo na direção de substituir essa entrada por um \textit{streaming} de vídeo capturado em tempo real por uma câmera. Para isso, seria necessário passar a estimar continuamente com uma biblioteca ou \textit{hardware} específico as poses dos \textit{frames} capturados, provendo assim um \textit{streaming} de esqueletos para o modelo. A biblioteca OpenPose (que está descrita em detalhes mais adiante) é capaz de atender a essa necessidade, porém seus requisitos de \textit{hardware} robusto podem acabar por limitar sua adoção em alguns contextos na prática. A leitura dos dados pelo modelo também precisaria ser evoluída afim de que ao invés de considerar informações em arquivos físicos, sejam utilizadas aquelas fornecidas pelo \textit{streaming} de esqueletos. Como o ST-GCN hoje só trabalha com vídeos de tamanho fixo, essa entrada em fluxo contínuo apenas seria classificada por ele de janelas em janelas de tempo, quando completado em memória esse número fixo estabelecido de \textit{frames}.
 
 
 \section{American Sign Language Lexicon Video Dataset} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -183,16 +173,11 @@ A pesquisa foi organizada segundo passos estabelecidos abaixo. Em termos gerais,
 \begin{enumerate}
     \item Definir modelo: nesse passo foi selecionado o modelo ST-GCN e sua abordagem baseada em grafos para lidar com o problema da língua de sinais;
     \item Definir \textit{dataset}: foi estabelecido o ASLLVD, devido à sua abrangência relevante de sinais, qualidade das amostras coletadas, organização das anotações e rotulações, e articulação dos sinais por indivíduos nativos. Apesar de baseado na Língua Americana de Sinais, a utilização desse \textit{dataset} não restringe a abordagem apresentada à língua daquele país. Ao contrário, entende-se que é possível adotar o mesmo método a \textit{datasets} de línguas de outros países;
-    \item Preparar \textit{dataset}: para que fosse possível utilizar o \textit{dataset} acima com o modelo ST-GCN foi necessário primeiro criar um \textit{pipeline} de pré-processamento, conforme descrito mais adiante nesta seção, afim de colocar cada amostra em  um formato compatível com a entrada do modelo;
-    \item Adaptar modelo: para que fosse possível utilizar o ST-GCN no contexto da língua de sinais, foi necessário adaptá-lo às particularidades do problema;
+    \item Preparar \textit{dataset}: para que fosse possível utilizar o \textit{dataset} acima com o ST-GCN foi necessário primeiro criar um \textit{pipeline} de pré-processamento, conforme descrito mais adiante nesta seção, afim de colocar cada amostra em  um formato compatível com a entrada do modelo;
+    \item Adaptar modelo: para que fosse possível utilizar o ST-GCN no contexto da língua de sinais, foi necessário realizar pequenas adaptações na interpretação dos grafos e na leitura dos dados. Esse processo também está melhor descrito mais adiante;
     \item Treinar modelo adaptado: nesse passo, o modelo acima será submetido às amostras do \textit{dataset} para que possa desenvolver um conhecimento acerca do problema;
     \item Avaliar e melhorar resultados: a partir das descobertas obtidas na tarefa acima, serão realizados os eventuais ajustes no modelo, \textit{dataset} ou nas configurações do treinamento, e repetido o passo anterior.
 \end{enumerate}
-
-O código fonte contendo as adaptações do ST-GCN aqui apresentadas está disponibilizado publicamente\footnote{
-    Disponível em \url{http://www.cin.ufpe.br/~cca5/st-gcn-sl}
-}. Esse código consiste num \textit{fork} criado a partir do código fonte original desenvolvido pelos autores do modelo.
-
 
 % TRATAMENTO DO DATASET ************************************************
 
@@ -223,7 +208,7 @@ A primeira delas consiste num passo preliminar de \textbf{obtenção dos vídeos
     Disponível em \url{http://www.bu.edu/asllrp/dai-asllvd-BU_glossing_with_variations_HS_information-extended-urls-RU.xls}
 }. Apesar do \textit{dataset} conter capturas de até 4 câmeras distintas para um mesmo sinal, este trabalho considera apenas a captura realizada pela câmera frontal, que contempla os movimentos do tronco, mãos e face, simultaneamente.
 
-A etapa seguinte consiste em \textbf{segmentar os vídeos} obtidos acima em vídeos individuais para cada sinal, uma vez que cada arquivo original corresponde a uma seção onde foram gravados múltiplos sinais por indivíduo. O intuito dessa tarefa é constituir um novo conjunto organizado de forma tal que cada sinal seja individualizado com seu respectivo rótulo. Para isso, também foi considerado o arquivo de metadados comentado acima, que dispõe dos rótulos aqui requeridos e das respectivas marcações de \textit{frames} de início e término para cada sinal dentro das seções. Como saída dessa etapa, são obtidos vídeos com duração média de 1 a 5 segundos e com aspecto semelhante ao que se observa na \refimage{fig:sign-original}.
+A etapa seguinte consiste em \textbf{segmentar os vídeos} obtidos acima em vídeos individuais por sinal, uma vez que cada arquivo original corresponde a uma seção onde foram gravados múltiplos sinais por indivíduo. O intuito dessa tarefa é constituir um novo conjunto organizado de forma tal que cada sinal esteja disposto de forma individual com seu respectivo rótulo. Para isso, também foi considerado o arquivo de metadados comentado acima, que dispõe dos rótulos aqui requeridos e das respectivas marcações de \textit{frames} de início e término para cada sinal dentro das seções. Como saída dessa etapa, são obtidos vídeos com duração média de 1 a 5 segundos e com aspecto semelhante ao que se observa na \refimage{fig:sign-original}.
 
 \image
     [5cm]
@@ -231,7 +216,7 @@ A etapa seguinte consiste em \textbf{segmentar os vídeos} obtidos acima em víd
     {images/sign_original}
     {Representação do sinal "EXAGGERATE", segmentado a partir das seções gravadas para o ASLLVD. Fonte: \cite{athitsos-asllvd-2008}.}
 
-O terceiro passo consiste em realizar a \textbf{estimação das poses} dos indivíduos presentes em cada um dos vídeos segmentados. Em outras palavras, isso significa extrair as coordenadas das partes do corpo desses indivíduos, \textit{frame} a \textit{frame}, para compor os esqueletos que são a base dos grafos que serão utilizados pelo modelo. Para isso, utilizou-se a biblioteca OpenPose, que é a mesma adotada pelos autores em \cite{st-gcn-2018}. A diferença, entretanto, está no fato de que além das coordenadas referentes ao corpo dos atores, um número consideravelmente maior de coordenadas foi necessário para que fosse possível abranger também as mãos e face dos indivíduos. No total são 130 pontos, dos quais 21 correspondem a cada uma das mãos; 70 correspondem às coordenadas da face; e 18 correspondem aos pontos corpo (vide \refimage{fig:keypoints-face-hand} e \refimage{fig:keypoints-pose}). O resultado da estimação pelo OpenPose consiste em múltiplos arquivos no formato JSON contendo as coordenadas e o nível de confiança da estimativa de cada uma delas, sendo um para cada \textit{frame} de vídeo. A \refimage{fig:openpose-coordinates} ilustra o formato desses arquivos. Ao término dessa etapa, todas essas coordenadas presentes nesses múltiplos arquivos, que se referem ao mesmo vídeo, são unificadas para que finalmente seja obtido um arquivo único de estimação por sinal.
+O terceiro passo consiste em realizar a \textbf{estimação das poses} dos indivíduos presentes em cada um dos vídeos segmentados. Em outras palavras, isso significa extrair as coordenadas das partes do corpo desses indivíduos, \textit{frame} a \textit{frame}, para compor os esqueletos que são a base dos grafos que serão utilizados pelo modelo. Para isso, utilizou-se a biblioteca OpenPose, que é a mesma adotada pelos autores em \cite{st-gcn-2018}. A diferença, entretanto, está no fato de que além das coordenadas referentes ao corpo dos atores, um número consideravelmente maior de coordenadas foi necessário para que fosse possível abranger também as mãos e face dos indivíduos. No total são 130 pontos, dos quais 21 correspondem a cada uma das mãos; 70 correspondem às coordenadas da face; e 18 correspondem aos pontos corpo (vide \refimage{fig:keypoints-face-hand} e \refimage{fig:keypoints-pose}). O resultado da estimação pelo OpenPose consiste em múltiplos arquivos no formato JSON contendo as coordenadas e o nível de confiança da estimativa de cada uma delas, sendo um para cada \textit{frame} de vídeo. A \refimage{fig:openpose-coordinates} ilustra o formato desses arquivos. Ao término dessa etapa, todas essas coordenadas presentes nos múltiplos arquivos de um mesmo vídeo, são unificadas para que finalmente seja obtido um arquivo único de estimação por sinal.
 
 \begin{figure}[ht]
     \centering
@@ -257,7 +242,7 @@ A \refimage{fig:sign-pose} ilustra a reconstrução em uma imagem 2D do resultad
     \label{fig:sign-pose}
 \end{figure}
 
-A quarta etapa diz respeito à \textbf{divisão do \textit{dataset}} pré-processado até aqui em subconjuntos que serão utilizados para o treinamento, validação e testes do modelo. Para esse procedimento, foi utilizada uma ferramenta de divisão de \textit{datasets} para validação cruzada disponibilizada pela biblioteca Scikit-Learn \cite{scikit-learn}, denominada "\textit{train\_test\_split}". Por meio dela, primeiramente é subtraída do conjunto original a proporção de amostras destinadas a testes; em seguida, aquelas destinadas a validação; e, por fim, as amostras restantes são destinadas para treinamento. Essa divisão segue como referência a configuração estabelecida a seguir:
+A quarta etapa diz respeito à \textbf{divisão do \textit{dataset}} pré-processado até aqui em subconjuntos que serão utilizados para o treinamento, validação e testes do modelo. Para esse procedimento, foi utilizada uma ferramenta de divisão de \textit{datasets} para validação cruzada disponibilizada pela biblioteca Scikit-Learn \cite{scikit-learn}, denominada "\textit{train\_test\_split}". Por meio dela, primeiramente é subtraída do conjunto original a proporção de amostras destinadas a testes; em seguida, aquelas destinadas à validação; e, por fim, as amostras restantes são destinadas para treinamento. Essa divisão segue como referência a configuração estabelecida a seguir:
 
 \begin{itemize}
     \item 70\% para treinamento;
@@ -265,14 +250,18 @@ A quarta etapa diz respeito à \textbf{divisão do \textit{dataset}} pré-proces
     \item 15\% para testes.
 \end{itemize}
 
-Por fim, a quinta etapa consiste em \textbf{normalizar e serializar} as amostras afim de torná-las compatíveis com o formato de entrada estabelecido pelo ST-GCN. A normalização objetiva tornar o comprimento de todas as amostras uniforme, aplicando para isso a repetição de seus \textit{frames} de forma sequencial até o preenchimento completo de um número fixo estabelecido de \textit{frames}. Neste trabalho, o número de \textit{frames} é fixado em 126 (que a uma taxa de 30 FPS, corresponderia a um vídeo de duração aproximada de 4 segundos). A serialização, por sua vez, consiste em pré-carregar as amostras dos subconjuntos criados acima para traduzi-las em arquivos físicos do Python \cite{python}, contendo as respectivas representações em memória desses objetos. Esse é o formato de entrada esperado pelo ST-GCN, que é adotado para otimizar o processo de leitura dos dados. Para cada subconjunto acima são criados dois arquivos físicos: um contendo sua lista de amostras; e outro contendo a lista de rótulos para essas amostras. Esse é, portanto, o resultado final obtido a partir das etapas de pré-processamento do ASLLVD.
+Por fim, a quinta etapa consiste em \textbf{normalizar e serializar} as amostras afim de torná-las compatíveis com o formato de leitura do ST-GCN. A normalização objetiva tornar o comprimento de todas as amostras uniforme, aplicando para isso a repetição de seus \textit{frames} de forma sequencial até o preenchimento completo de um número fixo estabelecido de \textit{frames}. Neste trabalho, o número de \textit{frames} é fixado em 126 (que a uma taxa de 30 FPS, corresponderia a um vídeo de duração aproximada de 4 segundos). A serialização, por sua vez, consiste em pré-carregar as amostras dos subconjuntos criados acima para traduzi-las em arquivos físicos do Python \cite{python}, contendo as respectivas representações em memória desses objetos. Esse é o formato de entrada esperado pelo ST-GCN, que é adotado para otimizar o processo de leitura dos dados. Para cada subconjunto acima são criados dois arquivos físicos: um contendo sua lista de amostras; e outro contendo a lista de rótulos para essas amostras. Esse é, portanto, o resultado final obtido a partir das etapas de pré-processamento do ASLLVD.
 
-A implementação da sequência de etapas de pré-processamento apresentada acima está disponibilizada publicamente\footnote{
+% Adaptação do modelo
+Conforme comentado acima, foram realizadas adaptações pontuais no código fonte do ST-GCN, mas que não alteram sua arquitetura ou funcionamento essencial. A primeira delas diz respeito à criação de uma nova representação de grafo para o problema da língua de sinais, uma vez que neste trabalho será utilizado um número bem maior de articulações, que vão além daqueles utilizados no trabalho original. Isso se faz necessário para que o modelo seja capaz de compreender os novos pontos do esqueleto e as relações (ou vértices) existentes entre eles. De forma análoga a essa necessidade, a outra modificação foi aplicada ao mecanismo de leitura dos dados em \textit{batch} para que ele seja capaz de compreender e aplicar eventuais transformações às matrizes maiores de articulações dos esqueletos que agora estão sendo utilizadas. 
+
+O código fonte contendo as adaptações do ST-GCN aqui apresentadas, bem como a implementação da sequência completa de etapas de pré-processamento está disponibilizado publicamente\footnote{
     Disponível em \url{http://www.cin.ufpe.br/~cca5/st-gcn-sl}
-}. Da mesma forma, as saídas de cada etapa e o \textit{dataset} final pré-processado também estão disponíveis\footnote{
+}. Esse código consiste num \textit{fork} criado a partir daquele originalmente desenvolvido pelos autores do modelo.
+
+Da mesma forma, as saídas de cada etapa e o \textit{dataset} final pré-processado também estão disponíveis\footnote{
     Disponível em \url{http://www.cin.ufpe.br/~cca5/asllvd-poses}
 }.
-
 
 
 \section{Resultados} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
