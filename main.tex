@@ -44,14 +44,19 @@ O primeiro passo nessa direção consiste em quebrar a barreira da representaç�
 
 \section{Trabalhos Relacionados} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-[TODO: escrever seção]
+O reconhecimento de línguas de sinais tem apresentado progressos relevantes nos últimos anos, os quais são motivados principalmente pelo advento de sensores mais modernos, de novas técnicas de aprendizagem de máquina e de \textit{hardwares} mais potentes que viabilizam o surgimento de algoritmos ainda mais robustos \cite{recent-advances-dl-2017, recent-advances-sl-2013}. Além disso, técnicas consideradas intrusivas e requerem a utilização de sensores como luvas, acelerômetros e marcadores acoplados ao corpo do interlocutor para captura dos sinais vêm sendo abandonadas, e cedendo espaço para abordagens baseadas em câmeras e visão computacional.
 
+Para isso, também tem crescido a adoção de técnicas de extração de características como SIFT \cite{sift-2004}, HOG \cite{hog-2005}, HOF \cite{hof-2008} e STIP \cite{hof-2008} \cite{recent-advances-dl-2017} afim de pré-processar as imagens capturadas por essas câmeras e fornecer informações mais ricas para utilização em conjunto com algoritmos de aprendizagem de máquina \cite{bhof-sl-2016, shanta-2018}.
 
-\section{Redes Convolucionais de Grafos Espaço-Temporais} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Recentemente, é possível perceber uma presença notável da utilização de Redes Neurais Convolucionais (ou CNNs) na resolução do problema do reconhecimento das línguas de sinais. Sua utilização para o reconhecimento de línguas de diferentes nacionalidades têm sido capaz de demonstrar resultados favoráveis, com acurácia comumente superior a 90\%  \cite{shanta-2018, ji-2017, taskiran-2018, rao-2018}. Algumas variações também são encontradas com esse mesmo propósito, como o uso de 3D CNNs \cite{elbadawy-2017}, combinada com o modelo Inception \cite{das-2018} ou com o uso de Regiões de Interesse \cite{sajanraj-2018}. Além das CNNs, pode-se também constatar, em menor proporção, a adoção de Redes Neurais Recorrentes \cite{konstantinidis-2018} e de Redes Residuais Temporais \cite{pigou-2017} para o reconhecimento de sinais.
 
-As Redes Convolucionais de Grafos Espaço-Temporais (ou \textit{Spatial-Temporal Graph Convolutional Network - ST-GCN}) consistem num tipo de modelo de aprendizagem profunda proposto por \cite{st-gcn-2018} que especializa a abordagem das Redes Neurais de Grafos e que são aplicados no reconhecimento de ações. Sua motivação surgiu a partir da necessidade enxergada pelos autores de métodos que fossem capazes de capturar de forma autônoma os padrões contidos na configuração espacial das articulações do corpo humano, bem como sua dinâmica temporal.
+Apesar desses avanços, muitos desses estudos ainda restringe-se a adotar apenas imagens estáticas dos sinais ou de letras isoladas da datilologia\footnote{
+     Datilologia – também conhecida como alfabeto digital ou alfabeto manual. Consiste na soletração de palavras pelos Surdos. É geralmente utilizada para introduzir uma palavra que ainda não possui um sinal equivalente \cite{quadros-2004, pereira-choi-2011}.
+} \cite{shanta-2018, taskiran-2018, elbadawy-2017, das-2018, sajanraj-2018}. Isso torna-se um ponto negativo quando observamos pela dimensão de que essa abordagem desconsidera o aspecto dinâmico da língua que é intrínseco ao cotidiano do Surdo, como seus movimentos, expressões não-manuais e articulações entre partes do corpo \cite{quadros-2004}. Dessa forma, faz-se extremamente relevante desenvolver técnicas capazes de considerar a dinâmica da língua de sinais como em \cite{konstantinidis-2018} e \cite{pigou-2017}. 
 
-Segundo eles, os métodos anteriores de uso de esqueletos para reconhecimento de ações acabaram limitando-se justamente por não explorar explicitamente tais relações espaciais entre as articulações, que são cruciais para a compreensão das ações humanas. Esses métodos, simplesmente empregaram as coordenadas conjuntas em etapas de tempo individuais para formar vetores de característica, aplicando uma análise temporal neles \cite{st-gcn-2018, wang-2012, fernando-2015}.
+Com esse propósito, este trabalho aplica uma abordagem de reconhecimento de ações por meio do esqueleto humano denominada de Rede Convolucional de Grafos Espaço-Temporais (ou \textit{Spatial-Temporal Graph Convolutional Network - ST-GCN}) apresentada em \cite{st-gcn-2018} para o problema do reconhecimento da língua de sinais. 
+
+A motivação da ST-GCN surgiu a partir da necessidade enxergada pelos autores de métodos que fossem capazes de capturar de forma autônoma os padrões contidos na configuração espacial das articulações do corpo humano, bem como sua dinâmica temporal. Segundo eles, os métodos anteriores de uso de esqueletos para reconhecimento de ações eram limitados justamente por não explorar explicitamente tais relações espaciais entre as articulações, que são cruciais para a compreensão das ações humanas. Esses métodos, simplesmente empregaram as coordenadas conjuntas em etapas de tempo individuais para formar vetores de característica, aplicando uma análise temporal neles \cite{st-gcn-2018, wang-2012, fernando-2015}.
 
 Mais recentemente, eles afirmam, novos métodos que tentaram alavancar as conexões naturais entre as articulações foram desenvolvidos \cite{shahroudy-2016, yong-du-2015}. Eles mostraram melhorias encorajadoras, o que sugere a importância da conectividade. No entanto, a maioria desses métodos baseia-se em partes ou regras criadas manualmente para analisar os padrões espaciais. Como resultado, os modelos criados para uma aplicação específica são difíceis de serem generalizados para outras \cite{st-gcn-2018}.
 
@@ -148,7 +153,21 @@ Na apresentação do ST-GCN, entretanto, os autores utilizaram apenas 18 desses 
 Todo o fluxo descrito até aqui trata da aplicação do ST-GCN para o contexto onde vídeos isolados são gravados previamente e utilizados como entrada. Apesar disso, entende-se que seria possível, com algum trabalho adicional, evoluí-lo na direção de substituir essa entrada por um \textit{streaming} de vídeo capturado em tempo real por uma câmera. Para isso, seria necessário passar a estimar continuamente com uma biblioteca ou \textit{hardware} específico as poses dos \textit{frames} capturados, provendo assim um \textit{streaming} de esqueletos para o modelo. A biblioteca OpenPose (que está descrita em detalhes mais adiante) é capaz de atender a essa necessidade, porém seus requisitos de \textit{hardware} robusto podem acabar por limitar sua adoção em alguns contextos na prática. A leitura dos dados pelo modelo também precisaria ser evoluída afim de que ao invés de considerar informações em arquivos físicos, sejam utilizadas aquelas fornecidas pelo \textit{streaming} de esqueletos. Como o ST-GCN hoje só trabalha com vídeos de tamanho fixo, essa entrada em fluxo contínuo apenas seria classificada por ele de janelas em janelas de tempo, quando completado em memória esse número fixo estabelecido de \textit{frames}.
 
 
-\section{American Sign Language Lexicon Video Dataset} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Experimentos} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+A pesquisa foi organizada segundo passos estabelecidos abaixo. Em termos gerais, eles definem desde a identificação de um modelo em potencial conforme objetivos estabelecidos na \refsect{sec:introducao}, sua adaptação para o problema da língua de sinais até a avaliação de seu desempenho.
+
+\begin{enumerate}
+    \item Definir modelo: nesse passo foi selecionado o modelo ST-GCN e sua abordagem baseada em grafos para lidar com o problema da língua de sinais;
+    \item Definir \textit{dataset}: foi estabelecido o ASLLVD, devido à sua abrangência relevante de sinais, qualidade das amostras coletadas, organização das anotações e rotulações, e articulação dos sinais por indivíduos nativos. Apesar de baseado na Língua Americana de Sinais, a utilização desse \textit{dataset} não restringe a abordagem apresentada à língua daquele país. Ao contrário, entende-se que é possível adotar o mesmo método a \textit{datasets} de línguas de outros países;
+    \item Preparar \textit{dataset}: para que fosse possível utilizar o \textit{dataset} acima com o ST-GCN foi necessário primeiro criar um \textit{pipeline} de pré-processamento, conforme descrito mais adiante nesta seção, afim de colocar cada amostra em  um formato compatível com a entrada do modelo;
+    \item Adaptar modelo: para que fosse possível utilizar o ST-GCN no contexto da língua de sinais, foi necessário realizar pequenas adaptações na interpretação dos grafos e na leitura dos dados. Esse processo também está melhor descrito mais adiante;
+    \item Treinar modelo adaptado: nesse passo, o modelo acima será submetido às amostras do \textit{dataset} para que possa desenvolver um conhecimento acerca do problema;
+    \item Avaliar e melhorar resultados: a partir das descobertas obtidas na tarefa acima, serão realizados os eventuais ajustes no modelo, \textit{dataset} ou nas configurações do treinamento, e repetido o passo anterior.
+\end{enumerate}
+
+
+\subsection{Dataset} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 O \textit{American Sign Language Lexicon Video Dataset} (ou ASLLVD) consiste num \textit{dataset} público\footnote{
     Disponível em \url{http://csr.bu.edu/asl/asllvd/annotate/index.html}.
@@ -164,22 +183,9 @@ Segundo os autores, cada sinal é articulado por indivíduos nativos da ASL, e a
 Ainda de acordo com os autores, o número e o tipo de sinais incluídos no ASLLVD são semelhantes em escala e escopo ao conjunto de entradas lexicais nos dicionários existentes de "Inglês-para-ASL". Existe ao menos um exemplo de vídeo por sinal (articulado por um indivíduo nativo), para quase todos os sinais contidos no Dicionário Gallaudet de Língua Americana de Sinais \cite{athitsos-asllvd-2008, gallaudet-2005}. 
 
 Ao analisar os metadados do \textit{dataset} é possível identificar a existência de um total de 2.745 sinais, representados em 9.757 amostras. Cada sinal contém entre 1 e 18 amostras articuladas por diferentes indivíduos (sendo 4 o número médio de amostras por sinal).
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
-\section{Método de Pesquisa} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-A pesquisa foi organizada segundo passos estabelecidos abaixo. Em termos gerais, eles definem desde a identificação de um modelo em potencial conforme objetivos estabelecidos na \refsect{sec:introducao}, sua adaptação para o problema da língua de sinais até a avaliação de seu desempenho.
-
-\begin{enumerate}
-    \item Definir modelo: nesse passo foi selecionado o modelo ST-GCN e sua abordagem baseada em grafos para lidar com o problema da língua de sinais;
-    \item Definir \textit{dataset}: foi estabelecido o ASLLVD, devido à sua abrangência relevante de sinais, qualidade das amostras coletadas, organização das anotações e rotulações, e articulação dos sinais por indivíduos nativos. Apesar de baseado na Língua Americana de Sinais, a utilização desse \textit{dataset} não restringe a abordagem apresentada à língua daquele país. Ao contrário, entende-se que é possível adotar o mesmo método a \textit{datasets} de línguas de outros países;
-    \item Preparar \textit{dataset}: para que fosse possível utilizar o \textit{dataset} acima com o ST-GCN foi necessário primeiro criar um \textit{pipeline} de pré-processamento, conforme descrito mais adiante nesta seção, afim de colocar cada amostra em  um formato compatível com a entrada do modelo;
-    \item Adaptar modelo: para que fosse possível utilizar o ST-GCN no contexto da língua de sinais, foi necessário realizar pequenas adaptações na interpretação dos grafos e na leitura dos dados. Esse processo também está melhor descrito mais adiante;
-    \item Treinar modelo adaptado: nesse passo, o modelo acima será submetido às amostras do \textit{dataset} para que possa desenvolver um conhecimento acerca do problema;
-    \item Avaliar e melhorar resultados: a partir das descobertas obtidas na tarefa acima, serão realizados os eventuais ajustes no modelo, \textit{dataset} ou nas configurações do treinamento, e repetido o passo anterior.
-\end{enumerate}
-
-% TRATAMENTO DO DATASET ************************************************
+\subsection{Pré-processamento do Dataset} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 Para tornar as amostras do ASLLVD compatíveis com a entrada esperada pelo modelo ST-GCN foram aplicadas várias etapas de pré-processamento em série, as quais estão apresentadas na \refimage{fig:preprocessamento} e definidas em detalhe a seguir.
 
@@ -252,17 +258,23 @@ A quarta etapa diz respeito à \textbf{divisão do \textit{dataset}} pré-proces
 
 Por fim, a quinta etapa consiste em \textbf{normalizar e serializar} as amostras afim de torná-las compatíveis com o formato de leitura do ST-GCN. A normalização objetiva tornar o comprimento de todas as amostras uniforme, aplicando para isso a repetição de seus \textit{frames} de forma sequencial até o preenchimento completo de um número fixo estabelecido de \textit{frames}. Neste trabalho, o número de \textit{frames} é fixado em 126 (que a uma taxa de 30 FPS, corresponderia a um vídeo de duração aproximada de 4 segundos). A serialização, por sua vez, consiste em pré-carregar as amostras dos subconjuntos criados acima para traduzi-las em arquivos físicos do Python \cite{python}, contendo as respectivas representações em memória desses objetos. Esse é o formato de entrada esperado pelo ST-GCN, que é adotado para otimizar o processo de leitura dos dados. Para cada subconjunto acima são criados dois arquivos físicos: um contendo sua lista de amostras; e outro contendo a lista de rótulos para essas amostras. Esse é, portanto, o resultado final obtido a partir das etapas de pré-processamento do ASLLVD.
 
-% Adaptação do modelo
-Conforme comentado acima, foram realizadas adaptações pontuais no código fonte do ST-GCN, mas que não alteram sua arquitetura ou funcionamento essencial. A primeira delas diz respeito à criação de uma nova representação de grafo para o problema da língua de sinais, uma vez que neste trabalho será utilizado um número bem maior de articulações, que vão além daqueles utilizados no trabalho original. Isso se faz necessário para que o modelo seja capaz de compreender os novos pontos do esqueleto e as relações (ou vértices) existentes entre eles. De forma análoga a essa necessidade, a outra modificação foi aplicada ao mecanismo de leitura dos dados em \textit{batch} para que ele seja capaz de compreender e aplicar eventuais transformações às matrizes maiores de articulações dos esqueletos que agora estão sendo utilizadas. 
+As saídas de cada etapa e o \textit{dataset} final pré-processado estão disponíveis publicamente\footnote{
+    Disponível em \url{http://www.cin.ufpe.br/~cca5/asllvd-poses}
+}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{ST-GCN para Reconhecimento da Língua de Sinais} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Conforme comentado acima, foram realizadas adaptações pontuais no código fonte do ST-GCN, mas que não alteram sua arquitetura ou funcionamento essencial. A primeira delas diz respeito à criação de uma nova representação de grafo para o problema da língua de sinais, uma vez que neste trabalho será utilizado um número bem maior de articulações, que vão além daqueles utilizados no trabalho original. Isso se faz necessário para que o modelo seja capaz de compreender os novos pontos do esqueleto e as relações (ou vértices) existentes entre eles. 
+
+De forma análoga a essa necessidade, a outra modificação foi aplicada ao mecanismo de leitura dos dados em \textit{batch} para que ele seja capaz de compreender e aplicar eventuais transformações às matrizes maiores de articulações dos esqueletos que agora estão sendo utilizadas. 
 
 O código fonte contendo as adaptações do ST-GCN aqui apresentadas, bem como a implementação da sequência completa de etapas de pré-processamento está disponibilizado publicamente\footnote{
     Disponível em \url{http://www.cin.ufpe.br/~cca5/st-gcn-sl}
 }. Esse código consiste num \textit{fork} criado a partir daquele originalmente desenvolvido pelos autores do modelo.
 
-Da mesma forma, as saídas de cada etapa e o \textit{dataset} final pré-processado também estão disponíveis\footnote{
-    Disponível em \url{http://www.cin.ufpe.br/~cca5/asllvd-poses}
-}.
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Resultados} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \label{sec:resultados}
@@ -273,25 +285,40 @@ Esta seção apresenta as descobertas e resultados obtidos a partir da aplicaç�
 Foram considerados \textit{batches} de 32 amostras e uma taxa de aprendizado de 0,1, além de um \textit{weight decay} de 0,0001 em quatro momentos distintos do treinamento (geralmente distribuídos após a conclusão de 35\%, 50\%, 65\% e 80\% das épocas previstas, respectivamente). 
 Adicionalmente, uma estratégia de \textit{data augmentation} para diversificar as amostras apresentadas ao modelo, e ela consiste na aplicação de transformações randômicas de rotação, translação e escala no momento da leitura desses itens nos \textit{batches}.
 
-A \reftable{tab:resultados-1} apresenta os resultados parciais obtidos da abordagem proposta neste trabalho (representado como ST-GCN (Sign Language), e aqueles obtidos pelo modelo ST-GCN em \cite{st-gcn-2018} (para os \textit{datasets} Kinetics e Kinetics Motion). O resultado do ST-GCN (Sign Language) está listado para o seu treinamento até a época 630 de um total de 1.000 previstas.
 
 \begin{table}[ht]
-    \centering
-    \caption{Performance atual da abordagem proposta e do ST-GCN original}
-    \label{tab:resultados-1}
-    \begin{tabular}{@{}lll@{}} \toprule
-                                        &   Top-1           &   Top-5           \\ \midrule
-        ST-GCN (Kinetics)               &   30,7\%          &   52,8\%          \\
-        ST-GCN (Kinetics Motion)        &   72,4\%          &   -               \\ \midrule
-        \textbf{ST-GCN (Sign Language)} & \textbf{26,0\%}   &   \textbf{45,2\%} \\ \bottomrule
-    \end{tabular}
+\centering
+\caption{My caption}
+\label{my-label}
+\begin{tabular}{@{}llllllll@{}}
+\toprule
+\multirow{2}{*}{Dataset} & \multicolumn{6}{l}{Recognition accuracy (\%)}                                                                \\ \cmidrule(l){2-8} 
+            & MEI   & MHI   & PCA   & COV   & HOF   & BHOF   & \textbf{ST-GCN}  \\ \midrule
+    ASLLVD  & 25.00 & 10.00 & 45.00 & 45.00 & 70.00 & 85.00  & \textbf{42.86} \\ \bottomrule
+\end{tabular}
 \end{table}
 
-De acordo com os autores em \cite{st-gcn-2018}, os \textit{datasets} Kinetics e Kinetics Motion diferem-se essencialmente pelo fato de que o primeiro corresponde ao conjunto completo de ações de múltiplos indivíduos (e que muitas vezes incluem a interação desses indivíduos com objetos e com o ambiente à sua volta, que devem ser considerados para classificar tais ações); já o segundo, por sua vez, diz respeito a um subconjunto criado pelos autores para englobar apenas ações descritas exclusivamente pelo movimento dos indivíduos, sem interação com o mundo à sua volta. 
 
-O motivo disso, nos remete a recapitular a abordagem do ST-GCN de mapear o corpo humano e seus movimentos através de grafos. Ao mesmo tempo em que permite uma observação praticamente completa do esqueleto dos indivíduos, ela abre mão de todos os detalhes adicionais presentes nas cenas em que esses indivíduos estão inseridos. 
 
-Para o contexto do problema apresentado neste trabalho, entretanto, não há prejuízos decorrentes da não observância dos detalhes da cena, conforme acima. Isso porque nas línguas de sinais o foco é estritamente voltado para o movimento do corpo dos indivíduos (principalmente de partes como mãos, tronco e face), e não é comum que haja interação com objetos durante a articulação dos sinais, mas apenas do corpo com o próprio corpo.
+% A \reftable{tab:resultados-1} apresenta os resultados parciais obtidos da abordagem proposta neste trabalho (representado como ST-GCN (Sign Language), e aqueles obtidos pelo modelo ST-GCN em \cite{st-gcn-2018} (para os \textit{datasets} Kinetics e Kinetics Motion). O resultado do ST-GCN (Sign Language) está listado para o seu treinamento até a época 630 de um total de 1.000 previstas.
+
+% \begin{table}[ht]
+%     \centering
+%     \caption{Performance atual da abordagem proposta e do ST-GCN original}
+%     \label{tab:resultados-1}
+%     \begin{tabular}{@{}lll@{}} \toprule
+%                                         &   Top-1           &   Top-5           \\ \midrule
+%         ST-GCN (Kinetics)               &   30,7\%          &   52,8\%          \\
+%         ST-GCN (Kinetics Motion)        &   72,4\%          &   -               \\ \midrule
+%         \textbf{ST-GCN (Sign Language)} & \textbf{26,0\%}   &   \textbf{45,2\%} \\ \bottomrule
+%     \end{tabular}
+% \end{table}
+
+% De acordo com os autores em \cite{st-gcn-2018}, os \textit{datasets} Kinetics e Kinetics Motion diferem-se essencialmente pelo fato de que o primeiro corresponde ao conjunto completo de ações de múltiplos indivíduos (e que muitas vezes incluem a interação desses indivíduos com objetos e com o ambiente à sua volta, que devem ser considerados para classificar tais ações); já o segundo, por sua vez, diz respeito a um subconjunto criado pelos autores para englobar apenas ações descritas exclusivamente pelo movimento dos indivíduos, sem interação com o mundo à sua volta. 
+
+% O motivo disso, nos remete a recapitular a abordagem do ST-GCN de mapear o corpo humano e seus movimentos através de grafos. Ao mesmo tempo em que permite uma observação praticamente completa do esqueleto dos indivíduos, ela abre mão de todos os detalhes adicionais presentes nas cenas em que esses indivíduos estão inseridos. 
+
+% Para o contexto do problema apresentado neste trabalho, entretanto, não há prejuízos decorrentes da não observância dos detalhes da cena, conforme acima. Isso porque nas línguas de sinais o foco é estritamente voltado para o movimento do corpo dos indivíduos (principalmente de partes como mãos, tronco e face), e não é comum que haja interação com objetos durante a articulação dos sinais, mas apenas do corpo com o próprio corpo.
 
 
 
