@@ -2,53 +2,66 @@
 \begin{document}
 \maketitle
 \begin{abstract}
-Este trabalho propõe a aplicação de um modelo de aprendizagem profunda baseado em grafos, conhecido como Rede Convolucional de Grafos Espaço-Temporais, para o reconhecimento de sinais da língua sinalizada. Trata-se de uma abordagem centrada no movimento do corpo humano, o qual é capturado no espaço e no tempo e representado na forma de grafos, que são posteriormente aprendidos automaticamente pelo modelo.
+O reconhecimento de sinais é uma área de pesquisa cercada por desafios, mas que possui um papel importante para facilitar a comunicação do Surdo e para promover a remoção de barreiras ainda existentes nessa comunicação para com a sociedade. Este trabalho propõe a utilização de um modelo de aprendizagem profunda de reconhecimento de ações conhecido como Rede Convolucional de Grafos Espaço-Temporais para o contexto da língua de sinais. Trata-se de uma nova abordagem centrada no movimento do esqueleto humano que utiliza grafos para capturar o movimento do corpo sob duas dimensões: espacial e temporal, e que é capaz de considerar aspectos desafiadores da dinâmica dessa língua. Além disso, este trabalho também apresenta a criação de um novo \textit{dataset} de esqueletos humanos para a língua de sinais americana baseado no ASLLVD, o qual é utilizado com o modelo acima e disponibilizado com o intuito de contribuir com a evolução de estudos relacionados a essa área.
 \end{abstract}
 
-%\begin{IEEEkeywords}
-%Broad band networks, quality of service, WDM.
-%\end{IEEEkeywords}
+\begin{IEEEkeywords}
+Língua de Sinais, Redes Neurais Convolucionais, Grafos Espaço-Temporais.
+\end{IEEEkeywords}
 
 
 \section{Introdução} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \label{sec:introducao}
 
-[TODO: reescrever seção...]
+A língua de sinais é uma ferramenta de comunicação visual e que possibilita com que indivíduos que possuem diferentes tipos de deficiência auditiva se comuniquem entre si e com os demais indivíduos na comunidade. Ela é a língua utilizada pela maioria dos Surdos em sua vida diária e, muito além do que isso, ela é o símbolo de identificação entre os membros dessa comunidade e também a principal força que os une \cite{pereira-choi-2011}. 
 
-Hoje há um grande número de estudos que se propõem realizar a transcrição da língua de sinais para sua equivalência na língua falada. Entretanto, muitos desses estudos apresentam-se limitados frente ao cotidiano do Surdo por desconsiderarem aspectos relevantes da fonologia dessa língua como, por exemplo, movimentos, expressões não-manuais e locação (ou pontos de articulação) \cite{quadros-2004} e abordam o problema utilizando imagens estáticas dos sinais ou restringindo seu foco apenas às mãos do interlocutor sem a interação com o próprio corpo. É comum também que tais estudos centralizem seu campo de atuação ao âmbito da datilologia\footnote{
-     Datilologia – também conhecida como alfabeto digital ou alfabeto manual. Consiste na soletração de palavras pelos Surdos. É geralmente utilizada para introduzir uma palavra que ainda não possui um sinal equivalente \cite{quadros-2004, pereira-choi-2011}.
-}, que na prática é aplicada apenas em contexto restritos da comunicação desses indivíduos.
+%Sign language is a language that provides visual communication and allows individuals with hearing or speech impairments to communicate with each other or with other individuals in the community. 
+%Segundo Pereira, Choi, et al. (2012), hoje a língua de sinais é a língua usada pela maioria dos Surdos em sua vida diária. É o símbolo de identificação entre os membros da comunidade Surda e também a principal força que os une. 
 
-Em \cite{antunes-hcisl-2011}, os autores reiteram os fatores acima e adicionam outros que expõem a dificuldade em trazer esse tipo de estudos para a realidade do Surdo: 
-\begin{enumerate}
-    \item O uso de equipamentos como luvas, acelerômetros e outros sensores que são de difícil acesso; 
-    \item A adoção de métodos e tecnologias que não empatizam com a realidade Surdo, restringindo sua movimentação ou deixando de considerar características importantes, como as expressões faciais;
-    \item O uso de métodos que mapeiam sinais diretamente para palavras, e que tornam-se facilmente obsoletos mediante a introdução de novos sinais ou quando confrontados com variações linguísticas como gírias e regionalismos; 
-    \item A utilização de imagens estáticas para o treinamento de modelos, que desconsideram a dinâmica da língua.
-\end{enumerate}
+Assim como nas línguas orais, existe uma relação muito estreita entre essa língua e a cultura dos diferentes países onde são utilizadas. Por esse motivo, apesar de compartilharem diversos traços em comum e de muitas vezes ser fácil transitar entre elas, cada país possui uma língua de sinais própria nascida e desenvolvida com as suas comunidades Surdas \cite{pereira-choi-2011}.
 
-Diante dessas limitações, é apresentada em \cite{antunes-hcisl-2011} e \cite{garcia-2013} uma arquitetura denominada HCI-SL, que tem como proposta considerar aspectos fonológicos da língua para viabilizar a interação entre homem e máquina por meio de sinais. A \refimage{fig:hcisl} apresenta a arquitetura em mais detalhes. É possível observar que as técnicas e ferramentas de inteligência computacional exercem um papel essencial nas camadas mais básicas da estrutura proposta, e compreendem atuam a ponta da interação do interlocutor para com a máquina.
+%Essa língua não é universal e cada país tem a sua, da mesma forma como eles possuem uma língua na modalidade oral. Há uma relação muito estreita entra a língua e cultura: as línguas de sinais refletem a cultura dos diferentes países onde são utilizadas e nasceram junto com as suas comunidades Surdas. Por esse motivo elas também são consideradas línguas naturais, segundo os autores.
 
-\image
-	[5cm]
-    {fig:hcisl}
-    {images/hcisl}
-    {Arquitetura HCI-SL, composta por uma API interna contendo tecnologias de visão e inteligência computacional e uma camada de \textit{frameworks} que provê uma interface padrão para ferramentas e serviços externos como dicionários, tradutores e aplicativo de fins diversos. Fonte: \cite{antunes-hcisl-2011}.}
+Segundo a Organização Mundial de Saúde, hoje o número de pessoas com deficiência auditiva incapacitante é de cerca de 466 milhões e estima-se que até 2050 esse número ultrapasse os 900 milhões -- o que equivale a uma proporção global de 1 em cada 10 indivíduos \cite{who-2018}. Esses dados ressaltam a abrangência e a importância do papel das línguas de sinais para viabilizar a comunicação das pessoas ao redor do mundo. 
 
-Para que essa arquitetura funcionasse, era também necessário definir uma forma homogênea de representar os sinais, que viria a ser utlizada pelas camadas internas e os serviços externos que consumissem a interface provida pela estrutura. Dessa forma, introduziu-se em \cite{antunes-2011} e \cite{antunes-2015} uma representação denominada por CORE-SL, que baseia-se nas características fonológicas da língua de sinais para descrevê-los computacionalmente. Segundo os autores, essa representação agrega flexibilidade e um nível de detalhamento capazes de proporcionar alternativas para um tratamento computacional robusto e para auxiliar às diferentes necessidades de aplicação. 
+%According to the World Health Organization, the number of hearing-impaired individuals has recently reached 400 million. For this reason, recent studies have been accelerated to make disabled people communicate more easily.
 
-Dado o contexto acima, esta pesquisa objetiva contribuir com a viabilização da arquitetura HCI-SL sob a dimensão das técnicas de inteligência computacional necessárias para compor sua base fundamental, bem como com a proposição de caminhos que contornem os problemas apontados nas abordagens apresentadas anteriormente quando confrontadas com o cotidiano do Surdo. 
 
-O primeiro passo nessa direção consiste em quebrar a barreira da representação estática dos sinais para identificar e explorar abordagens capazes de considerar os traços do movimento do corpo do interlocutor, bem como a interação entre suas partes e as expressões decorrentes da articulação dos sinais. Para isso, nas seções a seguir será apresentada e avaliada a eficácia da aplicação de uma técnica de aprendizagem profunda denominada Rede Convolucional de Grafos Espaço-Temporais \cite{st-gcn-2018}, que é centrada nos movimentos do corpo, mãos e face do interlocutor capturados por meio de câmeras convencionais e representados como grafos, para o reconhecimento de sinais. 
+Apesar disso, é muito pequeno o número de pessoas ouvintes que são capazes de se comunicar utilizando a língua de sinais. Isso acaba caracterizando uma barreira invisível que interfere na comunicação entre as comunidades Surda e ouvinte, inviabilizando uma integração mais efetiva entre elas \cite{peres-2006}. Nesse contexto, faz-se necessário no âmbito da tecnologia desenvolver ferramentas que sejam capazes de preencher essa lacuna e promover a inclusão entre essas pessoas. 
+
+%Apesar das conquistas que a comunidade Surda tem alcançado nos últimos anos, entre as quais o reconhecimento da importância das línguas de sinais na comunicação é certamente a mais notável, essa língua ainda não se disseminou o suficiente entre as pessoas que não têm contato direto com tal comunidade. Isso acaba caracterizando uma barreira invisível que interfere na comunicação entre as comunidades Surda e ouvinte, inviabilizando uma interação e inclusão mais efetiva entre ambas (PERES, FLORES, et al., 2006).
+
+%Very few hearing people are able to communicate in sign language. Therefore, there is a need to develop a recognition system to bridge the communication gap between the hearing and hearing impaired communities. For that reason, the sign language recognition problem has been researched since 1990s. A sign is not only performed with hand motion and hand shapes (manual components), but also through facial expressions, head motion and body postures (non-manual components).
+
+Por essa razão, estudos relacionados com o reconhecimento da língua de sinais vêm sendo desenvolvidos desde a década de 1990 e é possível constatar resultados significativos a partir deles \cite{lim-2016, recent-advances-dl-2017}. Os principais desafios encontrados por eles estão relacionados primeiramente com considerar os aspectos dinâmicos da língua, como por exemplo os movimentos, articulações entre partes do corpo e as expressões não-manuais, ao invés de limitarem-se a apenas reconhecer sinais estáticos ou posições de mãos isoladas. Além disso, a língua de sinais apresenta milhares de sinais, que às vezes diferem-se apenas por mudanças sutis no movimento, forma ou posição da mão e envolvem sobreposições significativas de dedos e oclusões. Quando combinadas as diferenças no estilo de sinalização entre indivíduos, bem como as variações no estilo decorrentes da não-universalidade ou de regionalismos da língua, essa linha de pesquisa pode se tornar ser muito desafiadora para os atuais algoritmos de inteligência computacional \cite{konstantinidis-2018}.
+
+% This is due to the fact that sign language features thousands of signs, sometimes differing only by subtle changes in hand motion, shape or position and involving significant finger overlaps and occlusions. Combined also with differences in the signing style between individuals, SLR can be very challenging for current computer vision algorithms. 
+% Isto se deve ao fato de que a linguagem de sinais apresenta milhares de sinais, às vezes diferindo apenas por mudanças sutis no movimento, forma ou posição da mão e envolvendo sobreposições significativas de dedos e oclusões. Combinado também com diferenças no estilo de assinatura entre indivíduos, o SLR pode ser muito desafiador para os atuais algoritmos de visão computacional
+% Finally, the unavailability of large sign language datasets and the fact that sign language is not universal but presents significant variations based on the ethnicity of signers pose challenges to the development of an accurate and robust SLR system.
+
+Dessa forma, este trabalho apresenta a aplicação ao reconhecimento da língua de sinais de uma nova abordagem capaz de realizar o reconhecimento de ações humanas tomando como base grafos espaço-temporais, a qual é denominada Redes Convolucionais de Grafos Espaço Temporais (ou \textit{Spatial-Temporal Graph Convolutional Networks} - ST-GCN) \cite{st-gcn-2018}.
+Ao utilizar representações em grafos do esqueleto humano, essa abordagem centraliza seu foco no movimento desse corpo e nas interações entre suas partes, desconsiderando a interação com o ambiente à sua volta. Além disso, ela também aborda os movimentos dos indivíduos sob duas dimensões distintas, a espacial e e temporal, o que lhe faz capaz de capturar os aspectos dinâmicos das ações exercidas. Essas características fazem dessa uma abordagem relevante para lidar com os desafios da língua de sinais aqui apresentados e justificam, portanto, sua adoção aqui.
+
+Entretanto, para que fosse possível utilizar o ST-GCN nesse contexto, foi necessário primeiro desenvolver um \textit{dataset} de esqueletos humanos da língua de sinais que serviria como a informação principal para alimentar esse modelo. Para isso, foi utilizado como base o \textit{American Sign Language Lexicon Video Dataset} (ASLLVD), que consiste numa ampla base de sinais da língua americana, a partir dos quais foram estimados e extraídos os esqueletos necessários para o novo \textit{dataset}.
+
+Sendo assim, este trabalho traz como principais contribuições: 1) a adoção de uma nova técnica centrada no movimento humano para o reconhecimento de sinais, a qual é capaz de considerar diferentes aspectos da dinâmica da língua sinalizada e ajudar a contornar alguns desafios apresentados acima nessa direção; 2) a criação e disponibilização\footnote{
+    Disponível em \url{http://www.cin.ufpe.br/~cca5/asllvd-poses}
+} de um \textit{dataset} de esqueletos humanos para a língua de sinais americana, o qual objetiva contribuir com a evolução de estudos futuros em áreas correlatas.
+
+Este trabalho está organizado da seguinte forma: na \refsect{sec:trabalhos-relacionados} são apresentados os trabalhos relacionados e o funcionamento do ST-GCN em maiores detalhes; a \refsect{sec:experimentos} aborda a condução dos experimentos, incluindo o processo de criação do \textit{dataset} acima e os ajustes realizados no ST-GCN para o reconhecimento da língua de sinais; por fim, na seção \refsect{sec:resultados} estão contidos os resultados obtidos a partir da abordagem aplicada.
+
 
 
 \section{Trabalhos Relacionados} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\label{sec:trabalhos-relacionados}
 
 O reconhecimento de línguas de sinais tem apresentado progressos relevantes nos últimos anos, os quais são motivados principalmente pelo advento de sensores mais modernos, de novas técnicas de aprendizagem de máquina e de \textit{hardwares} mais potentes que viabilizam o surgimento de algoritmos ainda mais robustos \cite{recent-advances-dl-2017, recent-advances-sl-2013}. Além disso, técnicas consideradas intrusivas e requerem a utilização de sensores como luvas, acelerômetros e marcadores acoplados ao corpo do interlocutor para captura dos sinais vêm sendo abandonadas, e cedendo espaço para abordagens baseadas em câmeras e visão computacional.
 
-Para isso, também tem crescido a adoção de técnicas de extração de características como SIFT \cite{sift-2004}, HOG \cite{hog-2005}, HOF \cite{hof-2008} e STIP \cite{hof-2008} \cite{recent-advances-dl-2017} afim de pré-processar as imagens capturadas por essas câmeras e fornecer informações mais ricas para utilização em conjunto com algoritmos de aprendizagem de máquina \cite{bhof-sl-2016, shanta-2018}.
+Para isso, também tem crescido a adoção de técnicas de extração de características como SIFT \cite{sift-2004}, HOG \cite{hog-2005}, HOF \cite{hof-2008} e STIP \cite{hof-2008} \cite{recent-advances-dl-2017} afim de pré-processar as imagens capturadas por essas câmeras e fornecer informações mais ricas para utilização em conjunto com algoritmos de aprendizagem de máquina \cite{lim-2016, shanta-2018}.
 
-Recentemente, é possível perceber uma presença notável da utilização de Redes Neurais Convolucionais (ou CNNs) na resolução do problema do reconhecimento das línguas de sinais. Sua utilização para o reconhecimento de línguas de diferentes nacionalidades têm sido capaz de demonstrar resultados favoráveis, com acurácia comumente superior a 90\%  \cite{shanta-2018, ji-2017, taskiran-2018, rao-2018}. Algumas variações também são encontradas com esse mesmo propósito, como o uso de 3D CNNs \cite{elbadawy-2017}, combinada com o modelo Inception \cite{das-2018} ou com o uso de Regiões de Interesse \cite{sajanraj-2018}. Além das CNNs, pode-se também constatar, em menor proporção, a adoção de Redes Neurais Recorrentes \cite{konstantinidis-2018} e de Redes Residuais Temporais \cite{pigou-2017} para o reconhecimento de sinais.
+Nessa linha, em \cite{lim-2016} foi introduzida uma abordagem de Histograma de Fluxo Óptico Baseado em Blocos de representação (ou \textit{Block-Based Histogram of Optical Flow} - BHOF) para o reconhecimento da linguagem de sinais a partir das imagens das mãos. Nele, primeiramente a face do signatário é rastreada e removida, e o modelo de segundo plano é construído por meio da fusão dos filtros mediano e de moda em toda a sequência de vídeo para detectar as mãos. Com base nesse modelo de segundo plano, o primeiro plano é então extraído e a posição da mão é determinada. Em seguida, as regiões do fluxo óptico das mãos são extraídas e o fluxo óptico do histograma baseado em blocos é finalmente calculado e utilizado na classificação. 
+
+Nos últimos anos, é possível também perceber uma presença notável da utilização de Redes Neurais Convolucionais (ou CNNs) na resolução do problema do reconhecimento das línguas de sinais. Sua utilização para o reconhecimento de línguas de diferentes nacionalidades têm sido capaz de demonstrar resultados favoráveis, com acurácia comumente superior a 90\%  \cite{shanta-2018, ji-2017, taskiran-2018, rao-2018}. Algumas variações também são encontradas com esse mesmo propósito, como o uso de 3D CNNs \cite{elbadawy-2017}, combinada com o modelo Inception \cite{das-2018} ou com o uso de Regiões de Interesse \cite{sajanraj-2018}. Além das CNNs, pode-se também constatar, em menor proporção, a adoção de Redes Neurais Recorrentes \cite{konstantinidis-2018} e de Redes Residuais Temporais \cite{pigou-2017} para o reconhecimento de sinais.
 
 Apesar desses avanços, muitos desses estudos ainda restringe-se a adotar apenas imagens estáticas dos sinais ou de letras isoladas da datilologia\footnote{
      Datilologia – também conhecida como alfabeto digital ou alfabeto manual. Consiste na soletração de palavras pelos Surdos. É geralmente utilizada para introduzir uma palavra que ainda não possui um sinal equivalente \cite{quadros-2004, pereira-choi-2011}.
@@ -154,6 +167,7 @@ Todo o fluxo descrito até aqui trata da aplicação do ST-GCN para o contexto o
 
 
 \section{Experimentos} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\label{sec:experimentos}
 
 A pesquisa foi organizada segundo passos estabelecidos abaixo. Em termos gerais, eles definem desde a identificação de um modelo em potencial conforme objetivos estabelecidos na \refsect{sec:introducao}, sua adaptação para o problema da língua de sinais até a avaliação de seu desempenho.
 
@@ -186,6 +200,7 @@ Ao analisar os metadados do \textit{dataset} é possível identificar a existên
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Pré-processamento do Dataset} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\label{sec:preproc-dataset}
 
 Para tornar as amostras do ASLLVD compatíveis com a entrada esperada pelo modelo ST-GCN foram aplicadas várias etapas de pré-processamento em série, as quais estão apresentadas na \refimage{fig:preprocessamento} e definidas em detalhe a seguir.
 
@@ -279,17 +294,44 @@ O código fonte contendo as adaptações do ST-GCN aqui apresentadas, bem como a
 \section{Resultados} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \label{sec:resultados}
 
-Esta seção apresenta as descobertas e resultados obtidos a partir da aplicação da abordagem descrita nas seções anteriores. Os experimentos aqui relacionados foram realizados utilizando uma máquina virtual com CPU Intel Haswell, memória RAM de 5GB e GPU NVIDIA Tesla P100 com 16GB de memória dedicada. O tempo médio obtido com essa arquitetura foi de aproximadamente 7 épocas para cada hora de treinamento.
+% Esta seção apresenta as descobertas e resultados obtidos a partir da aplicação da abordagem descrita nas seções anteriores. Os experimentos aqui relacionados foram realizados utilizando uma máquina virtual com CPU Intel Haswell, memória RAM de 5GB e GPU NVIDIA Tesla P100 com 16GB de memória dedicada. O tempo médio obtido com essa arquitetura foi de aproximadamente 7 épocas para cada hora de treinamento.
 % O tempo médio consumido para essa tarefa é proporcional ao número de épocas configuradas e tem variado entre 1 e 4 dias
 
-Foram considerados \textit{batches} de 32 amostras e uma taxa de aprendizado de 0,1, além de um \textit{weight decay} de 0,0001 em quatro momentos distintos do treinamento (geralmente distribuídos após a conclusão de 35\%, 50\%, 65\% e 80\% das épocas previstas, respectivamente). 
-Adicionalmente, uma estratégia de \textit{data augmentation} para diversificar as amostras apresentadas ao modelo, e ela consiste na aplicação de transformações randômicas de rotação, translação e escala no momento da leitura desses itens nos \textit{batches}.
+%- configuração máquina
+
+Para este trabalho foram utilizados como referência os experimentos apresentados em \cite{lim-2016} utilizando o ASLLVD (vide \refsect{sec:trabalhos-relacionados}) juntamente com a técnica BHOF. 
+
+Nesses experimentos, os autores utilizaram um subconjunto contendo 20 sinais selecionados a partir do ASLLVD, os quais estão apresentados na \reftable{tab:asllvd-20}. Para reproduzir essa configuração, primeiramente foram utilizadas as poses estimadas no mesmo \textit{dataset} pré-processado na \refsect{sec:experimentos}. A partir dele, foram selecionados os 20 sinais
+
+foram selecionadas as poses estimadas para esses sinais no \textit{dataset} pré-processado na \refsect{sec:experimentos}. Em seguida, foram repetidos os passos de "divisão do \textit{dataset}" e de "normalização e serialização" para que fossem gerados os arquivos de entrada para o modelo considerando apenas as 185 poses referentes a esses sinais, utilizando o mesmo processo descrito na \refsect{sec:experimentos}. O \textit{dataset} final contendo os 20 sinais pré-processados e utilizados neste experimento está disponível publicamente\footnote{
+    Disponível em \url{http://www.cin.ufpe.br/~cca5/asllvd-poses-20}
+}.
+
+\begin{table}[]
+\caption{Sinais selecionados para os experimentos, conforme \cite{lim-2016}}
+\label{tab:asllvd-20}
+\begin{tabular}{ll}
+\hline
+Dataset & Isolated Signs \\ \hline
+ASLLVD & \begin{tabular}[c]{@{}l@{}}adopt, again, all, awkward, baseball, behavior, can, chat, \\ cheap, cheat, church, coat, conflict, court, deposit, depressed, \\ doctor, don’t want, dress, enough\end{tabular} \\ \hline
+\end{tabular}
+\end{table}
+
+
+%- parametros
+%Foram considerados \textit{batches} de 32 amostras e uma taxa de aprendizado de 0,1, além de um \textit{weight decay} de 0,0001 em quatro momentos distintos do treinamento (geralmente distribuídos após a conclusão de 35\%, 50\%, 65\% e 80\% das épocas previstas, respectivamente). 
+%Adicionalmente, uma estratégia de \textit{data augmentation} para diversificar as amostras apresentadas ao modelo, e ela consiste na aplicação de transformações randômicas de rotação, translação e escala no momento da leitura desses itens nos \textit{batches}.
+
+
+Para fins de comparação, além do BHOF, os experimentos em \cite{lim-2016} incluem outros métodos populares que foram aplicados sob o mesmo \textit{dataset} de 20 sinais do ASLLVD, como MEI, MHI, PCA, COV e HOF. Os resultados desses métodos também foram reproduzidos na \reftable{tab:results} para que sejam tomados como referência.
+
+%For purposes of comparison, the experiments will include other popular methods such as motion energy image (MEI) [35], motion history image (MHI) [41], principal component analysis (PCA) [42], feature covariance matrix (COV) [30], and histogram of optical flow. The graphical illustration of isolated sign language gesture of MEI, MHI and PCA is shown in Fig. 6. The recognition rates are presented in Table 3. Computation time for each method in frame per seconds (FPS) is shown in the last row of the table. From the results shown, the BHOF method is clearly superior
 
 
 \begin{table}[ht]
 \centering
 \caption{My caption}
-\label{my-label}
+\label{tab:results}
 \begin{tabular}{@{}llllllll@{}}
 \toprule
 \multirow{2}{*}{Dataset} & \multicolumn{6}{l}{Recognition accuracy (\%)}                                                                \\ \cmidrule(l){2-8} 
@@ -297,6 +339,13 @@ Adicionalmente, uma estratégia de \textit{data augmentation} para diversificar 
     ASLLVD  & 25.00 & 10.00 & 45.00 & 45.00 & 70.00 & 85.00  & \textbf{42.86} \\ \bottomrule
 \end{tabular}
 \end{table}
+
+
+%- discussão
+
+
+
+
 
 
 
