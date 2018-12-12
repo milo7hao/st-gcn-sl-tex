@@ -166,6 +166,7 @@ A pesquisa foi organizada segundo passos estabelecidos abaixo. Em termos gerais,
 
 
 \subsection{Dataset} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\label{sec:dataset}
 
 O \textit{American Sign Language Lexicon Video Dataset} (ou ASLLVD) consiste num \textit{dataset} público\footnote{
     Disponível em \url{http://csr.bu.edu/asl/asllvd/annotate/index.html}.
@@ -184,7 +185,7 @@ Ao analisar os metadados do \textit{dataset} é possível identificar a existên
 
 
 \subsection{Criação do \textit{dataset} de esqueletos} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\label{sec:preproc-dataset}
+\label{sec:criacao-dataset}
 
 Para tornar as amostras do ASLLVD compatíveis com a entrada esperada pelo modelo ST-GCN foram aplicadas várias etapas de pré-processamento em série, as quais estão apresentadas na \refimage{fig:preprocessamento} e definidas em detalhe a seguir.
 
@@ -239,9 +240,9 @@ As saídas de cada etapa e o \textit{dataset} final pré-processado estão dispo
     Disponível em \url{http://www.cin.ufpe.br/~cca5/asllvd-poses}
 }.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Adaptação do ST-GCN para o reconhecimento de sinais} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\label{sec:adaptacao-st-gcn}
 
 Conforme comentado acima, foram realizadas adaptações pontuais no código fonte do ST-GCN, mas que não alteram sua arquitetura ou funcionamento essencial. A primeira delas diz respeito à criação de uma nova representação de grafo para o problema da língua de sinais, uma vez que neste trabalho será utilizado um número bem maior de articulações, que vão além daqueles utilizados no trabalho original. Isso se faz necessário para que o modelo seja capaz de compreender os novos pontos do esqueleto e as relações (ou vértices) existentes entre eles. 
 
@@ -251,9 +252,10 @@ O código fonte contendo as adaptações do ST-GCN aqui apresentadas, bem como a
     Disponível em \url{http://www.cin.ufpe.br/~cca5/st-gcn-sl}
 }. Esse código consiste num \textit{fork} criado a partir daquele originalmente desenvolvido pelos autores do modelo.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 
 \subsection{Experimentos} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\label{experimentos}
 
 Para este trabalho, foram utilizados como referência os experimentos apresentados em \cite{lim-2016}, o qual avalia a performance do reconhecimento dos sinais no \textit{dataset} ASLLVD pela técnica BHOF (vide \refsect{sec:trabalhos-relacionados}) e também por técnicas populares como \textit{Motion Energy Image} (MEI) \cite{athitsos-asllvd-2008}, \textit{Motion History Image} (MHI) \cite{babu-2004}, \textit{Principal Component Analysis} (PCA) \cite{dreuw-2012} e \textit{Histogram of Optical Flow} (HOF) \cite{laptev-2008}. 
 
@@ -267,7 +269,7 @@ ASLLVD & \begin{tabular}[c]{@{}l@{}}adopt, again, all, awkward, baseball, behavi
 \end{tabular}
 \end{table}
 
-Com esse propósito, os autores utilizaram um subconjunto contendo 20 sinais selecionados a partir do ASLLVD, conforme apresenta a \reftable{tab:asllvd-20}. Para reproduzir essa configuração, foram selecionadas as poses com esqueletos estimados para esse sinais a partir do \textit{dataset} criado na \refsubsect{sec:preproc-dataset}. Como o número resultante de amostras é pequeno, totalizando 185 itens, foi necessário aplicar uma nova divisão fazendo com que 77\% desse subconjunto fosse separado para treinamento e 33\% utilizado para testes. Com isso foi possível equilibrar o número de amostras para uma proporção mais adequada para a avaliação do modelo. Por fim, uma vez que uma nova divisão foi realizada foi necessário normalizar e serializar os conjuntos para compatibilizá-los com a entrada do ST-GCN. Os passos aqui descritos seguem o procedimento apresentado na \refsubsect{sec:preproc-dataset}, e o subconjunto resultante foi disponibilizado publicamente\footnote{
+Com esse propósito, os autores utilizaram um subconjunto contendo 20 sinais selecionados a partir do ASLLVD, conforme apresenta a \reftable{tab:asllvd-20}. Para reproduzir essa configuração, foram selecionadas as poses com esqueletos estimados para esse sinais a partir do \textit{dataset} criado na \refsect{sec:criacao-dataset}. Como o número resultante de amostras é pequeno, totalizando 185 itens, foi necessário aplicar uma nova divisão fazendo com que 77\% desse subconjunto fosse separado para treinamento e 33\% utilizado para testes. Com isso foi possível equilibrar o número de amostras para uma proporção mais adequada para a avaliação do modelo. Por fim, uma vez que uma nova divisão foi realizada foi necessário normalizar e serializar os conjuntos para compatibilizá-los com a entrada do ST-GCN. Os passos aqui descritos seguem o procedimento apresentado na \refsect{sec:criacao-dataset}, e o subconjunto resultante foi disponibilizado publicamente\footnote{
     Disponível em \url{http://www.cin.ufpe.br/~cca5/asllvd-poses-20}
 }.
 
@@ -275,20 +277,19 @@ Também devido às características desse conjunto de dados pequeno, o tamanho d
 
 Da mesma forma como na implementação original do algoritmo de treinamento do ST-GCN em \cite{st-gcn-2018}, os experimentos deste trabalho utilizaram como método de otimização o Gradiente Descendente Estocástico (ou \textit{Stochastic Gradient Descent} - SGD) com Momento de Nesterov, que por sua vez é capaz de melhorar a estabilidade e a convergência do SGD, como descrevem \cite{stanford-2018, bengio-2013, sutskever-2013}.
 
-Para a taxa de aprendizagem, foi aplicada uma estratégia de inicializa-la com um valor elevado afim de que os pesos aleatórios sejam colocados na direção de convergência dentro das primeiras épocas para reduzi-la gradativamente nas épocas posteriores com o intuito de possibilitar ajustes cada vez mais refinados dos pesos no treinamento. Sendo assim, no experimento com os 20 sinais selecionados foi utilizado um total de 600 épocas onde adotou-se uma taxa inicial de 0.1, a qual foi decaída para os valores de 0.01, 0.001, 0.0001 e 0.00001 após o término do treinamento das épocas 50, 250, 350 e 450, respectivamente. 
+Para a taxa de aprendizagem, foi aplicada uma estratégia de inicializa-la com um valor elevado afim de que os pesos aleatórios sejam colocados na direção de convergência dentro das primeiras épocas para reduzi-la gradativamente nas épocas posteriores com o intuito de possibilitar ajustes cada vez mais refinados dos pesos no treinamento. Sendo assim, no experimento com os 20 sinais selecionados foi utilizado um total de 600 épocas onde adotou-se uma taxa inicial de 0.1, a qual foi decaída para os valores de 0.01, 0.001, 0.0001 e 0.00001 após o término do treinamento das épocas 50, 250, 350 e 450, respectivamente.
 
+% TODO: revisar configurações do experimento
 
-% data augmentation
-%Adicionalmente, uma estratégia de \textit{data augmentation} para diversificar as amostras apresentadas ao modelo, e ela consiste na aplicação de transformações randômicas de rotação, translação e escala no momento da leitura desses itens nos \textit{batches}.
+Além do treinamento com o subconjunto de 20 sinais, também foi conduzido um experimento com o \textit{dataset} completo do ASLLVD, afim de estabelecer um valor de referência. Para isso, apenas as configurações relacionadas ao tamanho do \textit{batch} e das épocas de decaimento da taxa de aprendizado precisaram ser alteradas. Sendo, o novo tamanho de \textit{batch} para esse cenário foi de 24 itens e a taxa de aprendizado teve decaimento igual ao contexto acima sendo aplicado ao término das épocas 100, 300, 400 e 500.
 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Os resultados obtidos em ambos os cenários estão apresentados na seção a seguir, e os modelos pré-treinados resultantes foram disponibilizados publicamente\footnote{
+    Disponível em \url{http://www.cin.ufpe.br/~cca5/st-gcn-sl}
+}.
 
 
 \section{Resultados} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \label{sec:resultados}
-
-%- configuração máquina ???
 
 Esta seção apresenta as descobertas e resultados obtidos a partir da aplicação da abordagem descrita nas seções anteriores. 
 
@@ -308,7 +309,7 @@ Pode-se perceber pela imagem que o modelo conseguiu alcançar de forma consisten
 \label{tab:results-comparison-20}
 \begin{tabular}{lc}
 \hline
-                   & Acurácia (\%) \\ \hline
+                   & Acurácia (\%)  \\ \hline
 MHI                & 10.00                     \\
 MEI                & 25.00                     \\
 \textbf{ST-GCN SL} & \textbf{35.85}            \\
@@ -344,15 +345,9 @@ Métodos como o MEI e MHI apresentam abordagens mais primitivas, que basicamente
 %    {images/mei_mhi_pca}
 %    {Representação gráfica da aplicação do MEI, MHI e PCA em imagens de sinais isolados. Fonte: \cite{lim-2016}.}
 
-Os modelos pré-treinados a partir de ambos experimentos realizados neste trabalho estão disponibilizados publicamente\footnote{
-    Disponível em \url{http://www.cin.ufpe.br/~cca5/st-gcn-sl}
-}.
-
-
 
 % Bibliografia
 \bibliographystyle{IEEEtran}
 \bibliography{IEEEabrv,references.bib}
 
 \end{document}
-%%
