@@ -2,7 +2,7 @@
 \begin{document}
 \maketitle
 \begin{abstract}
-O reconhecimento de sinais é uma área de pesquisa cercada por desafios, mas que possui um papel importante para facilitar a comunicação do Surdo e para promover a remoção de barreiras ainda existentes nessa comunicação para com a sociedade. Este trabalho propõe a utilização de um modelo de aprendizagem profunda de reconhecimento de ações conhecido como Rede Convolucional de Grafos Espaço-Temporais para o contexto da língua de sinais. Trata-se de uma nova abordagem centrada no movimento do esqueleto humano que utiliza grafos para capturar o movimento do corpo sob duas dimensões: espacial e temporal, e que é capaz de considerar aspectos desafiadores da dinâmica dessa língua. Além disso, este trabalho também apresenta a criação de um novo \textit{dataset} de esqueletos humanos para a língua de sinais americana baseado no ASLLVD, o qual é utilizado com o modelo acima e disponibilizado com o intuito de contribuir com a evolução de estudos relacionados a essa área.
+O reconhecimento de sinais é uma área de pesquisa cercada por desafios, mas que possui um papel importante para facilitar a comunicação do Surdo e para remover as barreiras ainda existentes nessa comunicação para com a sociedade. Este trabalho propõe a utilização de um modelo de aprendizagem profunda de reconhecimento de ações conhecido como Rede Convolucional de Grafos Espaço-Temporais para o contexto da língua de sinais. Trata-se de uma nova abordagem centrada no movimento do esqueleto humano que utiliza grafos para capturar o movimento do corpo sob duas dimensões: espacial e temporal, e que é capaz de considerar aspectos desafiadores da dinâmica dessa língua. Além disso, este trabalho também apresenta a criação de um novo \textit{dataset} de esqueletos humanos para a língua de sinais americana baseado no ASLLVD, o qual é utilizado com o modelo acima e disponibilizado com o intuito de contribuir com a evolução de estudos relacionados a essa área.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -15,29 +15,13 @@ Língua de Sinais, Redes Neurais Convolucionais, Grafos Espaço-Temporais.
 
 A língua de sinais é uma ferramenta de comunicação visual e que possibilita com que indivíduos que possuem diferentes tipos de deficiência auditiva se comuniquem entre si e com os demais indivíduos na comunidade. Ela é a língua utilizada pela maioria dos Surdos em sua vida diária e, muito além do que isso, ela é o símbolo de identificação entre os membros dessa comunidade e também a principal força que os une \cite{pereira-choi-2011}. 
 
-%Sign language is a language that provides visual communication and allows individuals with hearing or speech impairments to communicate with each other or with other individuals in the community. 
-%Segundo Pereira, Choi, et al. (2012), hoje a língua de sinais é a língua usada pela maioria dos Surdos em sua vida diária. É o símbolo de identificação entre os membros da comunidade Surda e também a principal força que os une. 
-
 Assim como nas línguas orais, existe uma relação muito estreita entre essa língua e a cultura dos diferentes países onde são utilizadas. Por esse motivo, apesar de compartilharem diversos traços em comum e de muitas vezes ser fácil transitar entre elas, cada país possui uma língua de sinais própria nascida e desenvolvida com as suas comunidades Surdas \cite{pereira-choi-2011}.
-
-%Essa língua não é universal e cada país tem a sua, da mesma forma como eles possuem uma língua na modalidade oral. Há uma relação muito estreita entra a língua e cultura: as línguas de sinais refletem a cultura dos diferentes países onde são utilizadas e nasceram junto com as suas comunidades Surdas. Por esse motivo elas também são consideradas línguas naturais, segundo os autores.
 
 Segundo a Organização Mundial de Saúde, hoje o número de pessoas com deficiência auditiva incapacitante é de cerca de 466 milhões e estima-se que até 2050 esse número ultrapasse os 900 milhões -- o que equivale a uma proporção global de 1 em cada 10 indivíduos \cite{who-2018}. Esses dados ressaltam a abrangência e a importância do papel das línguas de sinais para viabilizar a comunicação das pessoas ao redor do mundo. 
 
-%According to the World Health Organization, the number of hearing-impaired individuals has recently reached 400 million. For this reason, recent studies have been accelerated to make disabled people communicate more easily.
-
-
 Apesar disso, é muito pequeno o número de pessoas ouvintes que são capazes de se comunicar utilizando a língua de sinais. Isso acaba caracterizando uma barreira invisível que interfere na comunicação entre as comunidades Surda e ouvinte, inviabilizando uma integração mais efetiva entre elas \cite{peres-2006}. Nesse contexto, faz-se necessário no âmbito da tecnologia desenvolver ferramentas que sejam capazes de preencher essa lacuna e promover a inclusão entre essas pessoas. 
 
-%Apesar das conquistas que a comunidade Surda tem alcançado nos últimos anos, entre as quais o reconhecimento da importância das línguas de sinais na comunicação é certamente a mais notável, essa língua ainda não se disseminou o suficiente entre as pessoas que não têm contato direto com tal comunidade. Isso acaba caracterizando uma barreira invisível que interfere na comunicação entre as comunidades Surda e ouvinte, inviabilizando uma interação e inclusão mais efetiva entre ambas (PERES, FLORES, et al., 2006).
-
-%Very few hearing people are able to communicate in sign language. Therefore, there is a need to develop a recognition system to bridge the communication gap between the hearing and hearing impaired communities. For that reason, the sign language recognition problem has been researched since 1990s. A sign is not only performed with hand motion and hand shapes (manual components), but also through facial expressions, head motion and body postures (non-manual components).
-
 Por essa razão, estudos relacionados com o reconhecimento da língua de sinais vêm sendo desenvolvidos desde a década de 1990 e é possível constatar resultados significativos a partir deles \cite{lim-2016, recent-advances-dl-2017}. Os principais desafios encontrados por eles estão relacionados primeiramente com considerar os aspectos dinâmicos da língua, como por exemplo os movimentos, articulações entre partes do corpo e as expressões não-manuais, ao invés de limitarem-se a apenas reconhecer sinais estáticos ou posições de mãos isoladas. Além disso, a língua de sinais apresenta milhares de sinais, que às vezes diferem-se apenas por mudanças sutis no movimento, forma ou posição da mão e envolvem sobreposições significativas de dedos e oclusões. Quando combinadas as diferenças no estilo de sinalização entre indivíduos, bem como as variações no estilo decorrentes da não-universalidade ou de regionalismos da língua, essa linha de pesquisa pode se tornar ser muito desafiadora para os atuais algoritmos de inteligência computacional \cite{konstantinidis-2018}.
-
-% This is due to the fact that sign language features thousands of signs, sometimes differing only by subtle changes in hand motion, shape or position and involving significant finger overlaps and occlusions. Combined also with differences in the signing style between individuals, SLR can be very challenging for current computer vision algorithms. 
-% Isto se deve ao fato de que a linguagem de sinais apresenta milhares de sinais, às vezes diferindo apenas por mudanças sutis no movimento, forma ou posição da mão e envolvendo sobreposições significativas de dedos e oclusões. Combinado também com diferenças no estilo de assinatura entre indivíduos, o SLR pode ser muito desafiador para os atuais algoritmos de visão computacional
-% Finally, the unavailability of large sign language datasets and the fact that sign language is not universal but presents significant variations based on the ethnicity of signers pose challenges to the development of an accurate and robust SLR system.
 
 Dessa forma, este trabalho apresenta a aplicação ao reconhecimento da língua de sinais de uma nova abordagem capaz de realizar o reconhecimento de ações humanas tomando como base grafos espaço-temporais, a qual é denominada Redes Convolucionais de Grafos Espaço Temporais (ou \textit{Spatial-Temporal Graph Convolutional Networks} - ST-GCN) \cite{st-gcn-2018}.
 Ao utilizar representações em grafos do esqueleto humano, essa abordagem centraliza seu foco no movimento desse corpo e nas interações entre suas partes, desconsiderando a interação com o ambiente à sua volta. Além disso, ela também aborda os movimentos dos indivíduos sob duas dimensões distintas, a espacial e e temporal, o que lhe faz capaz de capturar os aspectos dinâmicos das ações exercidas. Essas características fazem dessa uma abordagem relevante para lidar com os desafios da língua de sinais aqui apresentados e justificam, portanto, sua adoção aqui.
@@ -57,7 +41,7 @@ Este trabalho está organizado da seguinte forma: na \refsect{sec:trabalhos-rela
 
 O reconhecimento de línguas de sinais tem apresentado progressos relevantes nos últimos anos, os quais são motivados principalmente pelo advento de sensores mais modernos, de novas técnicas de aprendizagem de máquina e de \textit{hardwares} mais potentes que viabilizam o surgimento de algoritmos ainda mais robustos \cite{recent-advances-dl-2017, recent-advances-sl-2013}. Além disso, técnicas consideradas intrusivas e requerem a utilização de sensores como luvas, acelerômetros e marcadores acoplados ao corpo do interlocutor para captura dos sinais vêm sendo abandonadas, e cedendo espaço para abordagens baseadas em câmeras e visão computacional.
 
-Para isso, também tem crescido a adoção de técnicas de extração de características como SIFT \cite{sift-2004}, HOG \cite{hog-2005}, HOF \cite{hof-2008} e STIP \cite{hof-2008} \cite{recent-advances-dl-2017} afim de pré-processar as imagens capturadas por essas câmeras e fornecer informações mais ricas para utilização em conjunto com algoritmos de aprendizagem de máquina \cite{lim-2016, shanta-2018}.
+Para isso, também tem crescido a adoção de técnicas de extração de características como SIFT \cite{lowe-2004}, HOG \cite{dalal-2005}, HOF \cite{laptev-2008} e STIP \cite{laptev-2008} \cite{recent-advances-dl-2017} afim de pré-processar as imagens capturadas por essas câmeras e fornecer informações mais ricas para utilização em conjunto com algoritmos de aprendizagem de máquina \cite{lim-2016, shanta-2018}.
 
 Nessa linha, em \cite{lim-2016} foi introduzida uma abordagem de Histograma de Fluxo Óptico Baseado em Blocos de representação (ou \textit{Block-Based Histogram of Optical Flow} - BHOF) para o reconhecimento da linguagem de sinais a partir das imagens das mãos. Nele, primeiramente a face do signatário é rastreada e removida, e o modelo de segundo plano é construído por meio da fusão dos filtros mediano e de moda em toda a sequência de vídeo para detectar as mãos. Com base nesse modelo de segundo plano, o primeiro plano é então extraído e a posição da mão é determinada. Em seguida, as regiões do fluxo óptico das mãos são extraídas e o fluxo óptico do histograma baseado em blocos é finalmente calculado e utilizado na classificação. 
 
@@ -89,7 +73,7 @@ A \refimage{fig:st-gcn-workflow} ilustra a abordagem utilizada pelo ST-GCN. Nela
     {Fluxo do ST-GCN, onde os grafos criados a partir dos indivíduos presentes nos vídeos são submetidos ao modelo e, por fim, classificados entre as ações disponíveis. Fonte: \cite[p. 3]{st-gcn-2018}.}
 
 
-% Funcionamento do ST-GCN ------------------------
+% Funcionamento do ST-GCN:
 
 Para que seja possível compreender o funcionamento da rede ST-GCN em detalhe, é necessário primeiro aprofundarmos a discussão nas estratégias de amostragem e de particionamento adotadas por ele. 
 
@@ -136,7 +120,7 @@ Retomemos à definição inicial que estabelece que a dimensão temporal é form
 Uma vez realizada a amostragem sob as duas dimensões e selecionados os pontos para a convolução, é possível aplicar esse processo de uma forma análoga àquela aplicada a imagens 2D, conforme ilustra a \refimage{fig:st-gcn-convolution} (ao centro e à direita).
 
 
-% Arquitetura ------------------------
+% Arquitetura:
 
 A \refimage{fig:st-gcn-architecture} (à esquerda) permite-nos visualizar as camadas de convolução do modelo. Ao todo, são nove camadas convolucionais ST-GCN posicionadas de forma sequencial, que realizam a extração das características dos grafos espaço-temporais apresentados. Elas são precedidas por uma camada de normalização e seguidas por uma camada de \textit{pooling} global e outra de classificação \textit{softmax}. À direita da imagem é apresentado também o detalhe de uma unidade convolucional ST-GCN.
 
@@ -196,29 +180,13 @@ Segundo os autores, cada sinal é articulado por indivíduos nativos da ASL, e a
 
 Ainda de acordo com os autores, o número e o tipo de sinais incluídos no ASLLVD são semelhantes em escala e escopo ao conjunto de entradas lexicais nos dicionários existentes de "Inglês-para-ASL". Existe ao menos um exemplo de vídeo por sinal (articulado por um indivíduo nativo), para quase todos os sinais contidos no Dicionário Gallaudet de Língua Americana de Sinais \cite{athitsos-asllvd-2008, gallaudet-2005}. 
 
-Ao analisar os metadados do \textit{dataset} é possível identificar a existência de um total de 2.745 sinais, representados em 9.757 amostras. Cada sinal contém entre 1 e 18 amostras articuladas por diferentes indivíduos (sendo 4 o número médio de amostras por sinal).
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Ao analisar os metadados do \textit{dataset} é possível identificar a existência de um total de 2.745 sinais, representados em aproximadamente 10 mil amostras. Cada sinal contém entre 1 e 18 amostras articuladas por diferentes indivíduos (sendo 4 o número médio de amostras por sinal).
 
-\subsection{Pré-processamento do Dataset} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Criação do \textit{dataset} de esqueletos} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \label{sec:preproc-dataset}
 
 Para tornar as amostras do ASLLVD compatíveis com a entrada esperada pelo modelo ST-GCN foram aplicadas várias etapas de pré-processamento em série, as quais estão apresentadas na \refimage{fig:preprocessamento} e definidas em detalhe a seguir.
-
-%\begin{figure}[ht]
-%    \centering
-%    \smartdiagramset{
-%        border color=none,
-%        back arrow disabled=true,
-%        text width=1cm}
-%    \smartdiagram[sequence diagram]{
-%        Obter vídeos,
-%        Segmentar amostras,
-%        Estimar poses, 
-%        Holdout, 
-%        Processar amostras}
-%    \caption{Etapas de pré-processamento aplicadas ao \textit{dataset} ASLLVD.}
-%    \label{fig:preprocessamento}
-%\end{figure}
 
 \image
     {fig:preprocessamento}
@@ -263,13 +231,7 @@ A \refimage{fig:sign-pose} ilustra a reconstrução em uma imagem 2D do resultad
     \label{fig:sign-pose}
 \end{figure}
 
-A quarta etapa diz respeito à \textbf{divisão do \textit{dataset}} pré-processado até aqui em subconjuntos que serão utilizados para o treinamento, validação e testes do modelo. Para esse procedimento, foi utilizada uma ferramenta de divisão de \textit{datasets} para validação cruzada disponibilizada pela biblioteca Scikit-Learn \cite{scikit-learn}, denominada "\textit{train\_test\_split}". Por meio dela, primeiramente é subtraída do conjunto original a proporção de amostras destinadas a testes; em seguida, aquelas destinadas à validação; e, por fim, as amostras restantes são destinadas para treinamento. Essa divisão segue como referência a configuração estabelecida a seguir:
-
-\begin{itemize}
-    \item 70\% para treinamento;
-    \item 15\% para validação;
-    \item 15\% para testes.
-\end{itemize}
+A quarta etapa diz respeito à \textbf{divisão do \textit{dataset}} pré-processado até aqui em subconjuntos que serão utilizados para o treinamento, validação e testes do modelo. Para esse procedimento, foi utilizada uma ferramenta de divisão de \textit{datasets} para validação cruzada disponibilizada pela biblioteca Scikit-Learn \cite{scikit-learn}, denominada "\textit{train\_test\_split}". Por meio dela, primeiramente é subtraída do conjunto original a proporção de amostras destinadas a testes; em seguida, aquelas destinadas à validação; e, por fim, as amostras restantes são destinadas para treinamento. Na divisão do \textit{dataset} completo, foi separado 80\% das amostras para treinamento (que corresponde a 7.798 itens) e 20\% para testes (correspondendo a 1.950 itens). Essa é uma proporção utilizada e entende-se que o número de amostras em cada subconjunto é suficiente para conduzir uma validação adequada dos modelos.
 
 Por fim, a quinta etapa consiste em \textbf{normalizar e serializar} as amostras afim de torná-las compatíveis com o formato de leitura do ST-GCN. A normalização objetiva tornar o comprimento de todas as amostras uniforme, aplicando para isso a repetição de seus \textit{frames} de forma sequencial até o preenchimento completo de um número fixo estabelecido de \textit{frames}. Neste trabalho, o número de \textit{frames} é fixado em 126 (que a uma taxa de 30 FPS, corresponderia a um vídeo de duração aproximada de 4 segundos). A serialização, por sua vez, consiste em pré-carregar as amostras dos subconjuntos criados acima para traduzi-las em arquivos físicos do Python \cite{python}, contendo as respectivas representações em memória desses objetos. Esse é o formato de entrada esperado pelo ST-GCN, que é adotado para otimizar o processo de leitura dos dados. Para cada subconjunto acima são criados dois arquivos físicos: um contendo sua lista de amostras; e outro contendo a lista de rótulos para essas amostras. Esse é, portanto, o resultado final obtido a partir das etapas de pré-processamento do ASLLVD.
 
@@ -279,7 +241,7 @@ As saídas de cada etapa e o \textit{dataset} final pré-processado estão dispo
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{ST-GCN para Reconhecimento da Língua de Sinais} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Adaptação do ST-GCN para o reconhecimento de sinais} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 Conforme comentado acima, foram realizadas adaptações pontuais no código fonte do ST-GCN, mas que não alteram sua arquitetura ou funcionamento essencial. A primeira delas diz respeito à criação de uma nova representação de grafo para o problema da língua de sinais, uma vez que neste trabalho será utilizado um número bem maior de articulações, que vão além daqueles utilizados no trabalho original. Isso se faz necessário para que o modelo seja capaz de compreender os novos pontos do esqueleto e as relações (ou vértices) existentes entre eles. 
 
@@ -291,88 +253,100 @@ O código fonte contendo as adaptações do ST-GCN aqui apresentadas, bem como a
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Resultados} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\label{sec:resultados}
+\subsection{Experimentos} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Esta seção apresenta as descobertas e resultados obtidos a partir da aplicação da abordagem descrita nas seções anteriores. Os experimentos aqui relacionados foram realizados utilizando uma máquina virtual com CPU Intel Haswell, memória RAM de 5GB e GPU NVIDIA Tesla P100 com 16GB de memória dedicada. O tempo médio obtido com essa arquitetura foi de aproximadamente 7 épocas para cada hora de treinamento.
-% O tempo médio consumido para essa tarefa é proporcional ao número de épocas configuradas e tem variado entre 1 e 4 dias
-
-%- configuração máquina
-
-Para este trabalho foram utilizados como referência os experimentos apresentados em \cite{lim-2016} utilizando o ASLLVD (vide \refsect{sec:trabalhos-relacionados}) juntamente com a técnica BHOF. 
-
-Nesses experimentos, os autores utilizaram um subconjunto contendo 20 sinais selecionados a partir do ASLLVD, os quais estão apresentados na \reftable{tab:asllvd-20}. Para reproduzir essa configuração, primeiramente foram utilizadas as poses estimadas no mesmo \textit{dataset} pré-processado na \refsect{sec:experimentos}. A partir dele, foram selecionados os 20 sinais
-
-foram selecionadas as poses estimadas para esses sinais no \textit{dataset} pré-processado na \refsect{sec:experimentos}. Em seguida, foram repetidos os passos de "divisão do \textit{dataset}" e de "normalização e serialização" para que fossem gerados os arquivos de entrada para o modelo considerando apenas as 185 poses referentes a esses sinais, utilizando o mesmo processo descrito na \refsect{sec:experimentos}. O \textit{dataset} final contendo os 20 sinais pré-processados e utilizados neste experimento está disponível publicamente\footnote{
-    Disponível em \url{http://www.cin.ufpe.br/~cca5/asllvd-poses-20}
-}.
+Para este trabalho, foram utilizados como referência os experimentos apresentados em \cite{lim-2016}, o qual avalia a performance do reconhecimento dos sinais no \textit{dataset} ASLLVD pela técnica BHOF (vide \refsect{sec:trabalhos-relacionados}) e também por técnicas populares como \textit{Motion Energy Image} (MEI) \cite{athitsos-asllvd-2008}, \textit{Motion History Image} (MHI) \cite{babu-2004}, \textit{Principal Component Analysis} (PCA) \cite{dreuw-2012} e \textit{Histogram of Optical Flow} (HOF) \cite{laptev-2008}. 
 
 \begin{table}[]
-\caption{Sinais selecionados para os experimentos, conforme \cite{lim-2016}}
+\caption{Sinais selecionados para os experimentos em \cite{lim-2016}.}
 \label{tab:asllvd-20}
 \begin{tabular}{ll}
 \hline
-Dataset & Isolated Signs \\ \hline
+Dataset & Sinais selecionados \\ \hline
 ASLLVD & \begin{tabular}[c]{@{}l@{}}adopt, again, all, awkward, baseball, behavior, can, chat, \\ cheap, cheat, church, coat, conflict, court, deposit, depressed, \\ doctor, don’t want, dress, enough\end{tabular} \\ \hline
 \end{tabular}
 \end{table}
 
+Com esse propósito, os autores utilizaram um subconjunto contendo 20 sinais selecionados a partir do ASLLVD, conforme apresenta a \reftable{tab:asllvd-20}. Para reproduzir essa configuração, foram selecionadas as poses com esqueletos estimados para esse sinais a partir do \textit{dataset} criado na \refsubsect{sec:preproc-dataset}. Como o número resultante de amostras é pequeno, totalizando 185 itens, foi necessário aplicar uma nova divisão fazendo com que 77\% desse subconjunto fosse separado para treinamento e 33\% utilizado para testes. Com isso foi possível equilibrar o número de amostras para uma proporção mais adequada para a avaliação do modelo. Por fim, uma vez que uma nova divisão foi realizada foi necessário normalizar e serializar os conjuntos para compatibilizá-los com a entrada do ST-GCN. Os passos aqui descritos seguem o procedimento apresentado na \refsubsect{sec:preproc-dataset}, e o subconjunto resultante foi disponibilizado publicamente\footnote{
+    Disponível em \url{http://www.cin.ufpe.br/~cca5/asllvd-poses-20}
+}.
 
-%- parametros
-%Foram considerados \textit{batches} de 32 amostras e uma taxa de aprendizado de 0,1, além de um \textit{weight decay} de 0,0001 em quatro momentos distintos do treinamento (geralmente distribuídos após a conclusão de 35\%, 50\%, 65\% e 80\% das épocas previstas, respectivamente). 
+Também devido às características desse conjunto de dados pequeno, o tamanho dos \textit{batches} utilizados para o treinamento do modelo precisou ser reduzido para que melhores resultados passassem a ser observados nos experimentos. Dessa forma, foram considerados \textit{batches} com tamanho de 8 amostras.
+
+Da mesma forma como na implementação original do algoritmo de treinamento do ST-GCN em \cite{st-gcn-2018}, os experimentos deste trabalho utilizaram como método de otimização o Gradiente Descendente Estocástico (ou \textit{Stochastic Gradient Descent} - SGD) com Momento de Nesterov, que por sua vez é capaz de melhorar a estabilidade e a convergência do SGD, como descrevem \cite{stanford-2018, bengio-2013, sutskever-2013}.
+
+Para a taxa de aprendizagem, foi aplicada uma estratégia de inicializa-la com um valor elevado afim de que os pesos aleatórios sejam colocados na direção de convergência dentro das primeiras épocas para reduzi-la gradativamente nas épocas posteriores com o intuito de possibilitar ajustes cada vez mais refinados dos pesos no treinamento. Sendo assim, no experimento com os 20 sinais selecionados foi utilizado um total de 600 épocas onde adotou-se uma taxa inicial de 0.1, a qual foi decaída para os valores de 0.01, 0.001, 0.0001 e 0.00001 após o término do treinamento das épocas 50, 250, 350 e 450, respectivamente. 
+
+
+% data augmentation
 %Adicionalmente, uma estratégia de \textit{data augmentation} para diversificar as amostras apresentadas ao modelo, e ela consiste na aplicação de transformações randômicas de rotação, translação e escala no momento da leitura desses itens nos \textit{batches}.
 
 
-Para fins de comparação, além do BHOF, os experimentos em \cite{lim-2016} incluem outros métodos populares que foram aplicados sob o mesmo \textit{dataset} de 20 sinais do ASLLVD, como MEI, MHI, PCA, COV e HOF. Os resultados desses métodos também foram reproduzidos na \reftable{tab:results} para que sejam tomados como referência.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%For purposes of comparison, the experiments will include other popular methods such as motion energy image (MEI) [35], motion history image (MHI) [41], principal component analysis (PCA) [42], feature covariance matrix (COV) [30], and histogram of optical flow. The graphical illustration of isolated sign language gesture of MEI, MHI and PCA is shown in Fig. 6. The recognition rates are presented in Table 3. Computation time for each method in frame per seconds (FPS) is shown in the last row of the table. From the results shown, the BHOF method is clearly superior
 
+\section{Resultados} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\label{sec:resultados}
+
+%- configuração máquina ???
+
+Esta seção apresenta as descobertas e resultados obtidos a partir da aplicação da abordagem descrita nas seções anteriores. 
+
+O primeiro experimento foi realizado utilizando a abordagem apresentada em \cite{lim-2016}, que considera a seleção de 20 sinais específicos do ASLLVD, e cujo desempenho está representado na \refimage{fig:training-asllvd-20}. A linha vermelha apresenta a acurácia do modelo, e exibe sua evolução no decorrer das épocas de treinamento. Na linha cinza está representada a acurácia \textit{top-5}, que corresponde à acurácia com base nas 5 respostas de maior probabilidade apresentadas pelo modelo. Por fim, a linha tracejada azul representa a taxa de aprendizagem utilizada nas respectivas épocas, bem como seu decaimento durante o treinamento.
+
+\image
+    [8.5cm]
+    {fig:training-asllvd-20}
+    {images/results_20}
+    {Acurácia obtida pela abordagem apresentada no reconhecimento dos 20 sinais selecionados a partir do ASLLVD. A linha vermelha representa a acurácia Top 1 no decorrer das épocas de treinamento; a linha cinza, a acurácia Top 5; e a linha tracejada azul ilustra a taxa de aprendizagem utilizada e seu decaimento nas épocas respectivas.}
+
+Pode-se perceber pela imagem que o modelo conseguiu alcançar de forma consistente uma acurácia de 35,85\% a partir da época 400 no reconhecimento dos sinais. A acurácia \textit{top-5}, por sua vez, foi capaz de alcançar um número de 64,15\%. Esse desempenho foi superior ao apresentado por técnicas tradicionais como o MEI e o MHI, mas não foi capaz de superar os resultados obtidos por técnicas como o PCA e o BHOF \cite{lim-2016}. A \reftable{tab:results-comparison-20} apresenta a comparação desses resultados com a abordagem proposta.
 
 \begin{table}[ht]
 \centering
-\caption{My caption}
-\label{tab:results}
-\begin{tabular}{@{}llllllll@{}}
-\toprule
-\multirow{2}{*}{Dataset} & \multicolumn{6}{l}{Recognition accuracy (\%)}                                                                \\ \cmidrule(l){2-8} 
-            & MEI   & MHI   & PCA   & COV   & HOF   & BHOF   & \textbf{ST-GCN}  \\ \midrule
-    ASLLVD  & 25.00 & 10.00 & 45.00 & 45.00 & 70.00 & 85.00  & \textbf{42.86} \\ \bottomrule
+\caption{Acurácia no reconhecimento de sinais utilizando diferentes abordagens, conforme proposto em \cite{lim-2016}.}
+\label{tab:results-comparison-20}
+\begin{tabular}{lc}
+\hline
+                   & Acurácia (\%) \\ \hline
+MHI                & 10.00                     \\
+MEI                & 25.00                     \\
+\textbf{ST-GCN SL} & \textbf{35.85}            \\
+PCA                & 45.00                     \\
+HOF                & 70.00                     \\
+BHOF               & 85.00                     \\ \hline
 \end{tabular}
 \end{table}
 
 
-%- discussão
+% TODO: trocar imagem e revisar resultados do ASLLVD
+
+Afim de estabelecer uma referência com o \textit{dataset} completo do ASLLVD, foi realizado um segundo experimento utilizado os 2.745 sinais contidos nele. A \refimage{fig:training-asllvd} apresenta o desempenho obtido nesse treinamento. É possível observar uma acurácia de 12,67\% e uma acurácia \textit{top-5} de aproximadamente 25,00\%. Certamente, trata-se de uma tarefa muito mais desafiadora do que a proposta em \cite{lim-2016} e os resultados obtidos refletem claramente essa complexidade. 
+
+\image
+    [8.5cm]
+    {fig:training-asllvd}
+    {images/results}
+    {Acurácia obtida no treinamento do \textit{dataset} completo ASLLVD. Na imagem estão ilustradas a acurácia Top 1, a acurácia Top 5 e a taxa de aprendizagem utilizada e seu decaimento no decorrer das épocas.}
 
 
+Ao recapitular a abordagem proposta neste trabalho, percebe-se que uma de suas principais estratégias consiste em adotar um número maior de coordenadas afim de que partes do corpo não consideradas originalmente em \cite{st-gcn-2018}, como mãos e face, passassem a ser utilizadas para o reconhecimento da língua de sinais capturando diferentes aspectos de sua dinâmica. Isso fez com que o número de coordenadas aumentasse em mais de 7 vezes, partindo de 18 para 130. 
 
+Apesar disso, os resultados obtidos nesses experimentos nos levam a acreditar que muitos desses 130 pontos acabaram por não adicionar informação significativa acerca do domínio do problema da língua de sinais para o modelo utilizado. Por exemplo, ao observar os exemplos de amostras do ASLLVD apresentados nas seções anteriores, perceberemos que os indivíduos estão sempre dispostos sentados e acabam por não utilizar os seus membros inferiores, fazendo com que as coordenadas relacionadas a esses membros não sejam importantes; a face, por sua vez, contempla mais da metade das coordenadas utilizadas, porém muitos desses pontos acabam por não descrever movimentos significativos para os sinais ou então são redundantes devido à grande densidade de coordenadas nessa região. 
 
+Em contrapartida, o BHOF \cite{lim-2016} adota como objetivo centralizar o foco no movimento das mãos, isolando-as do restante do corpo e construindo histogramas a partir dos blocos nos \textit{frames} onde elas estão contidas durante a articulação dos sinais. De maneira efetiva, as mãos descrevem alguns dos principais traços nos movimentos da língua de sinais e, certamente o foco nelas e o sucesso em descartar informações pouco relevantes fizeram com que essa técnica apresentasse os resultados bastante expressivos com relação ao trabalho atual. Essa técnica é derivada do HOF e difere-se dele apenas pela abordagem de isolar as mãos dos indivíduos ao calcular o histograma do fluxo óptico.
 
+Métodos como o MEI e MHI apresentam abordagens mais primitivas, que basicamente detectam os movimentos nas cenas a partir da diferença entre os \textit{frames} consecutivos das ações. Eles não são capazes de diferenciar indivíduos ou de focar em partes específicas de seu corpo, fazendo com que movimentos de qualquer natureza sejam considerados de maneira equivalente. O PCA, por sua vez, adiciona a capacidade de reduzir a dimensionalidade dos componentes utilizados tomando com base a identificação daqueles de maior variância e que, consequentemente, são mais relevantes para a identificação do movimento nos \textit{frames}. 
 
+%A \refimage{fig:mei-mhi-pca} ilustra graficamente a aplicação desses métodos conforme \cite{lim-2016}.
+%\image
+%    {fig:mei-mhi-pca}
+%    {images/mei_mhi_pca}
+%    {Representação gráfica da aplicação do MEI, MHI e PCA em imagens de sinais isolados. Fonte: \cite{lim-2016}.}
 
-% A \reftable{tab:resultados-1} apresenta os resultados parciais obtidos da abordagem proposta neste trabalho (representado como ST-GCN (Sign Language), e aqueles obtidos pelo modelo ST-GCN em \cite{st-gcn-2018} (para os \textit{datasets} Kinetics e Kinetics Motion). O resultado do ST-GCN (Sign Language) está listado para o seu treinamento até a época 630 de um total de 1.000 previstas.
-
-% \begin{table}[ht]
-%     \centering
-%     \caption{Performance atual da abordagem proposta e do ST-GCN original}
-%     \label{tab:resultados-1}
-%     \begin{tabular}{@{}lll@{}} \toprule
-%                                         &   Top-1           &   Top-5           \\ \midrule
-%         ST-GCN (Kinetics)               &   30,7\%          &   52,8\%          \\
-%         ST-GCN (Kinetics Motion)        &   72,4\%          &   -               \\ \midrule
-%         \textbf{ST-GCN (Sign Language)} & \textbf{26,0\%}   &   \textbf{45,2\%} \\ \bottomrule
-%     \end{tabular}
-% \end{table}
-
-% De acordo com os autores em \cite{st-gcn-2018}, os \textit{datasets} Kinetics e Kinetics Motion diferem-se essencialmente pelo fato de que o primeiro corresponde ao conjunto completo de ações de múltiplos indivíduos (e que muitas vezes incluem a interação desses indivíduos com objetos e com o ambiente à sua volta, que devem ser considerados para classificar tais ações); já o segundo, por sua vez, diz respeito a um subconjunto criado pelos autores para englobar apenas ações descritas exclusivamente pelo movimento dos indivíduos, sem interação com o mundo à sua volta. 
-
-% O motivo disso, nos remete a recapitular a abordagem do ST-GCN de mapear o corpo humano e seus movimentos através de grafos. Ao mesmo tempo em que permite uma observação praticamente completa do esqueleto dos indivíduos, ela abre mão de todos os detalhes adicionais presentes nas cenas em que esses indivíduos estão inseridos. 
-
-% Para o contexto do problema apresentado neste trabalho, entretanto, não há prejuízos decorrentes da não observância dos detalhes da cena, conforme acima. Isso porque nas línguas de sinais o foco é estritamente voltado para o movimento do corpo dos indivíduos (principalmente de partes como mãos, tronco e face), e não é comum que haja interação com objetos durante a articulação dos sinais, mas apenas do corpo com o próprio corpo.
-
-
-
-% TODO: incluir gráfico de evolução no treinamento
-
+Os modelos pré-treinados a partir de ambos experimentos realizados neste trabalho estão disponibilizados publicamente\footnote{
+    Disponível em \url{http://www.cin.ufpe.br/~cca5/st-gcn-sl}
+}.
 
 
 
