@@ -1,4 +1,5 @@
 \input{preamble.sty}
+
 \begin{document}
 \maketitle
 \begin{abstract}
@@ -59,7 +60,7 @@ A motivação dessa técnica surgiu a partir da necessidade de métodos que foss
 O ST-GCN tem como base de sua formulação uma sequência de grafos de esqueletos que representam o corpo humano, os quais são obtidos a partir de uma série de \textit{frames} de vídeos de ações de indivíduos. A \refimage{fig:st-gcn-graph} permite-nos visualizar essa estrutura, onde cada nó corresponde a um ponto de articulação. Os vértices intra-corporais são definidos com base nas conexões naturais do corpo. Os vértices inter-frames, por sua vez, conectam as mesmas articulações entre \textit{frames} consecutivos para denotar sua trajetória no decorrer do tempo \cite{st-gcn-2018}.
 
 \image
-	[4cm]
+	[3.5cm]
     {fig:st-gcn-graph}
     {images/st_gcn_graph}
     {Sequência de grafos de esqueletos, que denotam o movimento humano no espaço e no tempo, utilizados pelo ST-GCN. Fonte: \cite[p. 1]{st-gcn-2018}.}
@@ -77,7 +78,7 @@ A \refimage{fig:st-gcn-workflow} apresenta uma visão geral da abordagem utiliza
 Para compreender o funcionamento do ST-GCN em mais detalhes, é preciso primeiro introduzir as estratégias de amostragem e de particionamento adotadas por ele. Quando lidamos com convoluções sobre imagens 2D, é fácil imaginar a existência de um \textit{grid} rígido (ou retângulo) em volta de um ponto central que representa a área de amostragem do filtro convolucional e delimita sua vizinhança. No caso dos grafos, entretanto, é necessário ir além dessa definição e passar a considerar que a vizinhança do ponto central será composta pelos pontos que estão diretamente conectados a ele por um vértice. A \refimage{fig:st-gcn-sampling} permite visualizar essa definição para um único \textit{frame}. Observe que para os pontos centrais em vermelho, agora as bordas tracejadas passam a representar a área de amostragem do filtro convolucional. Observe também que apesar de haver outros pontos fisicamente próximos aos pontos centrais (como no exemplo dos pontos dos pés, joelhos e cintura), a menos que haja um vértice que os conecte.
 
 \image
-	[3cm]
+	[2.5cm]
     {fig:st-gcn-sampling}
     {images/st_gcn_sampling}
     {Representação da convolução em um grafo. As articulações do corpo são desenhadas com pontos azuis. Os pontos vermelhos representam os pontos centrais de um filtro com distância D = 1 aplicado ao \textit{frame}, cuja abrangência é delimitada pela linha tracejada. Fonte: \cite[p. 5]{st-gcn-2018}.}
@@ -85,7 +86,7 @@ Para compreender o funcionamento do ST-GCN em mais detalhes, é preciso primeiro
 Por meio da \refimage{fig:st-gcn-sampling} é possível observar que apenas estão sendo considerados pelo filtro convolucional os pontos que estão imediatamente conectados aos pontos centrais. Em outras palavras, diz-se que a área de \textbf{amostragem} desse filtro está delimitada para vizinhos com distância D = 1. Essa distância é a mesma considerada pelos autores no ST-GCN \cite{st-gcn-2018}.
 
 \image
-	[3cm]
+	[2.5cm]
     {fig:st-gcn-spatial-part}
     {images/st_gcn_spatial_partitioning}
     {No Particionamento de Configuração Espacial, os nós são rotulados de acordo com suas distâncias ao centro de gravidade do esqueleto (cruz preta) comparado com o do nó raiz (verde). Os nós centrípetos têm distâncias menores (azul), enquanto os nós centrífugos têm distâncias mais longas (amarelo) do que o nó raiz. Fonte: \cite[p. 5]{st-gcn-2018}.}
@@ -105,7 +106,7 @@ O centro de gravidade é definido como sendo a coordenada média de todas as jun
 Para aprender a dimensão temporal, o ST-GCN estende o conceito de convolução de grafos acima para o esquema apresentado na \refimage{fig:st-gcn-convolution}. Consideremos o apresentado na \refimage{fig:st-gcn-graph}, que define que essa dimensão é representada pela sequência de grafos de esqueletos de \textit{frames} empilhados de forma consecutiva. Com isso, temos em mãos um conjunto de grafos em sequência que são vizinhos entre si. Consideremos agora que cada articulação do corpo existente em um grafo possui um vértice que conecta-se a ela mesma no grafo vizinho do \textit{frame} anterior e também do \textit{frame} posterior. Dado isso, se retomarmos à definição de amostragem perceberemos que o filtro convolucional passará agora a contemplar também esses pontos nos grafos vizinhos, uma vez que eles passam a se enquadrar nos requisitos de estarem diretamente conectados e a uma distância D = 1. É, portanto, dessa forma que o ST-GCN é capaz de considera as dimensões espacial e temporal e aplicar convoluções sobre elas.
 
 \image
-	[9cm]
+	[7cm]
     {fig:st-gcn-convolution}
     {images/st_gcn_convolution}
     {Convolução sob as dimensões espacial e temporal, que considera os pontos diretamente conectados no grafo atual e nos grafos vizinhos. Fonte: \cite[p. 3]{st-gcn-2018}.}
@@ -117,8 +118,8 @@ A \refimage{fig:st-gcn-architecture} (à esquerda) permite-nos visualizar a arqu
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=3.0cm]{images/st_gcn_architecture}
-    \includegraphics[width=3.5cm]{images/st_gcn_architeture_unit}
+    \includegraphics[width=2.5cm]{images/st_gcn_architecture}
+    \includegraphics[width=3.0cm]{images/st_gcn_architeture_unit}
     \caption{Arquitetura do modelo (à esquerda) e detalhe de uma unidade ST-GCN (à direita). Unidades de ST-GCN aplicam operações de normalização, convolução, ativação e \textit{dropout} aos grafos e levam em consideração o valor residual da camada anterior para calcular as ativações de saída. Fonte: adaptado de \cite{st-gcn-2018}.}
     \label{fig:st-gcn-architecture}
 \end{figure}
@@ -129,7 +130,7 @@ Para realizar a extração dos esqueletos a partir das ações dos indivíduos e
 }. Trata-se de uma ferramenta de código aberto que utiliza algoritmos de aprendizagem profunda para detectar e estimar até 135 pontos dos esqueletos de indivíduos em vídeos \cite{cao-realtime-2017, simon-hand-2017, wei-cpm-2016}. Apesar disso, os autores utilizaram apenas 18 desses pontos, os quais se correspondem às articulações principais do corpo (vide \refimage{fig:keypoints-pose}). 
 
 \image
-	[4cm]
+	[3cm]
     {fig:keypoints-pose}
     {images/keypoints_pose_COCO_18}
     {Representação dos 18 pontos referentes ao corpo humano, extraídos pelo OpenPose. Fonte: \cite{openpose-output-2018}.}
@@ -178,25 +179,26 @@ Ao analisar o \textit{dataset} em detalhe é possível identificar a existência
 
 Para tornar as amostras do ASLLVD compatíveis com a entrada esperada pelo modelo ST-GCN foi necessário aplicar uma série de etapas de pré-processamento, as quais deram origem ao novo \textit{dataset} contendo a estimativa de esqueletos para todos os indivíduos e sinais contidos nele.
 
-A esse novo \textit{dataset} foi atribuído o nome \textbf{ASLLVD-Skeleton}, e o mesmo foi disponibilizado publicamente\textit{dataset} final pré-processado estão disponíveis publicamente\footnote{
+A esse novo \textit{dataset} foi atribuído o nome \textbf{ASLLVD-Skeleton}, e o mesmo foi disponibilizado publicamente\footnote{
     Disponível em \url{http://www.cin.ufpe.br/~cca5/asllvd-skeleton}
-} com o intuito de também contribuir com o desenvolvimento de estudos futuros no reconhecimento de línguas de sinais.
+} com o intuito de contribuir com o desenvolvimento de estudos futuros no reconhecimento de línguas de sinais.
 
-As etapas aplicadas na criação desse novo \textit{dataset} estão apresentadas na \refimage{fig:preprocessamento} e definidas em detalhes adiante.
+As etapas aplicadas na criação desse novo \textit{dataset} estão apresentadas na \refimage{fig:preprocessamento} e descritas a seguir.
 
 \image
+    [8cm]
     {fig:preprocessamento}
-    {images/dataset_preprocessing}
-    {Etapas de pré-processamento aplicadas ao ASLLVD para criar o \textit{dataset} ASLLVD-Skeleton.}
+    {pt/images/dataset_preprocessing}
+    {Etapas de pré-processamento aplicadas na criação do \textit{dataset} ASLLVD-Skeleton.}
 
 A primeira etapa consiste num passo preliminar de \textbf{obtenção dos vídeos} que compõem o ASLLVD de forma automática, afim de reconstitui-lo e viabilizar as etapas posteriores. Um arquivo de metadados\footnote{
     Disponível em \url{http://www.bu.edu/asllrp/dai-asllvd-BU_glossing_with_variations_HS_information-extended-urls-RU.xls}
-} desse \textit{dataset} foi utilizado para guiar esta etapa. Nesse processo, foram consideradas apenas os vídeos capturados pela câmera frontal, que contempla simultaneamente os movimentos do tronco, mãos e face dos indivíduos.
+} desse \textit{dataset} foi utilizado para guiar esse processo. Nesse momento foram considerados apenas os vídeos capturados pela câmera frontal, que contempla simultaneamente os movimentos do tronco, mãos e face dos indivíduos.
 
 A etapa seguinte consiste em \textbf{segmentar os vídeos} para que seja obtido um vídeo por sinal. Isso se faz necessário porque cada arquivo no \textit{dataset} original corresponde a uma seção onde foram gravados múltiplos sinais por indivíduo. Com isso, é necessário constituir um novo conjunto organizado de tal forma que cada sinal esteja disposto individualmente com seu respectivo rótulo. Para isso, também foi considerado o arquivo de metadados comentado acima, que dispõe dos rótulos e das respectivas marcações de \textit{frames} de início e término para cada sinal nas seções. Como saída dessa etapa, tem-se pequenos vídeos com duração média de 1 a 5 segundos e com aspecto semelhante ao ilustrado na \refimage{fig:sign-original}.
 
 \image
-    [5cm]
+    [4cm]
     {fig:sign-original}
     {images/sign_original}
     {Representação do sinal "EXAGGERATE", segmentado a partir das seções gravadas para o ASLLVD. Fonte: \cite{athitsos-asllvd-2008}.}
@@ -206,24 +208,24 @@ O terceiro passo consiste em realizar a \textbf{estimar os esqueletos} dos indiv
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=3cm]{images/keypoints_hand}
-    \includegraphics[width=5cm]{images/keypoints_face}
+    \includegraphics[width=2.5cm]{images/keypoints_hand}
+    \includegraphics[width=4cm]{images/keypoints_face}
     \caption{Representação dos 21 pontos da mão (à esquerda) e 70 pontos da face (à direita), extraídos pelo OpenPose. Fonte: \cite{openpose-output-2018}.}
     \label{fig:keypoints-face-hand}
 \end{figure}
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=5cm]{images/sign_pose}
-    \includegraphics[width=5cm]{images/sign_pose_blended}
-    \caption{Reconstrução do esqueleto a partir das coordenadas estimadas pelo OpenPose para um \textit{frame} do sinal "EXAGGERATE" (acima); e sobreposição desse esqueleto no vídeo original (abaixo). Fonte: OpenPose.}
+    \includegraphics[width=3.5cm]{images/sign_pose}
+    \includegraphics[width=3.5cm]{images/sign_pose_blended}
+    \caption{Reconstrução do esqueleto a partir das coordenadas estimadas pelo OpenPose para um \textit{frame} do sinal "EXAGGERATE" (esquerda); e sobreposição desse esqueleto no vídeo original (direita). Fonte: OpenPose.}
     \label{fig:sign-pose}
 \end{figure}
 
 A \refimage{fig:openpose-coordinates} mostra um exemplo de arquivo obtido ao final dessa etapa. Nele estão contidos para cada \textit{frame} uma seção denominada \textit{pose} com as coordenadas dos eixos X e Y estimadas para cada articulação do corpo, e uma seção \textit{score} que contempla o grau de confiança para a estimativa de cada uma dessas articulações..
 
 \image
-    [8cm]
+    [6cm]
     {fig:openpose-coordinates}
     {images/openpose_coordinates}
     {Exemplo de arquivo contendo as coordenadas estimadas para os esqueletos de cada sinal. Para cada \textit{frame} está contida uma seção \textit{pose} com as coordenadas X e Y estimadas para cada articulação, e uma seção \textit{score} com o grau de confiança da estimativa de cada uma dessas articulações.}
@@ -325,7 +327,7 @@ Afim de estabelecer uma referência com o \textit{dataset} completo do ASLLVD, f
 
 Ao recapitular a abordagem proposta neste trabalho, percebe-se que uma de suas principais estratégias consiste em adotar um número maior de articulações afim de que partes do corpo não consideradas originalmente em \cite{st-gcn-2018}, como mãos e face, passassem a ser utilizadas para o reconhecimento da língua de sinais capturando diferentes aspectos de sua dinâmica. Isso fez com que o número de articulações aumentasse em mais de 7 vezes, partindo de 18 para 130. 
 
-Apesar disso, os resultados obtidos nesses experimentos nos levam a acreditar que muitos desses 130 pontos não adicionaram informação significativa acerca do domínio do problema da língua de sinais para o modelo utilizado. Por exemplo, ao observar algumas amostras do ASLLVD apresentadas nas seções anteriores, perceberemos que os indivíduos estão sempre sentados e isso faz com que as coordenadas relacionadas a seus membros inferiores não sejam importantes; a face, por sua vez, contempla mais da metade das coordenadas utilizadas, porém muitos desses pontos não denotam movimentos expressivos para os sinais ou então são redundantes devido à grande densidade de coordenadas nessa região. 
+Contudo, os resultados obtidos nesses experimentos nos levam a acreditar que muitos desses 130 pontos não adicionaram informação significativa acerca do domínio do problema da língua de sinais para o modelo utilizado. Por exemplo, ao observar algumas amostras do ASLLVD apresentadas nas seções anteriores, perceberemos que os indivíduos estão sempre sentados e isso faz com que as coordenadas relacionadas a seus membros inferiores não sejam importantes; a face, por sua vez, contempla mais da metade das coordenadas utilizadas, porém muitos desses pontos não denotam movimentos expressivos para os sinais ou então são redundantes devido à grande densidade de coordenadas nessa região. 
 
 Em contrapartida, o BHOF \cite{lim-2016} adota como objetivo centralizar o foco no movimento das mãos, isolando-as do restante do corpo e construindo histogramas a partir dos blocos nos \textit{frames} onde elas estão contidas durante a articulação dos sinais. De maneira efetiva, as mãos descrevem alguns dos principais traços nos movimentos da língua de sinais e, certamente o foco nelas e o sucesso em descartar informações pouco relevantes fizeram com que essa técnica apresentasse os resultados bastante expressivos com relação ao trabalho atual. Essa técnica é derivada do HOF e difere-se dele apenas pela abordagem de isolar as mãos dos indivíduos ao calcular o histograma do fluxo óptico.
 
