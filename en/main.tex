@@ -114,15 +114,16 @@ Figure \ref{fig:st-gcn-architecture} (left) allows us to visualize the proposed 
     \label{fig:st-gcn-architecture}
 \end{figure}
 
-To estimate the skeletons of individuals in videos, in \cite{st-gcn-2018} the authors used a library called OpenPose\footnote{
-    Available at \url{https://github.com/CMU-Perceptual-Computing-Lab/openpose}.
-}. It is an open-source tool that uses deep learning algorithms to detect and estimate up to 135 points from the human body \cite{cao-realtime-2017, simon-hand-2017, wei-cpm-2016}. Despite this, they only adopted 18 of these points, which correspond to the main body joints (see figure \ref{fig:keypoints-pose}).
+To estimate the skeletons of individuals in videos, in \cite{st-gcn-2018} the authors used a library called OpenPose. It is an open-source tool that uses deep learning algorithms to detect and estimate up to 130 human body points, as shown in figure \ref{fig:keypoints-openpose}, and which is presented in \cite{cao-realtime-2017, simon-hand-2017, wei-cpm-2016}.
 
-\image
-	[3cm]
-    {fig:keypoints-pose}
-    {images/keypoints_pose_COCO_18}
-    {Representation of the 18 points referring to the human body, extracted by OpenPose \cite{openpose-output-2018}.}
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=2.5cm]{images/keypoints_pose_COCO_18}
+    \includegraphics[width=2.5cm]{images/keypoints_hand}
+    \includegraphics[width=3cm]{images/keypoints_face}
+    \caption{Representation of the 130 points estimated by OpenPose, of which 18 correspond to the body (left); 21 correspond to each of the hands (center); and 70 points correspond to the face (right) \cite{openpose-output-2018}.}
+    \label{fig:keypoints-openpose}
+\end{figure}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -171,7 +172,7 @@ The new skeleton dataset was named \textbf{ASLLVD-Skeleton}, and has been made p
 
 The first step consists in \textbf{obtaining the videos} that make up the ASLLVD, in order to reconstitute the dataset and make feasible the later stages. A metadata file contained in it was used to guide this process. At this moment, only the videos captured by the frontal camera were considered, once they simultaneously contemplates movements of the trunk, hands and face of individuals.
 
-The next step is to \textbf{segment the videos} to generate a video sample for each signal. Every file in the original dataset corresponds to a section where multiple signs were recorded per individual. Due to this, it is necessary to constitute a new set organized in such a way that each sign is arranged individually with its respective label. For this, we also considered the metadata file discussed above, which contains the labels and the start and end frame markings to perform the segmentation for each sign. The output of this step consists of small videos with average duration up to 5 seconds and looking similar to the one shown in figure \ref{fig:sign-original}.
+The next step is to \textbf{segment the videos} to generate a video sample for each sign. Every file in the original dataset corresponds to a section where multiple signs were recorded per individual. Due to this, it is necessary to constitute a new set organized in such a way that each sign is arranged individually with its respective label. For this, we also considered the metadata file discussed above, which contains the labels and the start and end frame markings to perform the segmentation for each sign. The output of this step consists of small videos with average duration up to 5 seconds and looking similar to the one shown in figure \ref{fig:sign-original}.
 
 \image
     [4cm]
@@ -179,19 +180,8 @@ The next step is to \textbf{segment the videos} to generate a video sample for e
     {images/sign_original}
     {Representation of the "EXAGGERATE" sign, segmented from the sections recorded in ASLLVD.}
 
-% DONE: descrever pontos utilizados
-The third step consists of \textbf{estimating the skeletons} of the individuals present in the segmented videos. In other words, at this time the coordinates of the individuals' joints will be estimated for all frames, composing the skeletons that can be used later to generate the graphs used by the ST-GCN. As in \cite {st-gcn-2018}, we used the OpenPose library in this process, and a total of 130 keypoints were estimated, of which 21 correspond to each of the hands; 70 correspond to the face coordinates; and 18 correspond to the body (see figures \ref{fig:keypoints-face-hand} and \ref{fig:keypoints-pose}). Figure \ref{fig:sign-pose} illustrates the reconstruction in a 2D image of the estimated coordinates for the "EXAGGERATE" sign.
+The third step consists of \textbf{estimating the skeletons} of the individuals present in the segmented videos. In other words, at this time the coordinates of the individuals' joints will be estimated for all frames, composing the skeletons that can be used later to generate the graphs of the ST-GCN. As in \cite {st-gcn-2018}, we used the OpenPose library in this process, and a total of 130 keypoints were estimated (according to figure \ref{fig:keypoints-openpose}). Figure \ref{fig:sign-pose} illustrates the reconstruction in a 2D image of the estimated coordinates for the "EXAGGERATE" sign.
 
-% DONE: trocar imagem dos pontos utilizados
-\begin{figure}[ht]
-    \centering
-    \includegraphics[width=2.5cm]{images/keypoints_hand}
-    \includegraphics[width=4cm]{images/keypoints_face}
-    \caption{Representation of the 21 points of the hand (left) and 70 points of the face (right) extracted by OpenPose \cite{openpose-output-2018}.}
-    \label{fig:keypoints-face-hand}
-\end{figure}
-
-% DONE: ajustar pontos na imagem
 \begin{figure}[ht]
     \centering
     \includegraphics[width=3.5cm]{images/sign_pose}
@@ -215,12 +205,11 @@ Figure \ref{fig:openpose-coordinates} shows an example file obtained at the end 
 %   * 5 do corpo
 %   * 11 de cada mão
 % falar da saída (semelhante ao passo anterior, porém com menos pontos)
-Then, in the fourth step involves \textbf{filtering the keypoints} that will be used in this work. In the experiments presented below, only 27 of the 130 keypoints estimated in the previous step were considered, of which 5 refer to the shoulders and arms, and 11 refer to each of the individuals' hands, as shown in figure \ref{fig:filtered-keypoints}. The output of this step consists of the same files obtained in the previous step (see figure \ref{fig:openpose-coordinates}), but with a smaller number of coordinates.
+Then, the fourth step involves \textbf{filtering the keypoints} that will be used in this work. In the experiments presented below, only 27 of the 130 keypoints estimated in the previous step were considered, of which 5 refer to the shoulders and arms, and 11 refer to each of the individuals' hands, as ilustrated in figure \ref{fig:filtered-keypoints}. The output of this step consists of the same files obtained in the previous step, as shown in figure \ref{fig:openpose-coordinates}, but with a smaller number of coordinates per frame.
 
-% DONE: incluir imagem dos pontos filtrados
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=4
+    \includegraphics[width=3.5
     cm]{images/filtered_keypoints_body}
     \includegraphics[width=3cm]{images/filtered_keypoints_hand}
     \caption{Representation of the 27 keypoints used in the experiments, of which 5 refer to the shoulders and arms (left) and 11 are refer to each of the hands (right).}
@@ -241,8 +230,7 @@ The output of the processing of each of the above steps is made available indivi
 
 Since the graph representation approach adopted by the ST-GCN is very flexible, it was not necessary in this work to make modifications in the architecture of the model. Instead, only punctual adaptations to get him to consider the new coordinates for the sign language domain were required.
 
-% TODO: ajustar número de pontos
-Thus, a new graph layout for this problem was created, contemplating the 130 joints adopted here and their relations. In addition, adjustments were made on the matrices used in the training and test data reader in order to accommodate the dimensions of the new coordinates.
+Thus, a new graph layout was established for this problem, contemplating the 27 articulations adopted here and their relations. In addition, for custom layouts like this to be considered by the model, the ability to read these layouts from a configuration file has been implemented. Finally, small adjustments were made to the training matrices and the test data reader to accommodate the dynamic dimensions of the new coordinates.
 
 The source code containing these adaptations has been made publicly available\footnote{
     Available at \url{http://www.cin.ufpe.br/~cca5/st-gcn-sl}
@@ -255,9 +243,12 @@ The source code containing these adaptations has been made publicly available\fo
 
 In this work, we adopted as reference the experiments presented in \cite{lim-2016}, which evaluate the performance in recognition of the ASLLVD dataset by the Block-Based Histogram of Optical Flow (BHOF) method (see section \ref{sec:trabalhos-relacionados}) and also by popular techniques such as Motion Energy Image (MEI) \cite{athitsos-asllvd-2008}, Motion History Image (MHI) \cite{babu-2004}, Principal Component Analysis (PCA) \cite{dreuw-2012} and Histogram of Optical Flow (HOF) \cite{laptev-2008}.
 
-For this purpose, the authors used a subset containing 20 signs selected from the ASLLVD, as presented in table \ref{tab:asllvd-20}. To reproduce this configuration, the skeletons estimated for these signs were selected from the ASLLVD-Skeleton dataset created in section \ref{sec:criacao-dataset}. Once the resulting number of samples is small, totaling 185 items, it was necessary to apply a new division making 77\% of this subset to be separated for training and 33\% for tests. With this, a greater balance in the number of samples was obtained for an adequate evaluation of the model. Finally, as a new division of the samples was made, it was also necessary to normalize and serialize them to be compatible with the ST-GCN. In this process the same procedure as in section \ref{sec:criacao-dataset} was performed. The resulting subset was made publicly available\footnote{
+For this purpose, the authors used a subset containing 20 signs selected from the ASLLVD, as presented in table \ref{tab:asllvd-20}. To reproduce this configuration, the skeletons estimated for these signs were selected from the ASLLVD-Skeleton dataset created in section \ref{sec:criacao-dataset}. 
+After this, it was identified that among the selected items there were divergent articulations for the signs AGAIN, BASEBALL, CAN, CHAT, CHEAP, CHEAT, CONFLICT, DEPRESS, DOCTOR and DRESS. In order to solve this, we chose to keep only that articulation that contained the largest number of samples for their respective signs.
+
+Since the number of samples resulting from this process was small, totaling 131 items, it was necessary to apply a new division making 77\% of this subset to be separated for training and 33\% for tests. With this, a greater balance in the number of samples was obtained for an adequate evaluation of the model. Finally, as a new division of the samples was made, it was also necessary to normalize and serialize them to be compatible with the ST-GCN. In this process the same procedure as in section \ref{sec:criacao-dataset} was performed. The resulting subset was made publicly available\footnote{
     Available at \url{http://www.cin.ufpe.br/~cca5/asllvd-skeleton-20}
-} and is called \textbf{ASLLVD-Skeleton-20}.
+} and was named \textbf{ASLLVD-Skeleton-20}.
 
 \begin{table}[ht]
 \caption{Selected signs for the experiments in \cite{lim-2016}.}
@@ -273,13 +264,15 @@ Still due to the characteristics of this small dataset, the size of the batch us
 
 In the same way as in the original implementation of the ST-GCN training algorithm in \cite {st-gcn-2018}, the experiments in this work used as optimizer the Stochastic Gradient Descent (SGD) with Nesterov Momentum, which in turn is able to improve stability and the convergence of the SGD, as described by \cite{stanford-2018, bengio-2013, sutskever-2013}.
 
-% TODO: ajustar learning rate
-For the learning rate, a strategy of initializing it with a high value was applied in order that the random weights are placed in the direction of convergence within the first epochs. Then, this rate was gradually reduced in later epochs, allowing for more and more refined adjustments of training weights. Thus, in the experiment with the 20 selected signs, a total of 600 epochs were used, adopting an initial rate of 0.1, which was decreased to values of 0.01, 0.001, 0.0001 and 0.00001 after the end of the epochs 50, 250, 350 and 450, respectively.
+% DONE: ajustar learning rate
+For the learning rate, a strategy of initializing it with a higher value was applied so that the random weights were put in the direction of convergence within the first epochs. Then, this rate was gradually reduced in later epochs, allowing for more and more refined adjustments of training weights. Thus, in the experiment with the 20 selected signs, a total of 200 epochs were used, adopting an initial rate of 0.01, which was decreased to the values of 0.001, 0.0001 and 0.00001 after the end of the epochs 50, 100 and 150, respectively.
 
-% TODO: revisar configurações do experimento completo
-In addition to training with the subset of 20 signs above, an experiment with the complete ASLLVD dataset was also conducted in order to establish a reference value for it. To do this, only the settings related to the batch size and the decay epochs of the learning rate had to be changed. Thus, the new batch size for this scenario with 2.745 signs was 24 and the learning rate had similar behavior to the experiment above, being decayed at the end of the epochs 100, 300, 400 and 500.
+% TODO: revisar configurações do experimento completo / se será incluído
+In addition to training with the subset of 20 signs above, an experiment with the complete ASLLVD dataset was also conducted in order to establish a reference value for it. To do this, only the setting related to the batch size had to be changed. Thus, the new batch size for this scenario with 2,745 signs was 24 and the learning rate had similar behavior to the experiment above.
+% To do this, only the settings related to the batch size and the decay epochs of the learning rate had to be changed. Thus, the new batch size for this scenario with 2.745 signs was 24 and the learning rate had similar behavior to the experiment above.
 
 The results obtained in both scenarios are presented in the following section, and the pre-trained models are available along with the adaptations made in the ST-GCN, according to section \ref{sec:adaptacao-st-gcn}.
+% The results obtained are presented in the following section, and the pre-trained models are available along with the adaptations made in the ST-GCN, according to section \ref{sec:adaptacao-st-gcn}.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -288,17 +281,14 @@ The results obtained in both scenarios are presented in the following section, a
 
 The first experiment was performed using the approach presented in \cite{lim-2016}, which considers the selection of 20 specific signs of the ASLLVD, whose performance is represented in figure \ref{fig:training-asllvd-20}. The red line presents the accuracy of the model (\textit{top-1}), and its evolution over the course of training epochs. The gray line represents the \textit{top-5} accuracy, which corresponds to the accuracy based on the 5 most likely responses presented by the model. Finally, the blue dashed line represents the evolution of the learning rate used in the respective epochs, and its decay behavior.
 
-% TODO: atualizar gráfico 
 \image
     [8.5cm]
     {fig:training-asllvd-20}
     {images/results_20}
     {Accuracy obtained by the presented approach in the recognition of the 20 signs selected from the ASLLVD. The red line represents the \textit{top-1} accuracy during the training periods; the gray line, the \textit{top-5} accuracy; and the blue dashed line illustrates the learning rate and its decay in the respective epochs.}
 
-% TODO: revisar pelo gráfico se está coerente
-It can be seen from the image that the model was able to consistently achieve an accuracy of 54.72\% from epoch 400 on sign recognition. The \textit{top-5} accuracy, in turn, was able to reach a number of 88.68\%. This performance was superior to that presented by traditional techniques such as MEI and MHI, but was not able to overcome the results obtained by techniques such as PCA and BHOF \cite{lim-2016}. Table \ref{tab:results-comparison-20} presents the comparison of these results with the proposed approach.
+It can be observed from the image that the model was able to achieve an accuracy of 56.82\% from the epoch 80 in sign recognition. The \textit{top-5} accuracy, in turn, was able to reach 95.45\%. This performance was superior to the results presented by traditional techniques such as MEI, MHI and PCA, but was not able to overcome that obtained by the HOF and BHOF techniques \cite{lim-2016}. Table \ref{tab:results-comparison-20} presents the comparison of these results in detail.
 
-% DONE: atualizar resultado 
 \begin{table}[ht]
 \centering
 \caption{Accuracy in sign recognition using different approaches, as proposed in \cite{lim-2016}.}
@@ -309,25 +299,22 @@ It can be seen from the image that the model was able to consistently achieve an
 MHI                & 10.00                     \\
 MEI                & 25.00                     \\
 PCA                & 45.00                     \\
-\textbf{ST-GCN SL} & \textbf{54.72}            \\
+\textbf{ST-GCN SL} & \textbf{56.82}            \\
 HOF                & 70.00                     \\
 BHOF               & 85.00                     \\ \hline
 \end{tabular}
 \end{table}
 
-% TODO: revisar resultados do ASLLVD
-In order to establish a reference with the complete ASLLVD dataset, a second experiment was performed using its 2,745 signs. In this scenario, an accuracy (\textit{top-1}) of 7.03\% and a \textit{top-5} accuracy of approximately 14.67\% was observed. Of course, this is a much more challenging task than the one proposed in \cite{lim-2016} and these results clearly reflect this complexity.
+% TODO: revisar resultados do ASLLVD / se vai ser incluído
+In order to establish a reference with the complete ASLLVD dataset, a second experiment was performed using its 2,745 signs. In this scenario, an accuracy (\textit{top-1}) of 20.85\% and a \textit{top-5} accuracy of approximately 40.15\% was observed. Of course, this is a much more challenging task than the one proposed in \cite{lim-2016} and these results clearly reflect this complexity.
 
 % TODO: revisar justificativa (daqui para frente)
-Recapitulating the approach proposed in this paper, it is observable that one of its main strategies was to adopt a greater number of joints in order that parts of the body not originally considered in \cite{st-gcn-2018} (such as hands and face), would be adopted for the recognition of sign language, capturing different aspects of its dynamics. This caused the number of joints to increase by more than 7 times, from 18 to 130.
+From the table, we can see that the approach presented in this paper, which is based on graphs of the coordinates of human articulations, has not yet been able to provide such remarkable results as that based on the description of the individual movement of the hands through histograms adopted by BHOF. Certainly, the application of consecutive steps for optical flow extraction, color map creation, block segmentation and generation of histograms from them were able to ensure that more enriched features about the hand movements were extracted favoring its sign recognition performance. This technique is derived from HOF and differs only by the approach of focusing on the hands of individuals while calculating the optical flow histogram.
 
-However, the results obtained in these experiments lead us to believe that many of these 130 points did not add significant information about the domain of the sign language problem to the model used. For example, when looking at some samples of ASLLVD presented in the previous sections, we will notice that individuals are always seated and this makes the coordinates related to their lower limbs not important; the face, in turn, comprises more than half of the coordinates used, but many of these points do not denote expressive movements for the signs or are redundant due to the high density of coordinates in that region.
+Methods such as MEI and MHI, however, present more primitive approaches, which basically detect the movements and their intensity from the difference between the consecutive frames of actions. They are not able to differentiate individuals or to focus on specific parts of their body, causing movements of any nature to be considered equivalently. The PCA, in turn, adds the ability to reduce the dimensionality of the components based on the identification of those with greater variance and that, consequently, are more relevant for the detection of movement in the frames.
 
-In contrast, the BHOF \cite{lim-2016} aims to centralize the focus on hand movement by isolating them from the rest of the body and constructing histograms from the blocks in the frames where they are contained during articulation of the signs. Effectively, the hands describe some of the main features in sign language movements, and certainly the focus on them and the success in discarding little relevant information made this technique to present quite expressive results in relation to the current work. This technique is derived from the HOF and differs from it only by the approach of isolating the hands of individuals when calculating the optical flow histogram.
-
-Methods such as MEI and MHI present more primitive approaches, which basically detect the movements and their intensity from the difference between the consecutive frames of actions. They are not able to differentiate individuals or to focus on specific parts of their body, causing movements of any nature to be considered equivalently. The PCA, in turn, adds the ability to reduce the dimensionality of the components based on the identification of those with greater variance and that, consequently, are more relevant for the detection of movement in the frames.
-
-Although the results obtained with the presented approach did not reach an expressive performance like the BHOF, it is able to point the direction for the development of new studies. For future work, it is understood that there is a need for a revision in the number of coordinates used, possibly leading to an assessment in the potential of each group to add significance to the domain of sign language recognition.
+Although the results obtained with the presented approach did not reach an expressive performance, they are able to point the direction for the development of new studies. % For future work, it is understood that there is a need for a revision in the number of coordinates used, possibly leading to an assessment in the potential of each group to add significance to the domain of sign language recognition.
+For future work, it is understood as relevant to adopt approaches that go in the direction of enriching the information about the movements of the coordinates, especially those of the hands and fingers, that play  fundamental roles in the articulation of the signs and which are more subtle to capture. Examples of this may be related to the creation of new partitioning strategies that emphasize the subtler movements of these parts to the detriment of those of the rest of the body; the definition of weights to be learned that favor these subtle movements; or the addition of depth data in the input coordinates, which would then contemplate the 3D plane.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
