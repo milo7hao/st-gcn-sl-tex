@@ -35,7 +35,8 @@ To develop the proposed method, however, it is first necessary to build a datase
 
 The main contributions of the paper are: 1) the proposition of a new technique to sign recognition based on human movement, which considers different aspects of its dynamics and contributes to overcoming some of the main field challenges; and 2) the creation of a new dataset of human skeletons for sign language, currently non-existent, which aims to support the development of studies in this area.
 
-Section~\ref{sec:related-work} presents the related works and the details of ST-GCN. Section~\ref{sec:new-dataset} discusses the creation of the new dataset. Section~\ref{sec:st-gcn-for-sl-recognition} addresses the adjustments in ST-GCN and Section~\ref{sec:experiments} the conduction of the experiments. Finally, Sections~\ref{sec:results}~and~\ref{sec:final-remarks} contains the results and final remarks respectively.
+Section~\ref{sec:related-work} presents the related works and the details of ST-GCN. In Section~\ref{sec:new-dataset},  the creation of the new database is discussed.
+Section~\ref{sec:st-gcn-for-sl-recognition} addresses the adjustments in ST-GCN and Section~\ref{sec:experiments} the conduction of the experiments. Finally, Sections~\ref{sec:results}~and~\ref{sec:final-remarks} contains the results and final remarks respectively.
 
 \begin{figure*}[!ht]
     \centering
@@ -209,7 +210,7 @@ The source code that performs the processing of these steps is also available in
 
 Since the graph representation approach adopted by the ST-GCN is very flexible, it is not necessary to make modifications in the architecture of the model. Instead, only punctual adaptations to consider the new coordinates of the sign language domain.
 
-The first one is to modify the algorithm to make it capable of using new customized layouts of graphs beyond those originally defined in \cite{st-gcn-2018}. For this, a new type of layout called "custom" was defined in the configuration file of the model. In addition, a new parameter called "custom\_layout" has been created within the "graph\_args" attribute to allow the number of nodes, the central node, and the edges of new graphs to be informed.
+The first one is to modify the algorithm to make it capable of using new customized layouts of graphs beyond those originally defined in \cite{st-gcn-2018}. Thus, a new type of layout called "custom" was defined in the configuration file of the model. In addition, a new parameter called "custom\_layout" has been created within the "graph\_args" attribute to allow the number of nodes, the central node, and the edges of new graphs to be informed.
 
 Once this configuration is established, it is possible to map the topology of the graph used in this paper, which is composed by the 27 joints and vertices shown in  Figure~\ref{fig:filtered-keypoints}. Finally, small adjustments were required in the dimensions of the matrices used by the data feeders and also in the class that define the graph domain of the model, so that they can now support layouts with dynamic dimensions, as above.
 
@@ -250,7 +251,7 @@ ASLLVD & \begin{tabular}[c]{@{}l@{}}adopt, again, all, awkward, baseball, behavi
 Due to the characteristics of this small dataset, the size of the batch was set to 8 samples after previous experiments. 
 In the same way, as in the original implementation of the ST-GCN training algorithm, we used as optimizer the Stochastic Gradient Descent (SGD) with Nesterov Momentum. 
 
-For the learning rate, a decay strategy was adopted, which consists of initializing it with a higher value for the first epochs and gradually reducing it in the later epochs of the learning process to allow for more and more refined adjustments of the weights, as in \cite{st-gcn-2018}. Thus, in the experiment with the 20 selected signs, the total number of epochs was 200, adopting an initial learning rate of 0.01, which was decreased to the values of 0.001, 0.0001 and 0.00001 after the end of the epochs 50, 100 and 150, respectively.
+For the learning rate, a decay strategy was adopted, which consists of initializing it with a higher value and gradually reducing it in the later epochs of the learning process to allow for more and more refined adjustments of the weights, as in \cite{st-gcn-2018}. Thus, in the experiment with the 20 selected signs, the total number of epochs was 200, adopting an initial rate of 0.01, which was decreased to the values of 0.001, 0.0001 and 0.00001 after the end of the epochs 50, 100 and 150, respectively.
 
 In addition, an experiment with the complete ASLLVD dataset was also conducted to establish a reference value. In this experiment, only the batch size was changed. The batch size for this scenario with 2,745 signs was 24, and the learning rate had similar behavior to the experiment above.
 
@@ -294,9 +295,9 @@ Methods such as MEI and MHI, however, present more primitive approaches, which m
 
 The results obtained with the presented approach did not reach such expressive performance as those obtained by some of the comparative techniques. However, its contributions are very important in guiding the next steps to be taken by future studies in this field.
 
-Based on what is observed in this paper, it is relevant to seek approaches capable of enriching the information about the movements of the estimated coordinates, especially those of the hands and fingers, which, although very subtle, play a central role in the articulation and the meaning of the signs.
+Based on what is observed in this paper, it is relevant to seek approaches capable of enriching the information about the movements of the estimated coordinates, especially those of the hands and fingers, which, although very subtle, play a central role in the articulation and meaning of the signs.
 
-This may be related, for example, to the definition of a new partitioning strategy that would allow more emphasis on the subtle traces of hands and fingers to the detriment of the other parts of the body. In addition, the definition of specific weights for these parts would enable the model to learn more about its dynamics; today the model does not distinguish the type of joint being learned. Finally, including the depth information of the coordinates can provide more details about the trajectory of the movement of these parts to the model, which would now observe it through the three-dimensional plane.
+This may be related, for example, to the definition of a new partitioning strategy that would allow more emphasis on the subtle traces of hands and fingers to the detriment of the other parts of the body. In addition, the definition of specific weights for these parts would enable the model to learn more about its dynamics; today the model does not distinguish the type of joint being learned. Finally, to include the depth information in the coordinates can provide the model with more details about the trajectory of the movement of these parts, enabling it to observe them through the three-dimensional plane.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
