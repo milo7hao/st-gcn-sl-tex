@@ -6,7 +6,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Abstract:
 \begin{abstract}
-The recognition of sign language is a challenging task with an important role in society to facilitate the communication of deaf persons. We propose a new approach of Spatial-Temporal Graph Convolutional Network to sign language recognition based on the human skeletal movements. The method uses graphs to capture the signs dynamics in two dimensions, spatial and temporal, considering the complex aspects of the language. Additionally, we present a new dataset of human skeletons for sign language based on ASLLVD to contribute to future related studies.
+The recognition of sign language is a challenging task with an important role in society to facilitate the communication of deaf persons. We propose a new approach of Spatial-Temporal Graph Convolutional Network to sign language recognition based on the human skeletal movements. The method uses graphs to capture the signs dynamics in two dimensions, spatial and temporal, considering the complex aspects of the language. Additionally, we present a new dataset of human skeletons for sign language based on ASLLVD to contribute to future related studies. 
 \end{abstract}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -20,7 +20,7 @@ Sign Language, Convolutional Neural Network, Spatial Temporal Graph.
 \section{Introduction} 
 \label{sec:introduction}
 
-Sign language is a visual communication skill that enables individuals with different types of hearing impairment to communicate in society. It is the language used by most deaf people in their daily lives and, moreover, it is the symbol of identification between the members of that community and the main force that unites them.  The sign language has a very close relationship with the culture of the country or even regions, and for this reason, each nation has its language \cite{pereira-choi-2011}.
+Sign language is a visual communication skill that enables individuals with different types of hearing impairment to communicate in society. It is the language used by most deaf people in their daily lives and, moreover, it is the symbol of identification between the members of that community and the main force that unites them.  The sign language has a very close relationship with the culture of the country or even regions, and for this reason, each nation has its language  \cite{pereira-choi-2011}.
 
 According to the World Health Organization, the number of deaf people is about 466 million, and the organization estimates that by 2050 this number exceeds 900 million, which is equivalent to a forecast of 1 in 10 individuals around the world \cite{who-2018}. These data, in turn, highlight the breadth and importance of the sign language in the communication of people in different nations.
 
@@ -31,11 +31,11 @@ Research related to the sign recognition have been developed since the 1990s, an
 In this work, we present a new approach to performing the recognition of human actions based on spatial-temporal graphs called Spatial-Temporal Graph Convolutional Networks (ST-GCN) \cite {st-gcn-2018}. Using graph representations of the human skeleton we focus on body movement and the interactions between its parts, disregarding the interference of the environment around them. Besides, we address the movements under the spatial and temporal dimensions, and this allows to capture the dynamic aspects of the actions exercised over time. These characteristics make this a very relevant approach to dealing with the challenges and peculiarities of sign language recognition.
 
 % REV: o que significa frase final?
-To develop the proposed method, however, it is first necessary to build a dataset of human skeletons associated with sign language that would serve as the primary information to feed the ST-GCN and enable the creation of its graphs. We used as a base the videos of the American Sign Language Lexicon Video Dataset (ASLLVD). It consists of a large set of the American Sign Language (ASL), on which we perform a segmentation and assignment of estimated skeleton labels for each sample. 
+To develop the proposed method, however, it is first necessary to build a dataset of human skeletons associated with sign language that would serve as the primary information to feed the ST-GCN and enable the creation of its graphs. We used as a base the videos of the American Sign Language Lexicon Video Dataset (ASLLVD). It consists of a large set of the American Sign Language (ASL), on which we perform a segmentation and assignment of estimated skeleton labels. 
 
 The main contributions of the paper are: 1) the proposition of a new technique to sign recognition based on human movement, which considers different aspects of its dynamics and contributes to overcoming some of the main field challenges; and 2) the creation of a new dataset of human skeletons for sign language, currently non-existent, which aims to support the development of studies in this area.
 
-Section~\ref{sec:related-work} presents the related works and the details of ST-GCN. Section~\ref{sec:experiments} addresses the conduction of the experiments, including the new dataset and the adjustments in ST-GCN; Finally, Section~\ref{sec:results} contains the final remarks.
+Section~\ref{sec:related-work} presents the related works and the details of ST-GCN. Section~\ref{sec:new-dataset} discusses the creation of the new dataset. Section~\ref{sec:st-gcn-for-sl-recognition} addresses the adjustments in ST-GCN and Section~\ref{sec:experiments} the conduction of the experiments. Finally, Sections~\ref{sec:results}~and~\ref{sec:final-remarks} contains the results and final remarks respectively.
 
 \begin{figure*}[!ht]
     \centering
@@ -216,9 +216,7 @@ Since the graph representation approach adopted by the ST-GCN is very flexible, 
 
 The first one is to modify the algorithm to make it capable of using new customized layouts of graphs beyond those originally defined in \cite{st-gcn-2018}. For this, a new type of layout called "custom" was defined in the configuration file of the model. In addition, a new parameter called "custom\_layout" has been created within the "graph\_args" attribute to allow the number of nodes, the central node, and the edges of new graphs to be informed.
 
-Once this configuration is established, it is possible to map the topology of the graph used in this paper, which is composed by the 27 joints and vertices shown in  Figure~\ref{fig:filtered-keypoints}. Finally, small adjustments were required in the dimensions of the matrices used by the data feeders and also in the classes that define the graph domain used by the model, so that they can now support the customizable layouts with dynamic dimensions.
-
-%We used a new graph layout containing the 27 articulations and their relations. Besides, we need to change the reading process of the layouts and adjustments were made to the training matrices and the test data reader to accommodate the dynamic dimensions of the new coordinates.
+Once this configuration is established, it is possible to map the topology of the graph used in this paper, which is composed by the 27 joints and vertices shown in  Figure~\ref{fig:filtered-keypoints}. Finally, small adjustments were required in the dimensions of the matrices used by the data feeders and also in the class that define the graph domain of the model, so that they can now support layouts with dynamic dimensions, as above.
 
 The source code containing these adaptations is public available\footnote{
     Available at \url{http://www.cin.ufpe.br/~cca5/st-gcn-sl}
@@ -257,7 +255,7 @@ ASLLVD & \begin{tabular}[c]{@{}l@{}}adopt, again, all, awkward, baseball, behavi
 Due to the characteristics of this small dataset, the size of the batch was set to 8 samples after previous experiments. 
 In the same way, as in the original implementation of the ST-GCN training algorithm, we used as optimizer the Stochastic Gradient Descent (SGD) with Nesterov Momentum. 
 
-For the learning rate, we applied a strategy of initializing with a higher value, so the random weights were put in the direction of convergence within the first epochs. Then, this rate was gradually reduced after later epochs, allowing for more and more refined weights adjustments. Thus, in the experiment with the 20 selected signs, the total number of epochs was 200, adopting an initial learning rate of 0.01, which was decreased to the values of 0.001, 0.0001 and 0.00001 after the end of the epochs 50, 100 and 150, respectively.
+For the learning rate, a decay strategy was adopted, which consists of initializing it with a higher value for the first epochs and gradually reducing it in the later epochs of the learning process to allow for more and more refined adjustments of the weights, as in \cite{st-gcn-2018}. Thus, in the experiment with the 20 selected signs, the total number of epochs was 200, adopting an initial learning rate of 0.01, which was decreased to the values of 0.001, 0.0001 and 0.00001 after the end of the epochs 50, 100 and 150, respectively.
 
 In addition, an experiment with the complete ASLLVD dataset was also conducted to establish a reference value. In this experiment, only the batch size was changed. The batch size for this scenario with 2,745 signs was 24, and the learning rate had similar behavior to the experiment above.
 
@@ -299,8 +297,19 @@ Methods such as MEI and MHI, however, present more primitive approaches, which m
 \section{Final remarks} 
 \label{sec:final-remarks}
 
-Although the results obtained with the presented approach did not reach an expressive performance, they can point the direction for the development of new studies. % For future work, it is understood that there is a need for a revision in the number of coordinates used, possibly leading to an assessment in the potential of each group to add significance to the domain of sign language recognition.
-For future work, it is understood as relevant to adopt approaches that go in the direction of enriching the information about the movements of the coordinates, especially those of the hands and fingers, that play fundamental roles in the articulation of the signs and which are more subtle to capture. Examples of this may be related to the creation of new partitioning strategies that emphasize the subtler movements of these parts to the detriment of those of the rest of the body; the definition of weights to be learned that favor these subtle movements; or the addition of depth data in the input coordinates, which would then contemplate the 3D plane.
+The results obtained with the presented approach did not reach such expressive performance as those obtained by some of the comparative techniques. However, its contributions are very important in guiding the next steps to be taken by future studies in this field.
+
+Based on what is observed in this paper, it is relevant to seek approaches capable of enriching the information about the movements of the estimated coordinates, especially those of the hands and fingers, which, although very subtle, play a central role in the articulation and the meaning of the signs.
+
+This may be related, for example, to the definition of a new partitioning strategy that would allow more emphasis on the subtle traces of hands and fingers to the detriment of the other parts of the body. In addition, the definition of specific weights for these parts would enable the model to learn more about its dynamics; today the model does not distinguish the type of joint being learned. Finally, including the depth information of the coordinates can provide more details about the trajectory of the movement of these parts to the model, which would now observe it through the three-dimensional plane.
+
+
+
+
+
+
+%Although the results obtained with the presented approach did not reach an expressive performance, they can point the direction for the development of new studies. % For future work, it is understood that there is a need for a revision in the number of coordinates used, possibly leading to an assessment in the potential of each group to add significance to the domain of sign language recognition.
+%For future work, it is understood as relevant to adopt approaches that go in the direction of enriching the information about the movements of the coordinates, especially those of the hands and fingers, that play fundamental roles in the articulation of the signs and which are more subtle to capture. Examples of this may be related to the creation of new partitioning strategies that emphasize the subtler movements of these parts to the detriment of those of the rest of the body; the definition of weights to be learned that favor these subtle movements; or the addition of depth data in the input coordinates, which would then contemplate the 3D plane.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
