@@ -156,11 +156,6 @@ The new skeleton dataset was named \textbf{ASLLVD-Skeleton} and is public availa
    Available at \url{http://www.cin.ufpe.br/~cca5/asllvd-skeleton}
 } to contribute to the development of future studies on the recognition of sign languages.
 
-%\image
-%    {fig:preprocessamento}
-%    {en/images/dataset_preprocessing}
-%    {Preprocessing steps for creating the ASLLVD-Skeleton dataset.}
-
 The first step consists of \textbf{obtaining the videos} based on the associated metadata file used to guide this process. We consider only the videos captured by the frontal camera, once they simultaneously contemplate movements of the trunk, hands, and face of the individuals.
 
 The next step is to \textbf{segment the videos} to generate a video sample for each sign. Every file in the original dataset corresponds to multiple signs per individual. Due to this, it is necessary to change the files organization in such a way that each sign is arranged individually with its respective label. We also considered the metadata file which contains the labels and the start and end frame marks to perform the segmentation for each sign. The output of this step consists of small videos with a few seconds, as shown in Figure~\ref{fig:sign-original}.
@@ -302,14 +297,6 @@ The results obtained with the presented approach did not reach such expressive p
 Based on what is observed in this paper, it is relevant to seek approaches capable of enriching the information about the movements of the estimated coordinates, especially those of the hands and fingers, which, although very subtle, play a central role in the articulation and the meaning of the signs.
 
 This may be related, for example, to the definition of a new partitioning strategy that would allow more emphasis on the subtle traces of hands and fingers to the detriment of the other parts of the body. In addition, the definition of specific weights for these parts would enable the model to learn more about its dynamics; today the model does not distinguish the type of joint being learned. Finally, including the depth information of the coordinates can provide more details about the trajectory of the movement of these parts to the model, which would now observe it through the three-dimensional plane.
-
-
-
-
-
-
-%Although the results obtained with the presented approach did not reach an expressive performance, they can point the direction for the development of new studies. % For future work, it is understood that there is a need for a revision in the number of coordinates used, possibly leading to an assessment in the potential of each group to add significance to the domain of sign language recognition.
-%For future work, it is understood as relevant to adopt approaches that go in the direction of enriching the information about the movements of the coordinates, especially those of the hands and fingers, that play fundamental roles in the articulation of the signs and which are more subtle to capture. Examples of this may be related to the creation of new partitioning strategies that emphasize the subtler movements of these parts to the detriment of those of the rest of the body; the definition of weights to be learned that favor these subtle movements; or the addition of depth data in the input coordinates, which would then contemplate the 3D plane.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
