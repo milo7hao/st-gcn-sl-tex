@@ -11,9 +11,9 @@ The recognition of sign language is a challenging task with an important role in
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Keywords:
-\begin{IEEEkeywords}
-Sign Language, Convolutional Neural Network, Spatial Temporal Graph.
-\end{IEEEkeywords}
+%\begin{IEEEkeywords}
+%Sign Language, Convolutional Neural Network, Spatial Temporal Graph.
+%\end{IEEEkeywords}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -28,7 +28,7 @@ Despite this, there is still a small number of hearing people able to communicat
 
 Research related to the sign recognition have been developed since the 1990s, and it is possible to verify significant results \cite{lim-2016, recent-advances-dl-2017}. The main challenges are primarily related to considering the dynamic aspects of the language, such as movements, articulations between body parts and non-manual expressions, rather than merely recognizing static signs or isolated hand positions. Besides, the sign language has thousands of signs, which sometimes differ only by subtle changes in movement, shape, or position of the hands and involve significant overlaps of fingers and occlusions. When combined with differences in signing style by distinct individuals and the variations arising from its non-universality and regionalisms, this field of research can become challenging for current artificial intelligence algorithms \cite{konstantinidis-2018}.
 
-In this work, we present a new approach to performing the recognition of human actions based on spatial-temporal graphs called Spatial-Temporal Graph Convolutional Networks (ST-GCN) \cite {st-gcn-2018}. Using graph representations of the human skeleton we focus on body movement and the interactions between its parts, disregarding the interference of the environment around them. Besides, we address the movements under the spatial and temporal dimensions, and this allows to capture the dynamic aspects of the actions exercised over time. These characteristics make this a very relevant approach to dealing with the challenges and peculiarities of sign language recognition.
+In this work, we present a new approach to performing the recognition of human actions based on spatial-temporal graphs called Spatial-Temporal Graph Convolutional Networks (ST-GCN) \cite {st-gcn-2018}. Using graph representations of the human skeleton we focus on body movement and the interactions between its parts, disregarding the interference of the environment around them. Besides, we address the movements under the spatial and temporal dimensions, and this allows to capture the dynamic aspects of the actions exercised over time. These characteristics make it a very relevant approach to dealing with the challenges and peculiarities of sign language recognition.
 
 % REV: o que significa frase final?
 To develop the proposed method, however, it is first necessary to build a dataset of human skeletons associated with sign language that would serve as the primary information to feed the ST-GCN and enable the creation of its graphs. We used as a base the videos of the American Sign Language Lexicon Video Dataset (ASLLVD). It consists of a large set of the American Sign Language (ASL), on which we perform a segmentation and assignment of estimated skeleton labels. 
@@ -47,6 +47,7 @@ Section~\ref{sec:st-gcn-for-sl-recognition} addresses the adjustments in ST-GCN 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \section{Related work}
 \label{sec:related-work}
 
