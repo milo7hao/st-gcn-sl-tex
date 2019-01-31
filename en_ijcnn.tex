@@ -1,0 +1,53 @@
+\documentclass[10pt,conference]{IEEEtran}
+\usepackage{header}
+\usepackage{en/preamble}
+\usepackage{import}
+
+\author{
+    \IEEEauthorblockN{Cleison Correia de Amorim}
+    \IEEEauthorblockA{
+        \textit{Centro de Informática} \\
+        \textit{Universidade Federal de Pernambuco} \\
+        50.740-560, Recife, PE, Brazil \\
+        cca5@cin.ufpe.br
+    }
+    \and
+    \IEEEauthorblockN{David Macêdo}
+    \IEEEauthorblockA{
+        \textit{Centro de Informática} \\
+        \textit{Universidade Federal de Pernambuco} \\
+        50.740-560, Recife, PE, Brazil \\
+        dlm@cin.ufpe.br
+    }
+    \and
+    \IEEEauthorblockN{Cleber Zanchettin}
+    \IEEEauthorblockA{
+        \textit{Centro de Informática} \\
+        \textit{Universidade Federal de Pernambuco} \\
+        50.740-560, Recife, PE, Brazil \\
+        cz@cin.ufpe.br
+    }
+}
+
+\begin{document}
+    % Title:
+    \maketitle
+    
+    % Abstract:
+    \begin{abstract}
+    \import{en/}{abstract.tex}
+    \end{abstract}
+    
+    % Keywords:
+    %\begin{IEEEkeywords}
+    %\import{en/}{keywords.tex}
+    %\end{IEEEkeywords}
+    
+    % Content:
+    \import{en/}{sections.tex}
+    
+    % References:
+    \bibliographystyle{IEEEtran}
+    \bibliography{IEEEabrv,references.bib}
+\end{document}
+
