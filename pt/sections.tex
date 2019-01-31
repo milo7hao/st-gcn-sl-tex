@@ -1,16 +1,3 @@
-\input{preamble.sty}
-
-\begin{document}
-\maketitle
-\begin{abstract}
-O reconhecimento de sinais é uma área de pesquisa com diversos desafios, mas que possui um papel importante de facilitar a comunicação do Surdo e de remover as barreiras ainda existentes nessa comunicação para com a sociedade. Este trabalho propõe a utilização de um modelo de aprendizagem profunda de identificação de ações conhecido como Rede Convolucional de Grafos Espaço-Temporais para promover o reconhecimento da língua de sinais. Trata-se de uma nova abordagem centrada no movimento do esqueleto humano que utiliza grafos para capturar seu movimento sob duas dimensões, espacial e temporal, e que é capaz de considerar aspectos complexos da dinâmica dessa língua. Além disso, este trabalho também apresenta a criação de um \textit{dataset} de esqueletos humanos para a língua de sinais baseado no ASLLVD, o qual é utilizado neste estudo e disponibilizado publicamente com o intuito de contribuir para o desenvolvimento de estudos futuros relacionados.
-\end{abstract}
-
-\begin{IEEEkeywords}
-Língua de Sinais, Redes Neurais Convolucionais, Grafos Espaço-Temporais.
-\end{IEEEkeywords}
-
-
 \section{Introdução} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \label{sec:introducao}
 
@@ -188,7 +175,7 @@ As etapas aplicadas na criação desse novo \textit{dataset} estão apresentadas
 \image
     [8cm]
     {fig:preprocessamento}
-    {pt/images/dataset_preprocessing}
+    {images/dataset_preprocessing_pt}
     {Etapas de pré-processamento aplicadas na criação do \textit{dataset} ASLLVD-Skeleton.}
 
 A primeira etapa consiste num passo preliminar de \textbf{obtenção dos vídeos} que compõem o ASLLVD de forma automática, afim de reconstitui-lo e viabilizar as etapas posteriores. Um arquivo de metadados\footnote{
@@ -334,10 +321,3 @@ Em contrapartida, o BHOF \cite{lim-2016} adota como objetivo centralizar o foco 
 Métodos como o MEI e MHI apresentam abordagens mais primitivas, que basicamente detectam os movimentos e sua intensidade a partir da diferença entre os \textit{frames} consecutivos das ações. Eles não são capazes de diferenciar indivíduos ou de focar em partes específicas de seu corpo, fazendo com que movimentos de qualquer natureza sejam considerados de maneira equivalente. O PCA, por sua vez, adiciona a capacidade de reduzir a dimensionalidade dos componentes utilizados com base na identificação daqueles de maior variância e que, consequentemente, são mais relevantes para a identificação do movimento nos \textit{frames}. 
 
 Apesar dos resultados obtidos com a abordagem apresentados não terem alcançado um desempenho expressivo como o BHOF, que ele é capaz de apontar a direção para o desenvolvimento de novos estudos. Para trabalhos futuros, entende-se que há a necessidade de uma revisão no número de coordenadas utilizadas, eventualmente conduzindo uma avaliação do potencial de cada grupo delas em adicionar significância acerca do domínio do reconhecimento da língua de sinais.
-
-
-% Bibliografia
-\bibliographystyle{IEEEtran}
-\bibliography{IEEEabrv,references.bib}
-
-\end{document}
