@@ -2,13 +2,13 @@
 \section{Introduction} 
 \label{sec:introduction}
 
-Sign language is a visual communication skill that enables individuals with different types of hearing impairment to communicate in society. It is the language used by most deaf people in their daily lives and, moreover, it is the symbol of identification between the members of that community and the main force that unites them.  The sign language has a very close relationship with the culture of the country or even regions, and for this reason, each nation has its language  \cite{pereira-choi-2011}.
+Sign language is a visual communication skill that enables individuals with different types of hearing impairment to communicate in society. It is the language used by most deaf people in their daily lives and, moreover, it is the symbol of identification between the members of that community and the main force that unites them.  The sign language has a very close relationship with the culture of the country or even regions, and for this reason, each nation has its language ~\cite{pereira-choi-2011}.
 
-According to the World Health Organization, the number of deaf people is about 466 million, and the organization estimates that by 2050 this number exceeds 900 million, which is equivalent to a forecast of 1 in 10 individuals around the world \cite{who-2018}. These data, in turn, highlight the breadth and importance of the sign language in the communication of people in different nations.
+According to the World Health Organization, the number of deaf people is about 466 million, and the organization estimates that by 2050 this number exceeds 900 million, which is equivalent to a forecast of 1 in 10 individuals around the world~\cite{who-2018}. These data, in turn, highlight the breadth and importance of the sign language in the communication of people in different nations.
 
-Despite this, there is still a small number of hearing people able to communicate through sign language. This ends up characterizing an invisible barrier that interferes with the communication between deaf and hearing persons, making a more effective integration among these people impossible \cite{peres-2006}. In this context, it is essential to develop tools that can fill this gap by promoting integration among the population.
+Despite this, there is still a small number of hearing people able to communicate through sign language. This ends up characterizing an invisible barrier that interferes with the communication between deaf and hearing persons, making a more effective integration among these people impossible~\cite{peres-2006}. In this context, it is essential to develop tools that can fill this gap by promoting integration among the population.
 
-Research related to the sign recognition have been developed since the 1990s, and it is possible to verify significant results \cite{lim-2016, recent-advances-dl-2017}. The main challenges are primarily related to considering the dynamic aspects of the language, such as movements, articulations between body parts and non-manual expressions, rather than merely recognizing static signs or isolated hand positions. Besides, the sign language has thousands of signs, which sometimes differ only by subtle changes in movement, shape, or position of the hands and involve significant overlaps of fingers and occlusions. When combined with differences in signing style by distinct individuals and the variations arising from its non-universality and regionalisms, this field of research can become challenging for current artificial intelligence algorithms \cite{konstantinidis-2018}.
+Research related to the sign recognition have been developed since the 1990s, and it is possible to verify significant results~\cite{lim-2016,recent-advances-dl-2017}. The main challenges are primarily related to considering the dynamic aspects of the language, such as movements, articulations between body parts and non-manual expressions, rather than merely recognizing static signs or isolated hand positions. Besides, the sign language has thousands of signs, which sometimes differ only by subtle changes in movement, shape, or position of the hands and involve significant overlaps of fingers and occlusions. When combined with differences in signing style by distinct individuals and the variations arising from its non-universality and regionalisms, this field of research can become challenging for current artificial intelligence algorithms~\cite{konstantinidis-2018}.
 
 In this work, we present a new approach to performing the recognition of human actions based on spatial-temporal graphs called Spatial-Temporal Graph Convolutional Networks (ST-GCN) \cite {st-gcn-2018}. Using graph representations of the human skeleton we focus on body movement and the interactions between its parts, disregarding the interference of the environment around them. Besides, we address the movements under the spatial and temporal dimensions, and this allows to capture the dynamic aspects of the actions exercised over time. These characteristics make it a very relevant approach to dealing with the challenges and peculiarities of sign language recognition.
 
@@ -33,18 +33,18 @@ Section~\ref{sec:st-gcn-for-sl-recognition} addresses the adjustments in ST-GCN 
 \section{Related work}
 \label{sec:related-work}
 
-The recognition of sign languages obtained significant progress in recent years, which are motivated mainly by the advent of modern sensors, new machine learning techniques, and more powerful hardware \cite{recent-advances-dl-2017, recent-advances-sl-2013}. Besides, approaches considered intrusive and requiring the use of sensors such as gloves, accelerometers, and markers coupled to the body of the interlocutor have been gradually abandoned, replaced by new approaches using conventional cameras and computer vision techniques.
+The recognition of sign languages obtained significant progress in recent years, which are motivated mainly by the advent of modern sensors, new machine learning techniques, and more powerful hardware~\cite{recent-advances-dl-2017,recent-advances-sl-2013}. Besides, approaches considered intrusive and requiring the use of sensors such as gloves, accelerometers, and markers coupled to the body of the interlocutor have been gradually abandoned, replaced by new approaches using conventional cameras and computer vision techniques.
 
-Due to this movement, it is also notable the increase in the adoption of techniques for feature extraction such as SIFT \cite{lowe-2004}, HOG \cite{dalal-2005}, HOF \cite{laptev-2008} and STIP \cite{laptev-2008} to preprocess the images obtained by cameras and provide richer information to machine learning algorithms \cite{lim-2016, shanta-2018}.
+Due to this movement, it is also notable the increase in the adoption of techniques for feature extraction such as SIFT~\cite{lowe-2004}, HOG~\cite{dalal-2005}, HOF~\cite{laptev-2008} and STIP~\cite{laptev-2008} to preprocess the images obtained by cameras and provide richer information to machine learning algorithms~\cite{lim-2016,shanta-2018}.
 
-Convolutional Neural Networks (CNN), as in many computer vision applications, obtained remarkable results in this field with accuracy reached 90\% \cite{shanta-2018, ji-2017, taskiran-2018, rao-2018} depending on the dataset. There are still some variations as 3D CNNs \cite{elbadawy-2017}, the combination with other models such as Inception \cite{das-2018} or the Regions of Interest applications \cite{sajanraj-2018}. Recurrent Neural Networks \cite{konstantinidis-2018} and Temporal Residual Networks \cite{pigou-2017} also obtained interesting results in the same purpose.
+Convolutional Neural Networks (CNN), as in many computer vision applications, obtained remarkable results in this field with accuracy reached 90\% \cite{shanta-2018,ji-2017,taskiran-2018,rao-2018} depending on the dataset. There are still some variations as 3D CNNs~\cite{elbadawy-2017}, the combination with other models such as Inception~\cite{das-2018} or the Regions of Interest applications~\cite{sajanraj-2018}. Recurrent Neural Networks~\cite{konstantinidis-2018} and Temporal Residual Networks~\cite{pigou-2017} also obtained interesting results in the same purpose.
 
-Despite the above advances, a large portion of these studies addressing static signs or single-letter images, from the dactylology\footnote{Dactylology - also known as the digital or manual alphabet. It consists of spelling words by the Deaf. It is generally used to introduce a word that does not yet have an equivalent sign \cite{quadros-2004, pereira-choi-2011}.
-} \cite{shanta-2018, taskiran-2018, elbadawy-2017, das-2018, sajanraj-2018}. The problem is the negative effects on the intrinsic dynamics of the language, such as its movements, non-manual expressions, and articulations between parts of the body \cite{quadros-2004}. In this sense, it is extremely relevant that new studies observe such important characteristics, as in \cite{konstantinidis-2018} and \cite {pigou-2017}.
+Despite the above advances, a large portion of these studies addressing static signs or single-letter images, from the dactylology\footnote{Dactylology - also known as the digital or manual alphabet. It consists of spelling words by the Deaf. It is generally used to introduce a word that does not yet have an equivalent sign~\cite{quadros-2004,pereira-choi-2011}.
+}~\cite{shanta-2018,taskiran-2018,elbadawy-2017,das-2018,sajanraj-2018}. The problem is the negative effects on the intrinsic dynamics of the language, such as its movements, non-manual expressions, and articulations between parts of the body~\cite{quadros-2004}. In this sense, it is extremely relevant that new studies observe such important characteristics, as in~\cite{konstantinidis-2018} and \cite {pigou-2017}.
 
-With this purpose, we present an approach based on skeletal body movement to perform sign recognition. This technique is known as Spatial-Temporal Graph Convolutional Network (ST-GCN)\footnote {Available at \url{https://github.com/yysijie/st-gcn}.} and was introduced in \cite{st-gcn-2018}. The approach aims for methods capable of autonomously capturing the patterns contained in the spatial configuration of the body joints as well as their temporal dynamics. The authors suggest that previous methods for action recognition were limited by not explicitly exploring such spatial relations between the joints, which are crucial for the understanding of human actions. These methods simply used the joint coordinates in individual time steps to form feature vectors, applying a temporal analysis on them \cite{st-gcn-2018, wang-2012, fernando-2015}.
+With this purpose, we present an approach based on skeletal body movement to perform sign recognition. This technique is known as Spatial-Temporal Graph Convolutional Network (ST-GCN)\footnote {Available at \url{https://github.com/yysijie/st-gcn}.} and was introduced in~\cite{st-gcn-2018}. The approach aims for methods capable of autonomously capturing the patterns contained in the spatial configuration of the body joints as well as their temporal dynamics. The authors suggest that previous methods for action recognition were limited by not explicitly exploring such spatial relations between the joints, which are crucial for the understanding of human actions. These methods simply used the joint coordinates in individual time steps to form feature vectors, applying a temporal analysis on them~\cite{st-gcn-2018,wang-2012,fernando-2015}.
 
-The ST-GCN uses as a base of its formulation a sequence of skeleton graphs representing the human body obtained from a series of action frames of the individuals. Figure \ref{fig:st-gcn-graph} allows visualizing this structure, where each node corresponds to the point of articulation. The intra-body vertices are defined based on the body's natural connections. The inter-frame vertices, in turn, connect the same joints between consecutive frames to denote their trajectory over time \cite{st-gcn-2018}.
+The ST-GCN uses as a base of its formulation a sequence of skeleton graphs representing the human body obtained from a series of action frames of the individuals. Figure \ref{fig:st-gcn-graph} allows visualizing this structure, where each node corresponds to the point of articulation. The intra-body vertices are defined based on the body's natural connections. The inter-frame vertices, in turn, connect the same joints between consecutive frames to denote their trajectory over time~\cite{st-gcn-2018}.
     
 \image
     [3.5cm]
@@ -69,7 +69,7 @@ To understand the operation of the ST-GCN, it is necessary first to introduce it
     {images/st_gcn_sampling}
     {Sampling strategy in a convolution layer for a single frame \cite[p. 5]{st-gcn-2018}.}
 
-Figure~\ref{fig:st-gcn-sampling} shows how the convolutional filter considers only points immediately connected to the central points. In other words, the delimitation of the filter area consider the neighbors with distance $D = 1$. The authors defined this distance in ST-GCN \cite{st-gcn-2018}.
+Figure~\ref{fig:st-gcn-sampling} shows how the convolutional filter considers only points immediately connected to the central points. In other words, the delimitation of the filter area consider the neighbors with distance $D = 1$. The authors defined this distance in ST-GCN~\cite{st-gcn-2018}.
 
 The \textbf{partitioning strategy} is based on the location of the joints and the characteristics of the movement of the human body, as shown in Figure~\ref{fig:st-gcn-spatial-part}. According to the authors, concentric or eccentric categorize the body parts movements, and the points in the sampling region are partitioned into three subsets:
     
@@ -79,7 +79,7 @@ The \textbf{partitioning strategy} is based on the location of the joints and th
     \item The centrifugal group (yellow dots in the Figure~\ref{fig:st-gcn-spatial-part}), which are the nodes farther from the center of gravity.
 \end{itemize}
 
-The center of gravity is taken to be the mean coordinate of all joints of the skeleton in one frame. During convolution, each point of the body is labeled according to one of the above partitions named Spatial Configuration Partitioning \cite{st-gcn-2018}. It is through this method that the authors also establish the weights of the model, making each of the partitions receive a different weight to be learned.
+The center of gravity is taken to be the mean coordinate of all joints of the skeleton in one frame. During convolution, each point of the body is labeled according to one of the above partitions named Spatial Configuration Partitioning~\cite{st-gcn-2018}. It is through this method that the authors also establish the weights of the model, making each of the partitions receive a different weight to be learned.
 
 \image
     [2.5cm]
@@ -95,13 +95,13 @@ In order to learn the temporal dimension, the ST-GCN extends the concept of grap
     {images/st_gcn_convolution}
     {Convolution on the spatial and temporal dimensions, which considers the points directly connected in the current and neighboring graphs \cite[p. 3]{st-gcn-2018}.}
 
-Figure~\ref{fig:st-gcn-architecture} (left) shows the model architecture and its convolutional layers, according to \cite{st-gcn-2018}. There are a total of nine sequentially positioned ST-GCN layers, which perform the extraction of features from the graphs. A normalization layer precedes them and followed by a global pooling and a softmax classification layer. On the right side of the image we also show the details of an ST-GCN convolutional unit.
+Figure~\ref{fig:st-gcn-architecture} (left) shows the model architecture and its convolutional layers, according to~\cite{st-gcn-2018}. There are a total of nine sequentially positioned ST-GCN layers, which perform the extraction of features from the graphs. A normalization layer precedes them and followed by a global pooling and a softmax classification layer. On the right side of the image we also show the details of an ST-GCN convolutional unit.
 
 \begin{figure}[ht]
     \centering
     \includegraphics[width=2.5cm]{images/st_gcn_architecture}
     \includegraphics[width=3.0cm]{images/st_gcn_architeture_unit}
-    \caption{ST-GCN Model architecture (left) and details of one convolutional unit (right). Image adapted from \cite{st-gcn-2018}.}
+    \caption{ST-GCN Model architecture (left) and details of one convolutional unit (right). Image adapted from~\cite{st-gcn-2018}.}
     \label{fig:st-gcn-architecture}
 \end{figure}
 
@@ -110,18 +110,18 @@ Figure~\ref{fig:st-gcn-architecture} (left) shows the model architecture and its
     \includegraphics[width=2.5cm]{images/keypoints_pose_COCO_18}
     \includegraphics[width=2.5cm]{images/keypoints_hand}
     \includegraphics[width=3cm]{images/keypoints_face}
-    \caption{Representation of the 130 points estimated by OpenPose, 18 correspond to the body (left); 21 correspond to each of the hands (center); and 70 points correspond to the face (right) \cite{openpose-output-2018}.}
+    \caption{Representation of the 130 points estimated by OpenPose, 18 correspond to the body (left); 21 correspond to each of the hands (center); and 70 points correspond to the face (right)~\cite{openpose-output-2018}.}
     \label{fig:keypoints-openpose}
 \end{figure}
 
-To estimate the skeletons of individuals in videos, the authors \cite{st-gcn-2018} used a library called OpenPose. It is an open-source tool that uses deep learning algorithms to detect and estimate up to 130 human body points, as shown in Figure~\ref{fig:keypoints-openpose}, and presented in \cite{cao-realtime-2017, simon-hand-2017, wei-cpm-2016}.
+To estimate the skeletons of individuals in videos, the authors~\cite{st-gcn-2018} used a library called OpenPose. It is an open-source tool that uses deep learning algorithms to detect and estimate up to 130 human body points, as shown in Figure~\ref{fig:keypoints-openpose}, and presented in~\cite{cao-realtime-2017,simon-hand-2017,wei-cpm-2016}.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{New dataset of human skeletons \\ for sign language} 
+\section{New dataset of human skeletons for sign language} 
 \label{sec:new-dataset}
 
-We introduce a new dataset of human skeletons for sign language based on the American Sign Language Lexicon Video Dataset (ASLLVD). The ASLLVD  is a broad public dataset\footnote{ Available at \url{http://csr.bu.edu/asl/asllvd/annotate/index.html}.} containing video sequences of thousands of American Sign Language (ASL) signs, as well as their annotations, respective start, and end frame markings, and class labels for each sample \cite{ athitsos-asllvd-2008, neidle-2012, vloger-2012}.
+We introduce a new dataset of human skeletons for sign language based on the American Sign Language Lexicon Video Dataset (ASLLVD). The ASLLVD  is a broad public dataset\footnote{ Available at \url{http://csr.bu.edu/asl/asllvd/annotate/index.html}.} containing video sequences of thousands of American Sign Language (ASL) signs, as well as their annotations, respective start, and end frame markings, and class labels for each sample~\cite{athitsos-asllvd-2008,neidle-2012,vloger-2012}.
 
 According to the authors, each sign in ASLLVD is articulated by native individuals in ASL, and video sequences are collected using a four-camera system that simultaneously captures two frontal views, one side view and one enlarged view of the face of these individuals. Figure~\ref{fig:asllvd-example} exemplifies capturing three of these views for the "MERRY-GO-ROUND" sign. 
 
@@ -130,7 +130,7 @@ According to the authors, each sign in ASLLVD is articulated by native individua
     {images/asllvd_example}
     {Example of the sign "MERRY-GO-ROUND" from three different perspectives, in the ASLLVD \cite[p. 2]{athitsos-asllvd-2008}.}
     
-The number and type of signs included in ASLLVD are similar in scale and scope to the set of lexical entries in existing English-to-ASL dictionaries. There is at least one example of video per sign for almost all those contained in the Gallaudet Dictionary of American Sign Language \cite{athitsos-asllvd-2008, gallaudet-2005}.
+The number and type of signs included in ASLLVD are similar in scale and scope to the set of lexical entries in existing English-to-ASL dictionaries. There is at least one example of video per sign for almost all those contained in the Gallaudet Dictionary of American Sign Language~\cite{athitsos-asllvd-2008,gallaudet-2005}.
 
 There is a total of 2,745 signs, represented in approximately 10 thousand samples. Each sign contains between 1 and 18 samples articulated by different individuals (the average number of samples per sign is 4).
 
@@ -180,9 +180,9 @@ The fourth step involves \textbf{filtering the key points}. We use only 27 of th
 \end{figure}
 
 
-The fifth step concerns the \textbf{division of the dataset} into smaller subsets for training and test. For this procedure, a cross-validation dataset tool called "\textit{train\_test\_split}", available by the Scikit-Learn \cite{scikit-learn} library was used. In this division, we assign a proportion of 80\% of the samples for training (corresponding to 7,798 samples) and 20\% for tests (corresponding to 1,950 samples). This division is a commonly adopted proportion, and we understand that the number of samples in these groups is sufficient to validate the performance of most machine learning models.
+The fifth step concerns the \textbf{division of the dataset} into smaller subsets for training and test. For this procedure, a cross-validation dataset tool called "\textit{train\_test\_split}", available by the Scikit-Learn~\cite{scikit-learn} library was used. In this division, we assign a proportion of 80\% of the samples for training (corresponding to 7,798 samples) and 20\% for tests (corresponding to 1,950 samples). This division is a commonly adopted proportion, and we understand that the number of samples in these groups is sufficient to validate the performance of most machine learning models.
 
-Finally, the sixth step is to \textbf{normalize and serialize} the samples to make compatible with the ST-GCN format. Normalization aims to make the length of all samples uniform by applying the repetition of their frames sequentially to the complete filling of an established fixed number of frames. The number of fixed frames adopted is 63 (using a rate of 30 FPS, corresponds to a video with an approximate duration of 2 seconds). Serialization, in turn, consists of preloading the normalized samples from the subsets to translate them into physical Python \cite{python} files, which contain their in-memory representations which are the format used by the ST-GCN. We adopted this format to optimize the data loading process. For each subset, we generate two physical files, the samples, and the labels.
+Finally, the sixth step is to \textbf{normalize and serialize} the samples to make compatible with the ST-GCN format. Normalization aims to make the length of all samples uniform by applying the repetition of their frames sequentially to the complete filling of an established fixed number of frames. The number of fixed frames adopted is 63 (using a rate of 30 FPS, corresponds to a video with an approximate duration of 2 seconds). Serialization, in turn, consists of preloading the normalized samples from the subsets to translate them into physical Python~\cite{python} files, which contain their in-memory representations which are the format used by the ST-GCN. We adopted this format to optimize the data loading process. For each subset, we generate two physical files, the samples, and the labels.
 
 The source code that performs the processing of these steps is also available in the ASLLVD-Skeleton download area.
 
@@ -193,13 +193,13 @@ The source code that performs the processing of these steps is also available in
 
 Since the graph representation approach adopted by the ST-GCN is very flexible, it is not necessary to make modifications in the architecture of the model. Instead, only punctual adaptations to consider the new coordinates of the sign language domain.
 
-The first one is to modify the algorithm to make it capable of using new customized layouts of graphs beyond those originally defined in \cite{st-gcn-2018}. Thus, a new type of layout called "custom" was defined in the configuration file of the model. In addition, a new parameter called "custom\_layout" has been created within the "graph\_args" attribute to allow the number of nodes, the central node, and the edges of new graphs to be informed.
+The first one is to modify the algorithm to make it capable of using new customized layouts of graphs beyond those originally defined in~\cite{st-gcn-2018}. Thus, a new type of layout called "custom" was defined in the configuration file of the model. In addition, a new parameter called "custom\_layout" has been created within the "graph\_args" attribute to allow the number of nodes, the central node, and the edges of new graphs to be informed.
 
 Once this configuration is established, it is possible to map the topology of the graph used in this paper, which is composed by the 27 joints and vertices shown in  Figure~\ref{fig:filtered-keypoints}. Finally, small adjustments were required in the dimensions of the matrices used by the data feeders and also in the class that define the graph domain of the model, so that they can now support layouts with dynamic dimensions, as above.
 
 The source code containing these adaptations is public available\footnote{
     Available at \url{http://www.cin.ufpe.br/~cca5/st-gcn-sl}
-}. This code consists of a \textit{forked} repository created from the one originally model developed by the authors in \cite{st-gcn-2018}.
+}. This code consists of a \textit{forked} repository created from the one originally model developed by the authors in~\cite{st-gcn-2018}.
 
 
 \begin{figure*}[!t]
@@ -214,7 +214,7 @@ The source code containing these adaptations is public available\footnote{
 \section{Experiments} 
 \label{sec:experiments}
 
-We used as reference the experiments proposed in \cite{lim-2016}, which evaluate the performance in ASLLVD dataset of models as the Block-Based Histogram of Optical Flow (BHOF) method (see section \ref{sec:related-work}) and also popular techniques such as Motion Energy Image (MEI) \cite{athitsos-asllvd-2008}, Motion History Image (MHI) \cite{babu-2004}, Principal Component Analysis (PCA) \cite{dreuw-2012} and Histogram of Optical Flow (HOF) \cite{laptev-2008}.
+We used as reference the experiments proposed in~\cite{lim-2016}, which evaluate the performance in ASLLVD dataset of models as the Block-Based Histogram of Optical Flow (BHOF) method (see section \ref{sec:related-work}) and also popular techniques such as Motion Energy Image (MEI)~\cite{athitsos-asllvd-2008}, Motion History Image (MHI)~\cite{babu-2004}, Principal Component Analysis (PCA)~\cite{dreuw-2012} and Histogram of Optical Flow (HOF)~\cite{laptev-2008}.
 
 The authors used a subset containing 20 signs selected from the ASLLVD, as presented in Table~\ref{tab:asllvd-20}. To reproduce this configuration, we selected the estimated skeletons for these signs from the ASLLVD-Skeleton dataset. 
 We also identified that among the selected signs there were different articulations for the signs AGAIN, BASEBALL, CAN, CHAT, CHEAP, CHEAT, CONFLICT, DEPRESS, DOCTOR and DRESS. To solve this, we chose to keep only that articulation that contained the most significant number of samples for their respective signs.
@@ -222,7 +222,7 @@ We also identified that among the selected signs there were different articulati
 Since the number of samples resulting from this process was small, totaling 131 items, it was necessary to apply a new division making 77\% of this subset for training and 33\% for tests. With this strategy, we improve the balance in the number of samples for an adequate evaluation of the model. Finally, as we have a new sample division, it was also necessary to normalize and serialize the samples to be compatible with the ST-GCN. The resulting subset is also public available\footnote{ Available at \url{http://www.cin.ufpe.br/~cca5/asllvd-skeleton-20} } and named \textbf{ASLLVD-Skeleton-20}.
 
 \begin{table}[ht]
-\caption{Selected signs for the experiments in \cite{lim-2016}.}
+\caption{Selected signs for the experiments in~\cite{lim-2016}.}
 \label{tab:asllvd-20}
 \begin{tabular}{ll}
 \hline
@@ -234,7 +234,7 @@ ASLLVD & \begin{tabular}[c]{@{}l@{}}adopt, again, all, awkward, baseball, behavi
 Due to the characteristics of this small dataset, the size of the batch was set to 8 samples after previous experiments. 
 In the same way, as in the original implementation of the ST-GCN training algorithm, we used as optimizer the Stochastic Gradient Descent (SGD) with Nesterov Momentum. 
 
-For the learning rate, a decay strategy was adopted, which consists of initializing it with a higher value and gradually reducing it in the later epochs of the learning process to allow for more and more refined adjustments of the weights, as in \cite{st-gcn-2018}. Thus, in the experiment with the 20 selected signs, the total number of epochs was 200, adopting an initial rate of 0.01, which was decreased to the values of 0.001, 0.0001 and 0.00001 after the end of the epochs 50, 100 and 150, respectively.
+For the learning rate, a decay strategy was adopted, which consists of initializing it with a higher value and gradually reducing it in the later epochs of the learning process to allow for more and more refined adjustments of the weights, as in~\cite{st-gcn-2018}. Thus, in the experiment with the 20 selected signs, the total number of epochs was 200, adopting an initial rate of 0.01, which was decreased to the values of 0.001, 0.0001 and 0.00001 after the end of the epochs 50, 100 and 150, respectively.
 
 In addition, an experiment with the complete ASLLVD dataset was also conducted to establish a reference value. In this experiment, only the batch size was changed. The batch size for this scenario with 2,745 signs was 24, and the learning rate had similar behavior to the experiment above.
 
@@ -245,14 +245,14 @@ The obtained results in both scenarios are presented in the following section, a
 \section{Results} 
 \label{sec:results}
 
-The first experiment was performed using the approach presented in \cite{lim-2016}, which considers the selection of 20 specific signs of the ASLLVD, whose performance is represented in Figure~\ref{fig:training-asllvd-20}. The red line presents the accuracy of the model (\textit{top-1}) and its evolution throughout training epochs. The gray line represents the \textit{top-5} accuracy, which corresponds to the accuracy based on the 5 most likely responses presented by the model. Finally, the blue dashed line represents the evolution of the learning rate used in the respective epochs and its decay behavior.
+The first experiment was performed using the approach presented in~\cite{lim-2016}, which considers the selection of 20 specific signs of the ASLLVD, whose performance is represented in Figure~\ref{fig:training-asllvd-20}. The red line presents the accuracy of the model (\textit{top-1}) and its evolution throughout training epochs. The gray line represents the \textit{top-5} accuracy, which corresponds to the accuracy based on the 5 most likely responses presented by the model. Finally, the blue dashed line represents the evolution of the learning rate used in the respective epochs and its decay behavior.
 
-It can be observed from the image that the model was able to achieve an accuracy of 56.82\% from the epoch 80 in sign recognition. The \textit{top-5} accuracy, in turn, was able to reach 95.45\%. This performance was superior to the results presented by traditional techniques such as MEI, MHI, and PCA, but was not able to overcome that obtained by the HOF and BHOF techniques \cite{lim-2016}. Table~\ref{tab:results-comparison-20} presents the comparison of these results.
+It can be observed from the image that the model was able to achieve an accuracy of 56.82\% from the epoch 80 in sign recognition. The \textit{top-5} accuracy, in turn, was able to reach 95.45\%. This performance was superior to the results presented by traditional techniques such as MEI, MHI, and PCA, but was not able to overcome that obtained by the HOF and BHOF techniques~\cite{lim-2016}. Table~\ref{tab:results-comparison-20} presents the comparison of these results.
 
 \begin{table}[ht]
 \centering
 \caption{Sign recognition accuracy using different approaches \newline 
-    as proposed in \cite{lim-2016}.}
+    as proposed in~\cite{lim-2016}.}
 \label{tab:results-comparison-20}
 \begin{tabular}{lc}
 \hline
@@ -266,7 +266,7 @@ BHOF               & 85.00                     \\ \hline
 \end{tabular}
 \end{table}
 
-To establish a reference with the complete ASLLVD dataset, a second experiment was performed using its 2,745 signs. In this scenario, an accuracy (\textit{top-1}) of 20.85\% and a \textit{top-5} accuracy of approximately 40.15\% was obtained. Of course, this is a much more challenging task than the one proposed in \cite{lim-2016}, and these results reflect this complexity.
+To establish a reference with the complete ASLLVD dataset, a second experiment was performed using its 2,745 signs. In this scenario, an accuracy (\textit{top-1}) of 20.85\% and a \textit{top-5} accuracy of approximately 40.15\% was obtained. Of course, this is a much more challenging task than the one proposed in~\cite{lim-2016}, and these results reflect this complexity.
 
 From the table, we can see that the approach presented in this paper, based on graphs of the coordinates of human articulations, has not yet been able to provide such remarkable results as that based on the description of the individual movement of the hands through histograms adopted by BHOF. Indeed, the application of consecutive steps for optical flow extraction, color map creation, block segmentation and generation of histograms from them were able to ensure that more enhanced features about the hand movements were extracted favoring its sign recognition performance. This technique is derived from HOF and differs only by the approach of focusing on the hands of individuals while calculating the optical flow histogram.
 

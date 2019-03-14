@@ -1,0 +1,42 @@
+\documentclass{styles/springer/llncs}
+\usepackage{header}
+\usepackage{en/preamble}
+\usepackage{import}
+\usepackage{multicol}
+\usepackage{footmisc}
+    
+\begin{document}
+
+\titlerunning{Spatial-Temporal Graph Conv. Networks for Sign Language Recognition}
+
+\author{Cleison Correia de Amorim\inst{1}\orcidID{0000-0001-8053-5504} \and
+David Macêdo\inst{1}\orcidID{???} \and
+Cleber Zanchettin\inst{1}\orcidID{???}}
+
+\authorrunning{C. C. Amorim et al.}
+        
+\institute{Universidade Federal de Pernambuco, Recife PE 50.740-560, Brazil\\
+\email{\{cca5,dlm,cz\}@cin.ufpe.br}\\
+\url{http://www.cin.ufpe.br}}
+
+% Title:
+\maketitle
+
+% Abstract:
+\begin{abstract}
+\import{en/}{abstract.tex}
+\end{abstract}
+
+% Keywords:
+\begin{keywords}
+\import{en/}{keywords.tex}
+\end{keywords}
+
+% Content:
+\import{en/}{sections.tex}
+
+% References:
+\bibliographystyle{styles/springer/splncs04}
+\bibliography{references.bib}
+\end{document}
+
