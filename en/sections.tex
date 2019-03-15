@@ -47,14 +47,14 @@ With this purpose, we present an approach based on skeletal body movement to per
 The ST-GCN uses as a base of its formulation a sequence of skeleton graphs representing the human body obtained from a series of action frames of the individuals. Figure \ref{fig:st-gcn-graph} allows visualizing this structure, where each node corresponds to the point of articulation. The intra-body vertices are defined based on the body's natural connections. The inter-frame vertices, in turn, connect the same joints between consecutive frames to denote their trajectory over time~\cite{st-gcn-2018}.
     
 \image
-    [3.5cm]
+    [3.0cm]
     {fig:st-gcn-graph}
     {images/st_gcn_graph}
     {Sequence of skeleton graphs, denoting human movement in space and time, used by the ST-GCN \cite[p. 1]{st-gcn-2018}.}
 
 \begin{figure*}[ht!]
     \centering
-    \includegraphics[width=0.7\textwidth]{images/dataset_preprocessing_en}
+    \includegraphics[width=0.9\textwidth]{images/dataset_preprocessing_en}
     \caption{Preprocessing steps for creating the ASLLVD-Skeleton dataset.}
     \label{fig:preprocessamento}
 \end{figure*}
@@ -90,7 +90,7 @@ The center of gravity is taken to be the mean coordinate of all joints of the sk
 In order to learn the temporal dimension, the ST-GCN extends the concept of graph convolution shown above to the scheme presented in the Figure~\ref{fig:st-gcn-convolution}. Considering this dimension as a sequence of skeletons graphs stacked consecutively, as in Figure~\ref{fig:st-gcn-graph}. With this, we have in hands a set of graphs that are neighbors to each other. Let us now assume that each articulation of the body in a graph must be connected using a vertex to itself in the graph of the previous neighbor frame and also in the next neighbor frame. Given that, if we return to the definition of sampling introduced above, we verify that the convolutional filter contemplates those points belonging to the neighboring graphs, that now fit the requirements of being directly connected at a distance $D = 1$. In this way, ST-GCN considers the spatial and temporal dimensions and applies convolutions on them.
 
 \image
-    [8.5cm]
+    [8.0cm]
     {fig:st-gcn-convolution}
     {images/st_gcn_convolution}
     {Convolution on the spatial and temporal dimensions, which considers the points directly connected in the current and neighboring graphs \cite[p. 3]{st-gcn-2018}.}
@@ -204,7 +204,7 @@ The source code containing these adaptations is public available\footnote{
 
 \begin{figure*}[!t]
     \centering
-    \includegraphics[width=0.65\textwidth]{images/results_20}
+    \includegraphics[width=0.85\textwidth]{images/results_20}
     \caption{Accuracy obtained by the presented approach in recognition of the 20 signs selected from the ASLLVD.}
     \label{fig:training-asllvd-20}
 \end{figure*}
@@ -222,12 +222,13 @@ We also identified that among the selected signs there were different articulati
 Since the number of samples resulting from this process was small, totaling 131 items, it was necessary to apply a new division making 77\% of this subset for training and 33\% for tests. With this strategy, we improve the balance in the number of samples for an adequate evaluation of the model. Finally, as we have a new sample division, it was also necessary to normalize and serialize the samples to be compatible with the ST-GCN. The resulting subset is also public available\footnote{ Available at \url{http://www.cin.ufpe.br/~cca5/asllvd-skeleton-20} } and named \textbf{ASLLVD-Skeleton-20}.
 
 \begin{table}[ht]
+\centering
 \caption{Selected signs for the experiments in~\cite{lim-2016}.}
 \label{tab:asllvd-20}
-\begin{tabular}{ll}
+\begin{tabular}{ l | p{0.7\textwidth} }
 \hline
 Dataset & Selected signs \\ \hline
-ASLLVD & \begin{tabular}[c]{@{}l@{}}adopt, again, all, awkward, baseball, behavior, can, chat, \\ cheap, cheat, church, coat, conflict, court, deposit, depressed, \\ doctor, don’t want, dress, enough\end{tabular} \\ \hline
+ASLLVD & adopt, again, all, awkward, baseball, behavior, can, chat, cheap, cheat, church, coat, conflict, court, deposit, depressed, doctor, don’t want, dress, enough \\ \hline
 \end{tabular}
 \end{table}
 
@@ -251,8 +252,7 @@ It can be observed from the image that the model was able to achieve an accuracy
 
 \begin{table}[ht]
 \centering
-\caption{Sign recognition accuracy using different approaches \newline 
-    as proposed in~\cite{lim-2016}.}
+\caption{Sign recognition accuracy using different approaches as proposed in~\cite{lim-2016}.}
 \label{tab:results-comparison-20}
 \begin{tabular}{lc}
 \hline
